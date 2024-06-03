@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Switch } from "@headlessui/react";
 import classNames from "classnames";
 
-const LightUpBtns = () => {
+const LightAndUpBtns = () => {
 	const [enabled, setEnabled] = useState(false);
 
 	return (
@@ -13,14 +13,14 @@ const LightUpBtns = () => {
 				onChange={setEnabled}
 				className={classNames(
 					enabled ? "bg-white" : "bg-black",
-					"inline-flex h-3 w-6 flex-shrink-0 cursor-pointer rounded-full border-[1px] border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-orange-600"
+					"inline-flex h-3 w-6 flex-shrink-0 cursor-pointer rounded-full border-[1px] border-transparent transition-colors duration-200 ease-in-out outline outline-2 focus:ring-2 focus:ring-orange-600"
 				)}>
 				<span className='sr-only'>Use setting</span>
 				<span
 					aria-hidden='true'
 					className={classNames(
 						enabled ? "translate-x-2.5 bg-black" : "translate-x-0  bg-white",
-						"pointer-events-none inline-block h-2.5 w-2.5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+						"pointer-events-none inline-block h-2.5 w-2.5 transform rounded-full bg-black shadow ring-0 transition duration-200 ease-in-out"
 					)}
 				/>
 			</Switch>
@@ -48,7 +48,7 @@ const LightUpBtns = () => {
 						transform='translate(307.779 3403.604)'
 						fill='#f77403'
 						stroke='#f77403'
-						stroke-width='2'
+						strokeWidth='2'
 					/>
 				</g>
 			</svg>
@@ -56,4 +56,4 @@ const LightUpBtns = () => {
 	);
 };
 
-export default LightUpBtns;
+export default LightAndUpBtns;
