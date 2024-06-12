@@ -1,8 +1,8 @@
 const MenuBarsIcon = () => {
 	return (
-		<div className='relative w-6 h-6 flex flex-col items-end gap-1'>
+		<div className='relative flex flex-col items-end w-6 h-6 gap-1 justify-normal '>
 			{/* Larger bar */}
-			<div className='w-8 h-[.2em] bg-black rounded' />
+			<div className='w-8 h-[.2em] bg-black rounded pl-1' />
 			{/* Medium bar, thicker, slightly rotated */}
 			<div className='w-6 h-[.2em] bg-black rounded transform rotate-[-5deg] mt-[1px]' />
 			{/* Smallest bar, thicker, more rotated */}

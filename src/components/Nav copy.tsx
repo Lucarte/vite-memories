@@ -1,3 +1,4 @@
+import { PopoverPanel } from "@headlessui/react";
 import classNames from "classnames";
 
 const navigation = [
@@ -13,32 +14,33 @@ const navigation = [
 	{ name: "Sign Out", href: "#", page: "SignOut", current: false },
 ];
 
-type OnClickProps = {
-	onClick: () => void;
+type Props = {
+	onClick: (page: string) => void;
 };
-
-const Nav = ({ onClick }: OnClickProps) => {
+const Nav = ({ onClick }: Props) => {
 	return (
-		<nav className='absolute top-0 right-0 z-40 flex flex-col justify-center w-full h-full overflow-auto text-white bg-black shadow-md lg:w-1/2'>
-			{navigation.map((item) => (
-				<a
-					key={item.name}
-					href={item.href}
-					onClick={(e) => {
-						e.preventDefault();
-						onClick();
-					}}
-					aria-current={item.current ? "page" : undefined}
-					className={classNames(
-						item.current
-							? "bg-gray-900 text-white"
-							: "hover:text-white hover:bg-gray-900",
-						"block font-titles rounded-md py-2 px-3 text-2xl uppercase font-medium"
-					)}>
-					{item.name}
-				</a>
-			))}
-		</nav>
+		<PopoverPanel as='nav' aria-label='Global'>
+			<div className='max-w-3xl mx-auto space-y-1 text-2xl sm:px-4 '>
+				{navigation.map((item) => (
+					<a
+						key={item.name}
+						href='#'
+						onClick={(e) => {
+							e.preventDefault();
+							onClick(item.page);
+						}}
+						aria-current={item.current ? "page" : undefined}
+						className={classNames(
+							item.current
+								? "bg-gray-900 text-white"
+								: "hover:text-white hover:bg-gray-900",
+							"block rounded-md py-2 px-3 text-2xl uppercase font-medium"
+						)}>
+						{item.name}
+					</a>
+				))}
+			</div>
+		</PopoverPanel>
 	);
 };
 

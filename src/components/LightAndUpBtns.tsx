@@ -6,30 +6,32 @@ const LightAndUpBtns = () => {
 	const [enabled, setEnabled] = useState(false);
 
 	return (
-		<div className='fixed bottom-[2rem] left-0 right-0 flex justify-between px-4 items-center'>
+		<div className='fixed left-0 right-0 flex items-center justify-between pl-4 pr-5 md:px-8 bottom-10'>
 			{/* Dark/Light Modus Button */}
-			<Switch
-				checked={enabled}
-				onChange={setEnabled}
-				className={classNames(
-					enabled ? "bg-white" : "bg-black",
-					"inline-flex h-3 w-6 flex-shrink-0 cursor-pointer rounded-full border-[1px] border-transparent transition-colors duration-200 ease-in-out outline outline-2 focus:ring-2 focus:ring-orange-600"
-				)}>
-				<span className='sr-only'>Use setting</span>
-				<span
-					aria-hidden='true'
+			<div className='flex items-center justify-center w-10 h-8 rotate-90 bg-white md:rotate-0 rounded-xl'>
+				<Switch
+					checked={enabled}
+					onChange={setEnabled}
 					className={classNames(
-						enabled ? "translate-x-2.5 bg-black" : "translate-x-0  bg-white",
-						"pointer-events-none inline-block h-2.5 w-2.5 transform rounded-full bg-black shadow ring-0 transition duration-200 ease-in-out"
-					)}
-				/>
-			</Switch>
+						enabled ? "bg-white" : "bg-black",
+						"inline-flex h-3 w-6 flex-shrink-0 cursor-pointer rounded-full border-[1px] border-transparent transition-colors duration-200 ease-in-out outline outline-2 focus:ring-2 focus:ring-orange-600"
+					)}>
+					<span className='sr-only'>Use setting</span>
+					<span
+						aria-hidden='true'
+						className={classNames(
+							enabled ? "translate-x-2.5 bg-black" : "translate-x-0  bg-white",
+							"pointer-events-none inline-block h-2.5 w-2.5 transform rounded-full bg-black shadow ring-0 transition duration-200 ease-in-out"
+						)}
+					/>
+				</Switch>
+			</div>
 
 			{/* Up Button */}
 			<svg
 				xmlns='http://www.w3.org/2000/svg'
-				width='35'
-				height='35'
+				width='40'
+				height='40'
 				viewBox='0 0 35 35'>
 				<g id='Home_Btn' data-name='Home Btn' transform='translate(-308 -3404)'>
 					<circle
