@@ -1,255 +1,375 @@
-import { FormEvent, useState } from "react";
-import { UserCircleIcon } from "@heroicons/react/24/solid";
-import http from "../utils/http";
+import { DevTool } from "@hookform/devtools";
+import { useForm } from "react-hook-form";
 import CustomButton from "./CustomButton";
-import InputBox from "./InputBox";
-import Dropdown from "./Dropdown";
+import http from "../utils/http";
+import { UserCircleIcon } from "@heroicons/react/24/solid";
+import { useState } from "react";
 import { handleFileUpload } from "../utils/FileUploadHelper";
-import { handleDropdownChange } from "../utils/DropdownHelper";
+// import { useNavigate } from "react-router-dom";
+
+enum RelationshipEnum {
+	Family = "family",
+	Friend = "friend",
+	Teacher = "teacher",
+}
+
+const relationships = ["Family", "Friend", "Teacher"];
+
+type FormValues = {
+	firstName: string;
+	lastName: string;
+	email: string;
+	password: string;
+	passwordConfirmation: string;
+	relationshipToKid: "" | RelationshipEnum; // Allow empty string initially
+	terms: boolean;
+	avatarPath: FileList | null;
+};
 
 const RegisterForm = () => {
-	const [firstName, setFirstName] = useState("");
-	const [lastName, setLastName] = useState("");
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [passwordConfirmation, setPasswordConfirmation] = useState("");
-	const [relationshipToKid, setRelationshipToKid] = useState(
-		"Choose Relationship"
-	);
-	const [terms, setTerms] = useState(false);
+	const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 	const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-	const [avatarURL, setAvatarURL] = useState("");
-
-	const handleButtonClick = () => {
+	// Handle file change
+	const handlePicBtnClick = () => {
 		document.getElementById("hiddenFileInput")?.click();
 	};
+	// const navigate = useNavigate();
+
+	const {
+		register,
+		control,
+		handleSubmit,
+		formState: { errors },
+		watch,
+	} = useForm<FormValues>({
+		defaultValues: {
+			firstName: "",
+			lastName: "",
+			email: "",
+			password: "",
+			passwordConfirmation: "",
+			relationshipToKid: "",
+			terms: false,
+			avatarPath: null,
+		},
+	});
+
+	// Get the current value of 'password' using watch -- throwing me an error otherwise
+	const password = watch("password", "");
+	// const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	// 	const file = e.target.files?.[0];
+	// 	if (file) {
+	// 		setAvatarPreview(URL.createObjectURL(file));
+	// 	}
+	// };
 
 	// for the onSubmit inside the form tag
-	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
+	const onSubmit = async (formData: FormValues) => {
+		const data = new FormData();
+		data.append("firstName", formData.firstName);
+		data.append("lastName", formData.lastName);
+		data.append("email", formData.email);
+		data.append("password", formData.password);
+		data.append("passwordConfirmation", formData.passwordConfirmation);
+		data.append("relationshipToKid", formData.relationshipToKid);
+		data.append("terms", formData.terms ? "1" : "0");
 
-		// Create FormData object
-		const formData = new FormData();
-		formData.append("firstName", firstName);
-		formData.append("lastName", lastName);
-		formData.append("email", email);
-		formData.append("password", password);
-		formData.append("passwordConfirmation", passwordConfirmation);
-		formData.append("relationshipToKid", relationshipToKid);
-		formData.append("terms", terms ? "1" : "0"); // Convert boolean to number
+		// if (formData.avatarPath && formData.avatarPath[0]) {
+		// 	data.append("avatar_path", formData.avatarPath[0]);
+		// }
 
 		if (uploadedFile) {
-			formData.append("avatar_path", uploadedFile);
+			data.append("avatar_path", uploadedFile);
 		}
-
 		try {
+			// Request CSRF token
 			await http.get("/sanctum/csrf-cookie");
-			const response = await http.post("api/auth/register", formData, {
+			// const response = await http.post("api/auth/register", formData, {
+			await http.post("api/auth/register", formData, {
 				headers: {
 					"Content-Type": "multipart/form-data",
 				},
 			});
-			console.log(response);
+
+			// ################ // ################ TO DO: context for the authorized user ie. Admin // ################ // ################
+			// Extract user data from the response
+			// const userData = response.data;
+			// // Update the authentication context
+			// setAuth({ ...userData, isAdmin: userData.is_admin ?? false });
+
+			// First success message, then navigate to the login
+			// navigate("/login", {
+			// 	state: {
+			// 		successMessage: "You are now a fan of my Pearls of Great Price",
+			// 	},
+			// });
+
+			console.error("Registration worked!");
 		} catch (error) {
 			console.error("Registration failed:", error);
 		}
 	};
 
 	return (
-		<form
-			className='mt-4 space-y-10'
-			action='#'
-			// method='POST'
-			onSubmit={handleSubmit}>
-			{/* Avatar */}
-			<div className='flex flex-col items-center gap-y-4'>
-				{avatarURL ? (
-					<img
-						src={avatarURL}
-						alt='User avatar'
-						className='object-cover w-12 h-12 rounded-full'
-					/>
-				) : (
-					<UserCircleIcon
-						className='w-12 h-12 text-gray-300'
-						aria-hidden='true'
-					/>
-				)}
-				<div className='relative inline-block'>
-					<CustomButton
-						onClick={handleButtonClick}
-						type='button'
-						text='Upload a profile foto'
-						classes='relative rounded-[3px] bg-white px-2 py-1 text-xs font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
-					/>
-					<input
-						id='hiddenFileInput'
+		<>
+			<form
+				className='mt-4 space-y-10'
+				noValidate
+				onSubmit={handleSubmit(onSubmit)}>
+				{/* Avatar */}
+				<div className='flex flex-col items-center gap-y-4'>
+					{avatarPreview ? (
+						<img
+							src={avatarPreview}
+							alt='User avatar'
+							className='object-cover w-12 h-12 rounded-full'
+						/>
+					) : (
+						<UserCircleIcon
+							className='w-12 h-12 text-gray-300'
+							aria-hidden='true'
+						/>
+					)}
+					<div className='relative inline-block'>
+						<CustomButton
+							onClick={handlePicBtnClick}
+							type='button'
+							text='Upload a profile foto'
+							classes='relative rounded-[3px] bg-white px-2 py-1 text-xs font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
+						/>
+						<input
+							id='hiddenFileInput'
+							type='file'
+							{...register("avatarPath", {
+								required: {
+									value: false,
+									message: "Field is optional.",
+								},
+								validate: {
+									fileType: (value) =>
+										!value ||
+										[
+											"image/jpeg",
+											"image/jpg",
+											"image/png",
+											"image/gif",
+											"image/svg+xml",
+										].includes(value[0]?.type) ||
+										"Invalid file type. Only JPG, JPEG, PNG, GIF, and SVG are allowed.",
+									fileSize: (value) =>
+										!value ||
+										value[0]?.size <= 2048 * 1024 ||
+										"File size exceeds 2 MB.",
+								},
+							})}
+							// 'handleFileUpload' comes from 'FileUploadHelper'
+							onChange={(e) =>
+								handleFileUpload(e, setUploadedFile, setAvatarPreview)
+							}
+							// pointer only works when 'hidden', but the btn functionality only on 'opacity-0'
+							className='absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer'
+						/>
+					</div>
+					{uploadedFile && <p>Uploaded file: {uploadedFile.name}</p>}
+					{/* <input
 						type='file'
-						// 'handleFileUpload' comes from 'FileUploadHelper'
-						onChange={(e) => handleFileUpload(e, setUploadedFile, setAvatarURL)}
-						// pointer only works when 'hidden', but the btn functionality only on 'opacity-0'
-						className='absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer'
-					/>
+						accept='image/*'
+						{...register("avatarPath", { required: false })}
+						onChange={handleFileChange}
+					/> */}
+					<p>{errors.avatarPath?.message}</p>
 				</div>
-				{uploadedFile && <p>Uploaded file: {uploadedFile.name}</p>}
-			</div>
-			{/* First Name  from Component*/}
-			<div className='relative'>
-				<InputBox
-					label={{
-						htmlFor: "firstName",
-						classes:
-							"absolute inline-block px-2 text-xs font-light text-gray-800 bg-white -top-2 left-4",
-						text: "First Name",
-					}}
-					input={{
-						type: "text",
-						name: "firstName",
-						id: "firstName",
-						classes:
-							"block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6",
-						placeholder: "Mariana",
-						value: firstName,
-						onChange: (e) => {
-							setFirstName(e.target.value);
+				<div className='relative'>
+					<label
+						htmlFor='firstName'
+						className='absolute inline-block px-2 text-xs font-light text-gray-800 bg-white -top-2 left-4'>
+						First Name
+					</label>
+					<input
+						type='text'
+						className='"block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"'
+						placeholder='Mariana'
+						aria-invalid={errors.firstName ? "true" : "false"}
+						{...register("firstName", {
+							required: {
+								value: true,
+								message: "Field required.",
+							},
+							minLength: {
+								value: 2,
+								message: "Minimum length is 2 characters.",
+							},
+							maxLength: {
+								value: 16,
+								message: "Maximum length is 16 characters.",
+							},
+						})}
+					/>
+					<p>{errors.firstName?.message}</p>
+				</div>
+				<div className='relative'>
+					<label
+						htmlFor='lastName'
+						className='absolute inline-block px-2 text-xs font-light text-gray-800 bg-white -top-2 left-4'>
+						Last Name
+					</label>
+					<input
+						type='text'
+						className='"block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"'
+						placeholder='Lucht'
+						aria-invalid={errors.lastName ? "true" : "false"}
+						{...register("lastName", {
+							required: {
+								value: true,
+								message: "Field required.",
+							},
+							minLength: {
+								value: 2,
+								message: "Minimum length is 2 characters.",
+							},
+							maxLength: {
+								value: 16,
+								message: "Maximum length is 16 characters.",
+							},
+						})}
+					/>
+					<p>{errors.lastName?.message}</p>
+				</div>
+				<div className='relative'>
+					<label
+						htmlFor='email'
+						className='absolute inline-block px-2 text-xs font-light text-gray-800 bg-white -top-2 left-4'>
+						E-Mail
+					</label>
+					<input
+						type='email'
+						className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
+						placeholder='you@mail.com'
+						aria-invalid={errors.email ? "true" : "false"}
+						{...register("email", {
+							required: {
+								value: true,
+								message: "Please enter an email.",
+							},
+							pattern: {
+								value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+								message: "Invalid email format",
+							},
+						})}
+					/>
+					<p>{errors.email?.message}</p>
+				</div>
+				{/* PASSWORD */}
+				<div className='relative'>
+					<label
+						htmlFor='password'
+						className='absolute inline-block px-2 text-xs font-light text-gray-800 bg-white -top-2 left-4'>
+						Password
+					</label>
+					<input
+						className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
+						placeholder='OneShortJoke!'
+						type='password'
+						aria-invalid={errors.password ? "true" : "false"}
+						{...register("password", {
+							required: {
+								value: true,
+								message: "Please enter a password",
+							},
+							validate: {
+								minLength: (value) =>
+									value.length >= 8 || "Password must be 8 characters long.",
+								lowercase: (value) =>
+									/^(?=.*[a-z])/.test(value) ||
+									"Password must contain at least one lowercase letter.",
+								uppercase: (value) =>
+									/^(?=.*[A-Z])/.test(value) ||
+									"Password must contain at least one uppercase letter.",
+								number: (value) =>
+									/^(?=.*\d)/.test(value) ||
+									"Password must contain at least one number.",
+								specialChar: (value) =>
+									/^(?=.*[@$!%*?&])/.test(value) ||
+									"Password must contain at least one special character.",
+							},
+						})}
+					/>
+					<p>{errors.password?.message}</p>
+				</div>
+				{/* PASSWORD CONFIRMATION */}
+				<div className='relative'>
+					<label
+						htmlFor='passwordConfirmation'
+						className='absolute inline-block px-2 text-xs font-light text-gray-800 bg-white -top-2 left-4'>
+						Password Confirmation
+					</label>
+					<input
+						className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
+						placeholder='SameShortJoke!'
+						type='password'
+						aria-invalid={errors.password ? "true" : "false"}
+						{...register("passwordConfirmation", {
+							required: "Please re-enter your password.",
+							validate: {
+								matchPassword: (value) =>
+									value === password || "Passwords do not match.",
+							},
+						})}
+					/>
+					<p>{errors.passwordConfirmation?.message}</p>
+				</div>
+				{/* RELATIONSHIP */}
+				<select
+					className='block w-full rounded-[3px] font-light border-0 py-2 px-6 bg-gray-100 text-gray-500 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
+					aria-invalid={errors.relationshipToKid ? "true" : "false"}
+					{...register("relationshipToKid", {
+						required: {
+							value: true,
+							message: "Please select a relationship.",
 						},
-					}}
-				/>
-			</div>
-			{/* Last Name  from Component*/}
-			<div className='relative'>
-				<InputBox
-					label={{
-						htmlFor: "lastName",
-						classes:
-							"absolute inline-block px-2 text-xs font-light text-gray-800 bg-white -top-2 left-4",
-						text: "Last Name",
-					}}
-					input={{
-						type: "text",
-						name: "lastName",
-						id: "lastName",
-						classes:
-							"block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6",
-						placeholder: "Lucht",
-						value: lastName,
-						onChange: (e) => {
-							setLastName(e.target.value);
-						},
-					}}
-				/>
-			</div>
-			{/* E-Mail from Component*/}
-			<div className='relative'>
-				<InputBox
-					label={{
-						htmlFor: "email",
-						classes:
-							"absolute inline-block px-2 text-xs font-light text-gray-800 bg-white -top-2 left-4",
-						text: "E-Mail",
-					}}
-					input={{
-						type: "email",
-						name: "email",
-						id: "email",
-						classes:
-							"block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6",
-						placeholder: "me@gmail.com",
-						value: email,
-						onChange: (e) => {
-							setEmail(e.target.value);
-						},
-					}}
-				/>
-			</div>
-			{/* Password from Component*/}
-			<div className='relative'>
-				<InputBox
-					label={{
-						htmlFor: "password",
-						classes:
-							"absolute inline-block px-2 text-xs font-light text-gray-800 bg-white -top-2 left-4",
-						text: "Password",
-					}}
-					input={{
-						type: "password",
-						name: "password",
-						id: "password",
-						classes:
-							"block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6",
-						placeholder: "1ShortJoke!",
-						value: password,
-						onChange: (e) => {
-							setPassword(e.target.value);
-						},
-					}}
-				/>
-			</div>
-			{/* Password Confirmation from Component*/}
-			<div className='relative'>
-				<InputBox
-					label={{
-						htmlFor: "passwordConfirmation",
-						classes:
-							"absolute inline-block px-2 text-xs font-light text-gray-800 bg-white -top-2 left-4",
-						text: "Password Confirmation",
-					}}
-					input={{
-						type: "password",
-						name: "passwordConfirmation",
-						id: "passwordConfirmation",
-						classes:
-							"block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6",
-						placeholder: "SameShortJoke!",
-						value: passwordConfirmation,
-						onChange: (e) => {
-							setPasswordConfirmation(e.target.value);
-						},
-					}}
-				/>
-			</div>
-			{/* Relationship to kid from Component*/}
-			<Dropdown
-				select={{
-					id: "relationshipToKid",
-					name: "relationshipToKid",
-					value: relationshipToKid,
-					classes:
-						"block w-full rounded-[3px] font-light border-0 py-2 px-6 bg-gray-100 text-gray-500 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6",
-					// 'handleDropdownChange' comes from 'DropdownHelper'
-					onChange: handleDropdownChange(setRelationshipToKid),
-				}}
-				options={["Choose Relationship", "Family", "Friend", "Teacher"]}
-			/>
-			{/* Terms */}
-			<InputBox
-				classes='flex relative items-center h-6 gap-x-3 justify-center'
-				input={{
-					type: "checkbox",
-					name: "terms",
-					id: "terms",
-					classes:
-						"w-4 h-4 text-gray-600 border-gray-300 rounded focus:ring-orange-600",
-					onChange: (e) => setTerms(e.target.checked),
-				}}
-				label={{
-					htmlFor: "terms",
-					classes: "text-black text-sm",
-					text: "Accept the ",
-					children: (
-						<span className='underline cursor-pointer hover:text-gray-600'>
-							Terms & Conditions
-						</span>
-					),
-				}}
-			/>
-			{/* Register Button */}
-			<CustomButton
-				type='submit'
-				classes='rounded-bl-2xl rounded-tr-2xl bg-gray-900 px-6 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600'
-				text='Register'
-			/>{" "}
-		</form>
+						validate: (value) =>
+							value !== "" || "Please select a relationship.",
+					})}>
+					<option value='' disabled>
+						Select a relationship
+					</option>
+					{relationships.map((relationship) => (
+						<option key={relationship} value={relationship}>
+							{relationship}
+						</option>
+					))}
+				</select>
+				<p>{errors.relationshipToKid?.message}</p>
+				{/* TERMS */}
+				<div className='relative flex items-center justify-center h-6 gap-x-3'>
+					<input
+						className='w-4 h-4 text-gray-600 border-gray-300 rounded focus:ring-orange-600'
+						aria-invalid={errors.terms ? "true" : "false"}
+						type='checkbox'
+						{...register("terms", {
+							required: "Please accept the terms and conditions.",
+						})}
+					/>
+					<label htmlFor='terms'>
+						I accept the{" "}
+						<a
+							href='#'
+							className='underline cursor-pointer hover:text-gray-600'>
+							Terms and Conditions
+						</a>
+						.
+					</label>
+					<p className=''>{errors.terms?.message}</p>
+				</div>
+				{/* Register Button */}
+				<CustomButton
+					type='submit'
+					classes='rounded-bl-2xl rounded-tr-2xl bg-gray-900 px-6 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600'
+					text='Register'
+				/>{" "}
+			</form>
+			<DevTool control={control} />
+		</>
 	);
 };
 

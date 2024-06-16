@@ -2,7 +2,6 @@ import Header from "./components/Header";
 import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import { useState } from "react";
-
 import "./App.css";
 import NewMemory from "./pages/NewMemory";
 
@@ -12,8 +11,8 @@ const App = () => {
 	return (
 		<div className=''>
 			<Header />
-			<Login />
-			{/* <Registration /> */}
+			{/* <Login /> */}
+			<Registration />
 			{/* <NewMemory /> */}
 			{/* {page === "Registration" ? <Registration /> : <Login />} */}
 		</div>
