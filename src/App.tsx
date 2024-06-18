@@ -11,9 +11,9 @@ const App = () => {
 	return (
 		<div className=''>
 			<Header />
-			{/* <Login /> */}
-			<Registration />
-			{/* <NewMemory /> */}
+			<Login />
+			{/* <Registration /> */}
+			<NewMemory />
 			{/* {page === "Registration" ? <Registration /> : <Login />} */}
 		</div>
 	);

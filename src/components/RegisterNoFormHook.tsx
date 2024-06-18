@@ -18,7 +18,7 @@ const RegisterNoForm = () => {
 	);
 	const [terms, setTerms] = useState(false);
 	const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-	const [avatarURL, setAvatarURL] = useState("");
+	const [avatarPreview, setAvatarPreview] = useState("");
 
 	const handleButtonClick = () => {
 		document.getElementById("hiddenFileInput")?.click();
@@ -63,9 +63,9 @@ const RegisterNoForm = () => {
 			onSubmit={handleSubmit}>
 			{/* Avatar */}
 			<div className='flex flex-col items-center gap-y-4'>
-				{avatarURL ? (
+				{avatarPreview ? (
 					<img
-						src={avatarURL}
+						src={avatarPreview}
 						alt='User avatar'
 						className='object-cover w-12 h-12 rounded-full'
 					/>
@@ -86,7 +86,9 @@ const RegisterNoForm = () => {
 						id='hiddenFileInput'
 						type='file'
 						// 'handleFileUpload' comes from 'FileUploadHelper'
-						onChange={(e) => handleFileUpload(e, setUploadedFile, setAvatarURL)}
+						onChange={(e) =>
+							handleFileUpload(e, setUploadedFile, setAvatarPreview)
+						}
 						// pointer only works when 'hidden', but the btn functionality only on 'opacity-0'
 						className='absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer'
 					/>

@@ -4,8 +4,6 @@ import CustomButton from "./CustomButton";
 import http from "../utils/http";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
-import { handleFileUpload } from "../utils/FileUploadHelper";
-// import { useNavigate } from "react-router-dom";
 
 enum RelationshipEnum {
 	Family = "family",
@@ -15,25 +13,24 @@ enum RelationshipEnum {
 
 const relationships = ["Family", "Friend", "Teacher"];
 
-type FormValues = {
+type RegisterFormValues = {
 	firstName: string;
 	lastName: string;
 	email: string;
 	password: string;
 	passwordConfirmation: string;
-	relationshipToKid: "" | RelationshipEnum; // Allow empty string initially
+	relationshipToKid: "";
 	terms: boolean;
 	avatarPath: FileList | null;
 };
 
 const RegisterForm = () => {
 	const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-	const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+
 	// Handle file change
 	const handlePicBtnClick = () => {
-		document.getElementById("hiddenFileInput")?.click();
+		setAvatarPreview;
 	};
-	// const navigate = useNavigate();
 
 	const {
 		register,
@@ -41,7 +38,7 @@ const RegisterForm = () => {
 		handleSubmit,
 		formState: { errors },
 		watch,
-	} = useForm<FormValues>({
+	} = useForm<RegisterFormValues>({
 		defaultValues: {
 			firstName: "",
 			lastName: "",
@@ -56,15 +53,9 @@ const RegisterForm = () => {
 
 	// Get the current value of 'password' using watch -- throwing me an error otherwise
 	const password = watch("password", "");
-	// const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-	// 	const file = e.target.files?.[0];
-	// 	if (file) {
-	// 		setAvatarPreview(URL.createObjectURL(file));
-	// 	}
-	// };
 
 	// for the onSubmit inside the form tag
-	const onSubmit = async (formData: FormValues) => {
+	const onSubmit = async (formData: RegisterFormValues) => {
 		const data = new FormData();
 		data.append("firstName", formData.firstName);
 		data.append("lastName", formData.lastName);
@@ -73,14 +64,12 @@ const RegisterForm = () => {
 		data.append("passwordConfirmation", formData.passwordConfirmation);
 		data.append("relationshipToKid", formData.relationshipToKid);
 		data.append("terms", formData.terms ? "1" : "0");
+		data.append("avatarPath", formData.avatarPath[0]);
 
 		// if (formData.avatarPath && formData.avatarPath[0]) {
 		// 	data.append("avatar_path", formData.avatarPath[0]);
 		// }
 
-		if (uploadedFile) {
-			data.append("avatar_path", uploadedFile);
-		}
 		try {
 			// Request CSRF token
 			await http.get("/sanctum/csrf-cookie");
@@ -91,20 +80,7 @@ const RegisterForm = () => {
 				},
 			});
 
-			// ################ // ################ TO DO: context for the authorized user ie. Admin // ################ // ################
-			// Extract user data from the response
-			// const userData = response.data;
-			// // Update the authentication context
-			// setAuth({ ...userData, isAdmin: userData.is_admin ?? false });
-
-			// First success message, then navigate to the login
-			// navigate("/login", {
-			// 	state: {
-			// 		successMessage: "You are now a fan of my Pearls of Great Price",
-			// 	},
-			// });
-
-			console.error("Registration worked!");
+			console.log("Registration worked!");
 		} catch (error) {
 			console.error("Registration failed:", error);
 		}
@@ -116,7 +92,7 @@ const RegisterForm = () => {
 				className='mt-4 space-y-10'
 				noValidate
 				onSubmit={handleSubmit(onSubmit)}>
-				{/* Avatar */}
+				{/* Avatar Preview */}
 				<div className='flex flex-col items-center gap-y-4'>
 					{avatarPreview ? (
 						<img
@@ -130,6 +106,7 @@ const RegisterForm = () => {
 							aria-hidden='true'
 						/>
 					)}
+					{/* Avatar */}
 					<div className='relative inline-block'>
 						<CustomButton
 							onClick={handlePicBtnClick}
@@ -141,42 +118,30 @@ const RegisterForm = () => {
 							id='hiddenFileInput'
 							type='file'
 							{...register("avatarPath", {
-								required: {
-									value: false,
-									message: "Field is optional.",
-								},
 								validate: {
-									fileType: (value) =>
-										!value ||
-										[
-											"image/jpeg",
-											"image/jpg",
-											"image/png",
-											"image/gif",
-											"image/svg+xml",
-										].includes(value[0]?.type) ||
+									fileType: (files: FileList | null) =>
+										!files ||
+										(files.length > 0 &&
+											[
+												"image/jpeg",
+												"image/jpg",
+												"image/png",
+												"image/gif",
+												"image/svg+xml",
+											].includes(files[0].type)) ||
 										"Invalid file type. Only JPG, JPEG, PNG, GIF, and SVG are allowed.",
-									fileSize: (value) =>
-										!value ||
-										value[0]?.size <= 2048 * 1024 ||
+									fileSize: (files: FileList | null) =>
+										!files ||
+										(files.length > 0 && files[0].size <= 2048 * 1024) || // 2 MB (in bytes)
 										"File size exceeds 2 MB.",
 								},
 							})}
-							// 'handleFileUpload' comes from 'FileUploadHelper'
-							onChange={(e) =>
-								handleFileUpload(e, setUploadedFile, setAvatarPreview)
-							}
 							// pointer only works when 'hidden', but the btn functionality only on 'opacity-0'
 							className='absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer'
 						/>
 					</div>
-					{uploadedFile && <p>Uploaded file: {uploadedFile.name}</p>}
-					{/* <input
-						type='file'
-						accept='image/*'
-						{...register("avatarPath", { required: false })}
-						onChange={handleFileChange}
-					/> */}
+					{/* {uploadedFile && <p>Uploaded file: {uploadedFile.name}</p>} */}
+
 					<p>{errors.avatarPath?.message}</p>
 				</div>
 				<div className='relative'>

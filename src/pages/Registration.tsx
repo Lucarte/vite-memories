@@ -16,8 +16,6 @@ const Registration = () => {
 				<div className='sm:mx-auto sm:w-full sm:max-w-sm'>
 					<RegisterForm />
 					{/* <RegisterNoForm /> */}
-
-					{/* Link to login */}
 					<p className='mt-10 text-sm text-center text-gray-900'>
 						Already a fan?{" "}
 						<a

@@ -77,7 +77,7 @@ const Header = () => {
 				{/* Lupe in mobile && h1-tag in other sizes */}
 				<div className='flex justify-center'>
 					<div className='block md:hidden'>
-						<MagnifyingGlassIcon className='w-5 h-5 mr-4 color-black' />
+						<MagnifyingGlassIcon className='w-5 h-5 mr-4' />
 					</div>
 					<div className='hidden md:block'>
 						{/* <p>A.L.L..P.O.S.T.S</p> */}
@@ -87,11 +87,11 @@ const Header = () => {
 				</div>
 				{/* Menu in mobile && Menu and Lupe in other sizes */}
 				<div className='flex items-center justify-end md:min-w-48'>
-					<MagnifyingGlassIcon className='hidden w-5 h-5 md:block color-black md:mr-10' />
+					<MagnifyingGlassIcon className='hidden w-5 h-5 md:block md:mr-10' />
 					<button type='button' onClick={handleClick} className='z-50'>
 						{isMenuOpen ? (
 							<XMarkIcon
-								className='block text-white rounded-sm w-7 h-7 hover:bg-white hover:text-black'
+								className='block text-black rounded-sm w-7 h-7 hover:bg-black hover:text-white'
 								aria-hidden='true'
 							/>
 						) : (
