@@ -24,7 +24,9 @@ const Login = () => {
 			});
 
 			// props.setUserData(response.data);
+			console.log("SUCCESSFULLY LOGGED IN!");
 		} catch {
+			console.error("NOT LOGGED IN :(");
 			//
 		}
 	};

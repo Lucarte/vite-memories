@@ -50,30 +50,6 @@ const months: string[] = [
 
 const days: number[] = Array.from({ length: 31 }, (_, i) => i + 1);
 
-const categories = [
-	"Music",
-	"Sports",
-	"Dance",
-	"Viola",
-	"Musical Theater",
-	"Programming",
-	"Art",
-	"Various",
-	"Climbing",
-	"Running",
-	"Swimming",
-	"Harmonica",
-	"IJK",
-	"FJO",
-	"CMS",
-	"Theater",
-	"Horse Riding",
-	"Meditation",
-	"Cold Plunges",
-	"Primary School",
-	"Around-the-World",
-];
-
 const MemoryForm: React.FC = () => {
 	const {
 		register,
@@ -94,10 +70,22 @@ const MemoryForm: React.FC = () => {
 	});
 
 	const [mediaType, setMediaType] = useState("");
+	const [categories, setCategories] = useState<
+		{ id: string; category: string }[]
+	>([]);
 
 	useEffect(() => {
-		register("category_ids");
-	}, [register]);
+		const fetchCategories = async () => {
+			try {
+				const response = await http.get("/api/auth/categories");
+				setCategories(response.data);
+			} catch (error) {
+				console.error("Failed to fetch categories", error);
+			}
+		};
+
+		fetchCategories();
+	}, []);
 
 	const handleMediaType = (type: string) => {
 		setMediaType(type);
@@ -145,10 +133,11 @@ const MemoryForm: React.FC = () => {
 			// Make the new memory creation request
 			const response = await http.post("/api/auth/memory", data);
 
-			// Handle success (redirect or show a success message)
+			// TODO: Handle success (redirect or show a success message)
+
 			console.log(response.data);
 		} catch {
-			console.log("ERROR creating new memory");
+			console.error("ERROR creating new memory");
 		}
 	};
 
@@ -183,7 +172,7 @@ const MemoryForm: React.FC = () => {
 						))}
 					</div>
 					{errors.kid && (
-						<p className='text-sm font-light text-red-500 '>
+						<p className='text-sm font-light text-orange-500 '>
 							Please select one option.
 						</p>
 					)}
@@ -193,32 +182,33 @@ const MemoryForm: React.FC = () => {
 				<article className='mt-10 font-light'>
 					<fieldset className='relative flex flex-wrap justify-center w-full p-4 pt-6 border-[2.5px] rounded-[3px] border-black'>
 						<legend className='absolute flex px-2 text-sm text-black bg-white -top-3 left-4'>
-							Category
+							Categories
 						</legend>
 						{categories.map((category) => (
 							<label
-								key={category}
-								htmlFor={`category-${category}`}
-								className={`flex px-3 mx-2 my-1 border border-black rounded cursor-pointer w-fit  ${
-									getValues("category_ids").includes(category)
+								key={category.id}
+								htmlFor={`category-${category.id}`}
+								className={`relative flex px-3 mx-2 my-1 border border-black rounded cursor-pointer w-fit  ${
+									getValues("category_ids").includes(category.id)
 										? "bg-white text-black"
 										: "bg-black text-white"
 								} hover:bg-white hover:text-black`}>
-								{category}
+								{category.category}
 								<input
 									id={`category-${category}`}
-									className='hidden'
+									className='absolute top-0 left-0 w-full h-full opacity-0'
 									type='checkbox'
+									value={category.id}
 									{...register("category_ids", {
 										required: "Please select at least one category.",
 									})}
-									value={category}
 								/>
 							</label>
 						))}
+						{errors.category_ids && <p>{errors.category_ids.message}</p>}
 					</fieldset>
 					{errors.category_ids && (
-						<p className='mt-1 text-sm text-red-500'>
+						<p className='mt-1 text-sm text-orange-500'>
 							{errors.category_ids.message}
 						</p>
 					)}
@@ -248,7 +238,7 @@ const MemoryForm: React.FC = () => {
 							},
 						})}
 					/>
-					<p className='mt-1 text-sm font-light text-red-500'>
+					<p className='mt-1 text-sm font-light text-orange-500'>
 						{errors.title?.message}
 					</p>
 				</div>
@@ -275,7 +265,7 @@ const MemoryForm: React.FC = () => {
 								message: "Maximum length is 2000 characters.",
 							},
 						})}></textarea>
-					<p className='mt-1 text-sm font-light text-red-500'>
+					<p className='mt-1 text-sm font-light text-orange-500'>
 						{errors.description?.message}
 					</p>
 				</div>
@@ -307,7 +297,7 @@ const MemoryForm: React.FC = () => {
 											{...register("image", { required: true })}
 											className='block w-full rounded-[3px] border-0 py-2 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
 										/>
-										<p className='mt-1 text-sm font-light text-red-500'>
+										<p className='mt-1 text-sm font-light text-orange-500'>
 											{errors.image?.message}
 										</p>
 									</div>
@@ -332,7 +322,7 @@ const MemoryForm: React.FC = () => {
 											{...register("audio", { required: true })}
 											className='block w-full rounded-[3px] border-0 py-2 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
 										/>
-										<p className='mt-1 text-sm font-light text-red-500'>
+										<p className='mt-1 text-sm font-light text-orange-500'>
 											{errors.audio?.message}
 										</p>
 									</div>
@@ -357,7 +347,7 @@ const MemoryForm: React.FC = () => {
 											{...register("video", { required: true })}
 											className='block w-full rounded-[3px] border-0 py-2 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
 										/>
-										<p className='mt-1 text-sm font-light text-red-500'>
+										<p className='mt-1 text-sm font-light text-orange-500'>
 											{errors.video?.message}
 										</p>
 									</div>
@@ -384,7 +374,7 @@ const MemoryForm: React.FC = () => {
 											{...register("url", { required: true })}
 											className='block w-full rounded-[3px] border-0 py-2 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
 										/>
-										<p className='mt-1 text-sm font-light text-red-500'>
+										<p className='mt-1 text-sm font-light text-orange-500'>
 											{errors.url?.message}
 										</p>
 									</div>
@@ -416,7 +406,7 @@ const MemoryForm: React.FC = () => {
 								</option>
 							))}
 						</select>
-						<p className='mt-1 text-sm font-light text-red-500'>
+						<p className='mt-1 text-sm font-light text-orange-500'>
 							{errors.year?.message}
 						</p>
 
@@ -432,7 +422,9 @@ const MemoryForm: React.FC = () => {
 								</option>
 							))}
 						</select>
-						<p className='mt-1 text-sm text-red-500'>{errors.month?.message}</p>
+						<p className='mt-1 text-sm text-orange-500'>
+							{errors.month?.message}
+						</p>
 
 						<select
 							className='block w-full rounded-[3px] font-light border-0 py-2 px-6 bg-gray-100 text-gray-500 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
@@ -446,7 +438,7 @@ const MemoryForm: React.FC = () => {
 								</option>
 							))}
 						</select>
-						<p className='mt-1 text-sm font-light text-red-500'>
+						<p className='mt-1 text-sm font-light text-orange-500'>
 							{errors.day?.message}
 						</p>
 					</div>
