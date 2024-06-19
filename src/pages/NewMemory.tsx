@@ -28,7 +28,7 @@ type MemoryFormValues = {
 	// filePaths: File[];
 	// fileTypes: ("image" | "video" | "audio" | "url")[];
 	url?: string[];
-	categoryIds: string[];
+	category_ids: string[];
 };
 
 const years: number[] = Array.from({ length: 101 }, (_, i) => 2000 + i);
@@ -84,7 +84,7 @@ const MemoryForm: React.FC = () => {
 	} = useForm<MemoryFormValues>({
 		defaultValues: {
 			kid: "",
-			categoryIds: [],
+			category_ids: [],
 			title: "",
 			description: "",
 			year: "",
@@ -96,7 +96,7 @@ const MemoryForm: React.FC = () => {
 	const [mediaType, setMediaType] = useState("");
 
 	useEffect(() => {
-		register("categoryIds");
+		register("category_ids");
 	}, [register]);
 
 	const handleMediaType = (type: string) => {
@@ -115,7 +115,7 @@ const MemoryForm: React.FC = () => {
 			formData.append("year", String(data.year));
 			formData.append("month", data.month || "");
 			formData.append("day", String(data.day || ""));
-			formData.append("categoryIds", JSON.stringify(data.categoryIds));
+			formData.append("category_ids", JSON.stringify(data.category_ids));
 
 			switch (mediaType) {
 				case "image":
@@ -200,7 +200,7 @@ const MemoryForm: React.FC = () => {
 								key={category}
 								htmlFor={`category-${category}`}
 								className={`flex px-3 mx-2 my-1 border border-black rounded cursor-pointer w-fit  ${
-									getValues("categoryIds").includes(category)
+									getValues("category_ids").includes(category)
 										? "bg-white text-black"
 										: "bg-black text-white"
 								} hover:bg-white hover:text-black`}>
@@ -209,7 +209,7 @@ const MemoryForm: React.FC = () => {
 									id={`category-${category}`}
 									className='hidden'
 									type='checkbox'
-									{...register("categoryIds", {
+									{...register("category_ids", {
 										required: "Please select at least one category.",
 									})}
 									value={category}
@@ -217,9 +217,9 @@ const MemoryForm: React.FC = () => {
 							</label>
 						))}
 					</fieldset>
-					{errors.categoryIds && (
+					{errors.category_ids && (
 						<p className='mt-1 text-sm text-red-500'>
-							{errors.categoryIds.message}
+							{errors.category_ids.message}
 						</p>
 					)}
 				</article>

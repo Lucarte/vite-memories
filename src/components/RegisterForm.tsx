@@ -3,13 +3,7 @@ import { useForm } from "react-hook-form";
 import CustomButton from "./CustomButton";
 import http from "../utils/http";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
-import { useState } from "react";
-
-enum RelationshipEnum {
-	Family = "family",
-	Friend = "friend",
-	Teacher = "teacher",
-}
+import { useEffect, useState } from "react";
 
 const relationships = ["Family", "Friend", "Teacher"];
 
@@ -19,18 +13,13 @@ type RegisterFormValues = {
 	email: string;
 	password: string;
 	passwordConfirmation: string;
-	relationshipToKid: "";
+	relationshipToKid: "Family" | "Friend" | "Teacher" | "Select a relationship.";
 	terms: boolean;
-	avatarPath: FileList | null;
+	avatar_path: FileList | null;
 };
 
 const RegisterForm = () => {
 	const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
-
-	// Handle file change
-	const handlePicBtnClick = () => {
-		setAvatarPreview;
-	};
 
 	const {
 		register,
@@ -45,9 +34,9 @@ const RegisterForm = () => {
 			email: "",
 			password: "",
 			passwordConfirmation: "",
-			relationshipToKid: "",
+			relationshipToKid: "Select a relationship.",
 			terms: false,
-			avatarPath: null,
+			avatar_path: null,
 		},
 	});
 
@@ -64,17 +53,15 @@ const RegisterForm = () => {
 		data.append("passwordConfirmation", formData.passwordConfirmation);
 		data.append("relationshipToKid", formData.relationshipToKid);
 		data.append("terms", formData.terms ? "1" : "0");
-		data.append("avatarPath", formData.avatarPath[0]);
-
-		// if (formData.avatarPath && formData.avatarPath[0]) {
-		// 	data.append("avatar_path", formData.avatarPath[0]);
-		// }
+		if (formData.avatar_path) {
+			data.append("avatar_path", formData.avatar_path[0]);
+		}
 
 		try {
 			// Request CSRF token
 			await http.get("/sanctum/csrf-cookie");
 			// const response = await http.post("api/auth/register", formData, {
-			await http.post("api/auth/register", formData, {
+			await http.post("api/auth/register", data, {
 				headers: {
 					"Content-Type": "multipart/form-data",
 				},
@@ -85,6 +72,14 @@ const RegisterForm = () => {
 			console.error("Registration failed:", error);
 		}
 	};
+
+	useEffect(() => {
+		return () => {
+			if (avatarPreview) {
+				URL.revokeObjectURL(avatarPreview);
+			}
+		};
+	}, [avatarPreview]);
 
 	return (
 		<>
@@ -107,17 +102,19 @@ const RegisterForm = () => {
 						/>
 					)}
 					{/* Avatar */}
-					<div className='relative inline-block'>
-						<CustomButton
-							onClick={handlePicBtnClick}
-							type='button'
-							text='Upload a profile foto'
-							classes='relative rounded-[3px] bg-white px-2 py-1 text-xs font-medium text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
-						/>
+					<div className='relative px-2 py-1 text-xs text-gray-500 bg-gray-300 rounded-lg'>
+						Upload avatar!
 						<input
-							id='hiddenFileInput'
+							id='avatar_path'
 							type='file'
-							{...register("avatarPath", {
+							{...register("avatar_path", {
+								onChange: (e) => {
+									setAvatarPreview(
+										e.target.files?.[0]
+											? URL.createObjectURL(e.target.files[0])
+											: null
+									);
+								},
 								validate: {
 									fileType: (files: FileList | null) =>
 										!files ||
@@ -137,13 +134,15 @@ const RegisterForm = () => {
 								},
 							})}
 							// pointer only works when 'hidden', but the btn functionality only on 'opacity-0'
-							className='absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer'
+							className='absolute top-0 opacity-0 cursor-pointer -left-20'
 						/>
 					</div>
-					{/* {uploadedFile && <p>Uploaded file: {uploadedFile.name}</p>} */}
 
-					<p>{errors.avatarPath?.message}</p>
+					<p className='mt-2 text-sm text-orange-500'>
+						{errors.avatar_path?.message}
+					</p>
 				</div>
+				{/* First Name */}
 				<div className='relative'>
 					<label
 						htmlFor='firstName'
@@ -158,7 +157,7 @@ const RegisterForm = () => {
 						{...register("firstName", {
 							required: {
 								value: true,
-								message: "Field required.",
+								message: "Got a first name?",
 							},
 							minLength: {
 								value: 2,
@@ -170,8 +169,11 @@ const RegisterForm = () => {
 							},
 						})}
 					/>
-					<p>{errors.firstName?.message}</p>
+					<p className='mt-2 text-sm text-orange-500'>
+						{errors.firstName?.message}
+					</p>
 				</div>
+				{/* Last Name */}
 				<div className='relative'>
 					<label
 						htmlFor='lastName'
@@ -186,7 +188,7 @@ const RegisterForm = () => {
 						{...register("lastName", {
 							required: {
 								value: true,
-								message: "Field required.",
+								message: "How about a last name?",
 							},
 							minLength: {
 								value: 2,
@@ -198,8 +200,11 @@ const RegisterForm = () => {
 							},
 						})}
 					/>
-					<p>{errors.lastName?.message}</p>
+					<p className='mt-2 text-sm text-orange-500'>
+						{errors.lastName?.message}
+					</p>
 				</div>
+				{/* E-Mail */}
 				<div className='relative'>
 					<label
 						htmlFor='email'
@@ -214,15 +219,17 @@ const RegisterForm = () => {
 						{...register("email", {
 							required: {
 								value: true,
-								message: "Please enter an email.",
+								message: "Don't forget your email!",
 							},
 							pattern: {
 								value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-								message: "Invalid email format",
+								message: "Invalid email format.",
 							},
 						})}
 					/>
-					<p>{errors.email?.message}</p>
+					<p className='mt-2 text-sm text-orange-500'>
+						{errors.email?.message}
+					</p>
 				</div>
 				{/* PASSWORD */}
 				<div className='relative'>
@@ -239,7 +246,7 @@ const RegisterForm = () => {
 						{...register("password", {
 							required: {
 								value: true,
-								message: "Please enter a password",
+								message: "Create a password!",
 							},
 							validate: {
 								minLength: (value) =>
@@ -259,7 +266,9 @@ const RegisterForm = () => {
 							},
 						})}
 					/>
-					<p>{errors.password?.message}</p>
+					<p className='mt-2 text-sm text-orange-500'>
+						{errors.password?.message}
+					</p>
 				</div>
 				{/* PASSWORD CONFIRMATION */}
 				<div className='relative'>
@@ -274,57 +283,66 @@ const RegisterForm = () => {
 						type='password'
 						aria-invalid={errors.password ? "true" : "false"}
 						{...register("passwordConfirmation", {
-							required: "Please re-enter your password.",
+							required: "Re-enter your password.",
 							validate: {
 								matchPassword: (value) =>
 									value === password || "Passwords do not match.",
 							},
 						})}
 					/>
-					<p>{errors.passwordConfirmation?.message}</p>
+					<p className='mt-2 text-sm text-orange-500'>
+						{errors.passwordConfirmation?.message}
+					</p>
 				</div>
 				{/* RELATIONSHIP */}
-				<select
-					className='block w-full rounded-[3px] font-light border-0 py-2 px-6 bg-gray-100 text-gray-500 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
-					aria-invalid={errors.relationshipToKid ? "true" : "false"}
-					{...register("relationshipToKid", {
-						required: {
-							value: true,
-							message: "Please select a relationship.",
-						},
-						validate: (value) =>
-							value !== "" || "Please select a relationship.",
-					})}>
-					<option value='' disabled>
-						Select a relationship
-					</option>
-					{relationships.map((relationship) => (
-						<option key={relationship} value={relationship}>
-							{relationship}
+				<div>
+					<select
+						className='block w-full rounded-[3px] font-light border-0 py-2 px-6 bg-gray-100 text-gray-500 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
+						aria-invalid={errors.relationshipToKid ? "true" : "false"}
+						{...register("relationshipToKid", {
+							validate: (value) => {
+								return (
+									value !== "Select a relationship." || "How are you related?"
+								);
+							},
+						})}>
+						<option value='Select a relationship.' disabled>
+							Select a relationship
 						</option>
-					))}
-				</select>
-				<p>{errors.relationshipToKid?.message}</p>
+						{relationships.map((relationship) => (
+							<option key={relationship} value={relationship}>
+								{relationship}
+							</option>
+						))}
+					</select>
+					<p className='mt-2 text-sm text-orange-500'>
+						{errors.relationshipToKid?.message}
+					</p>
+				</div>
 				{/* TERMS */}
-				<div className='relative flex items-center justify-center h-6 gap-x-3'>
-					<input
-						className='w-4 h-4 text-gray-600 border-gray-300 rounded focus:ring-orange-600'
-						aria-invalid={errors.terms ? "true" : "false"}
-						type='checkbox'
-						{...register("terms", {
-							required: "Please accept the terms and conditions.",
-						})}
-					/>
-					<label htmlFor='terms'>
-						I accept the{" "}
-						<a
-							href='#'
-							className='underline cursor-pointer hover:text-gray-600'>
-							Terms and Conditions
-						</a>
-						.
-					</label>
-					<p className=''>{errors.terms?.message}</p>
+				<div className='flex flex-col min-w-[17.5rem] -ml-4 sm:ml-0'>
+					<div className='flex items-center justify-center h-6 gap-x-3'>
+						<input
+							className='w-4 h-4 text-gray-600 border-gray-300 rounded focus:ring-orange-600'
+							aria-invalid={errors.terms ? "true" : "false"}
+							type='checkbox'
+							{...register("terms", {
+								required: "You must accept the terms and conditions.",
+							})}
+						/>
+						<label htmlFor='terms' className=''>
+							I accept the{" "}
+							<a
+								href='#'
+								className='underline cursor-pointer hover:text-gray-600'>
+								Terms and Conditions
+							</a>
+							<span>.</span>
+						</label>
+					</div>
+					<p className='mt-2 text-sm text-orange-500'>
+						{errors.terms?.message}
+					</p>
 				</div>
 				{/* Register Button */}
 				<CustomButton

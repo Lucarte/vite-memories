@@ -19,7 +19,7 @@ type OnClickProps = {
 
 const Nav = ({ onClick }: OnClickProps) => {
 	return (
-		<nav className='absolute top-0 right-0 z-40 flex flex-col justify-center w-full h-full overflow-auto text-white bg-black shadow-md lg:w-1/2'>
+		<nav className='absolute top-0 right-0 z-50 flex flex-col justify-center w-full h-full overflow-auto text-white bg-black shadow-md lg:w-1/2'>
 			{navigation.map((item) => (
 				<a
 					key={item.name}

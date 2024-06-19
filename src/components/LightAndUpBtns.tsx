@@ -6,7 +6,7 @@ const LightAndUpBtns = () => {
 	const [enabled, setEnabled] = useState(false);
 
 	return (
-		<div className='fixed left-0 right-0 z-50 flex items-center justify-between pl-4 pr-5 md:px-8 bottom-20'>
+		<div className='fixed left-0 right-0 z-40 flex items-center justify-between pl-4 pr-5 md:px-8 bottom-20'>
 			{/* Dark/Light Modus Button */}
 			<div className='flex items-center justify-center w-10 h-8 rotate-90 bg-white md:rotate-0 rounded-xl'>
 				<Switch

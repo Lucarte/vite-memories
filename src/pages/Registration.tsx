@@ -1,6 +1,5 @@
 import RegisterForm from "../components/RegisterForm";
 import LightUpBtns from "../components/LightAndUpBtns";
-import RegisterNoForm from "../components/RegisterNoFormHook";
 
 const Registration = () => {
 	return (
@@ -15,7 +14,6 @@ const Registration = () => {
 				{/* Link to actual Form */}
 				<div className='sm:mx-auto sm:w-full sm:max-w-sm'>
 					<RegisterForm />
-					{/* <RegisterNoForm /> */}
 					<p className='mt-10 text-sm text-center text-gray-900'>
 						Already a fan?{" "}
 						<a
