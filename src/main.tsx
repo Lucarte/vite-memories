@@ -24,7 +24,7 @@ import Registration from "./pages/Registration";
 import Home from "./pages/Home";
 // import Memories, { loader as memoriesLoader } from "./pages/Memories";
 import AuthProvider from "./context/AuthProvider";
-import Memories from "./pages/Memories";
+import Memories, { memoryLoader } from "./pages/Memories";
 import Pablo from "./pages/Pablo";
 import Gabriella from "./pages/Gabriella";
 import Fans from "./pages/Fans";
@@ -43,7 +43,7 @@ const router = createBrowserRouter(
 					<Route path='/pablo' element={<Pablo />} />
 					<Route
 						path='/memories'
-						// loader={memoriesLoader}
+						loader={memoryLoader}
 						element={<Memories />}></Route>
 					<Route
 						path='/memories/:kid'

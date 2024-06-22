@@ -15,10 +15,13 @@ const RootError = () => {
 		);
 	}
 	return (
-		<>
-			<h1>Ooops! Something just broke!! UNKOWN ERROR</h1>
-			<Link to='/'>Go Home</Link>
-		</>
+		<div className='flex flex-col items-center h-full gap-6 mt-44'>
+			<h1 className='italic font-bold'>OOOPS!</h1>
+			<p>UNKOWN ERROR</p>
+			<Link to='/'>
+				Just go back <span className='underline'>Home</span>
+			</Link>
+		</div>
 	);
 };
 

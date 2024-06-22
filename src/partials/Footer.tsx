@@ -10,9 +10,9 @@ const Footer = ({ handleLogout }: Props) => {
 	const { auth } = useContext(AuthContext);
 
 	return (
-		<footer className='fixed bottom-0 w-full h-20 font-light'>
+		<footer className='fixed bottom-0 flex items-center justify-center w-full h-20 mx-auto font-light bg-white'>
 			{auth.id ? (
-				<div className='flex items-center justify-center gap-4 -ml-4'>
+				<div className='flex items-center justify-center gap-4'>
 					{/* Add the firstName of the person to the message */}
 					<p className=''>Welcome into the past!</p>
 					<button
