@@ -4,6 +4,7 @@ import Registration from "./pages/Registration";
 import { useState } from "react";
 import "./App.css";
 import NewMemory from "./pages/NewMemory";
+import { BrowserRouter, Routes, Route, Link, NavLink } from "react-router-dom";
 
 const App = () => {
 	const [page, setPage] = useState("Registration");
@@ -11,9 +12,9 @@ const App = () => {
 	return (
 		<div className=''>
 			<Header />
-			<Login />
-			{/* <Registration /> */}
-			<NewMemory />
+			{/* <Login /> */}
+			<Registration />
+			{/* <NewMemory /> */}
 			{/* {page === "Registration" ? <Registration /> : <Login />} */}
 		</div>
 	);

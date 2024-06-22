@@ -4,8 +4,6 @@ import http from "../utils/http";
 import { useEffect, useState } from "react";
 import LightAndUpBtns from "../partials/LightAndUpBtns";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
-import { AuthContext } from "../context/AuthProvider";
-import { useContext } from "react";
 
 type KidOptionProps = {
 	id: string;
@@ -28,8 +26,9 @@ type MemoryFormValues = {
 	image?: File[];
 	audio?: File[];
 	video?: File[];
-	file_paths: File[];
-	urls?: string[];
+	// filePaths: File[];
+	// fileTypes: ("image" | "video" | "audio" | "url")[];
+	url?: string[];
 	category_ids: string[];
 };
 
@@ -53,8 +52,6 @@ const months: string[] = [
 const days: number[] = Array.from({ length: 31 }, (_, i) => i + 1);
 
 const MemoryForm: React.FC = () => {
-	const { auth } = useContext(AuthContext);
-	auth.isAdmin ?? "false";
 	const {
 		register,
 		control,
@@ -76,7 +73,7 @@ const MemoryForm: React.FC = () => {
 	const [categories, setCategories] = useState<
 		{ id: string; category: string }[]
 	>([]);
-	const [uploadedFile, setUploadedFile] = useState<string | null>(null);
+	const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 	const [mediaType, setMediaType] = useState<string | null>(null);
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,12 +86,7 @@ const MemoryForm: React.FC = () => {
 				"image/gif",
 				"image/svg+xml",
 			];
-			const validAudioTypes = [
-				"audio/x-aiff",
-				"audio/mpeg",
-				"audio/m4a",
-				"audio/mp3",
-			];
+			const validAudioTypes = ["audio/x-aiff", "audio/mpeg", "audio/mp3"];
 			const validVideoTypes = [
 				"video/mp4",
 				"video/avi",
@@ -103,27 +95,27 @@ const MemoryForm: React.FC = () => {
 			];
 
 			if (validImageTypes.includes(file.type)) {
-				setUploadedFile(URL.createObjectURL(file));
+				setUploadedImage(URL.createObjectURL(file));
 				setMediaType("image");
 			} else if (validAudioTypes.includes(file.type)) {
-				setUploadedFile(null);
+				setUploadedImage(null);
 				setMediaType("audio");
 			} else if (validVideoTypes.includes(file.type)) {
-				setUploadedFile(null);
+				setUploadedImage(null);
 				setMediaType("video");
 			} else {
 				alert("Invalid file type.");
 				return;
 			}
 
-			if (file.size > 222048 * 1024) {
+			if (file.size > 2048 * 1024) {
 				// 2 MB for images
 				alert("File size exceeds 2 MB.");
 				return;
 			}
 			// Additional size validation for other file types can be added here
 		} else {
-			setUploadedFile(null);
+			setUploadedImage(null);
 			setMediaType(null);
 		}
 	};
@@ -143,11 +135,11 @@ const MemoryForm: React.FC = () => {
 
 	useEffect(() => {
 		return () => {
-			if (uploadedFile) {
-				URL.revokeObjectURL(uploadedFile);
+			if (uploadedImage) {
+				URL.revokeObjectURL(uploadedImage);
 			}
 		};
-	}, [uploadedFile]);
+	}, [uploadedImage]);
 
 	const onSubmit: SubmitHandler<MemoryFormValues> = async (data) => {
 		try {
@@ -163,31 +155,42 @@ const MemoryForm: React.FC = () => {
 			formData.append("day", String(data.day || ""));
 			formData.append("category_ids", JSON.stringify(data.category_ids));
 
-			if (data.file_paths) {
-				Array.from(data.file_paths).forEach((file: File, index: number) => {
-					formData.append(`file_paths[${index}]`, file);
-				});
+			switch (mediaType) {
+				case "image":
+					if (data.image && data.image.length > 0) {
+						formData.append("image", data.image[0]);
+					}
+					break;
+				case "audio":
+					if (data.audio && data.audio.length > 0) {
+						formData.append("audio", data.audio[0]);
+					}
+					break;
+				case "video":
+					if (data.video && data.video.length > 0) {
+						formData.append("video", data.video[0]);
+					}
+					break;
+				case "url":
+					if (data.url) {
+						formData.append("url", data.url[0]);
+					}
+					break;
+				default:
+					break;
 			}
 
-			if (data.urls) {
-				data.urls.forEach((url: string, index: number) => {
-					formData.append(`urls[${index}]`, url);
-				});
-			}
+			// Make the new memory creation request
+			const response = await http.post("/api/auth/memory", data);
 
-			const response = await http.post("/api/auth/memory", data, {
-				headers: {
-					"Content-Type": "multipart/form-data",
-				},
-			});
+			// TODO: Handle success (redirect or show a success message)
 
 			console.log(response.data);
-		} catch (error) {
-			console.error("There was an error creating the memory:", error);
+		} catch {
+			console.error("ERROR creating new memory");
 		}
 	};
-	// console.log(getValues("category_ids"));
-	const selectedCategories = getValues("category_ids");
+
 	return (
 		<div className='flex justify-center'>
 			<form onSubmit={handleSubmit(onSubmit)} className='max-w-[30rem]'>
@@ -226,7 +229,6 @@ const MemoryForm: React.FC = () => {
 				</fieldset>
 
 				{/* Memory Categories */}
-
 				<article className='mt-10 font-light'>
 					<fieldset className='relative flex flex-wrap justify-center w-full p-4 pt-6 border-[2.5px] rounded-[3px] border-black'>
 						<legend className='absolute flex px-2 text-sm text-black bg-white -top-3 left-4'>
@@ -237,7 +239,7 @@ const MemoryForm: React.FC = () => {
 								key={category.id}
 								htmlFor={`category-${category.id}`}
 								className={`relative flex px-3 mx-2 my-1 border border-black rounded cursor-pointer w-fit  ${
-									selectedCategories.includes(category.id.toString())
+									getValues("category_ids").includes(category.id)
 										? "bg-white text-black"
 										: "bg-black text-white"
 								} hover:bg-white hover:text-black`}>
@@ -325,11 +327,12 @@ const MemoryForm: React.FC = () => {
 					</p>
 					<div className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'>
 						<div className='mt-5 mb-3 space-y-4'>
+							{/* Upload Image */}
 							<div className='flex flex-col items-center gap-y-4'>
-								{uploadedFile ? (
+								{uploadedImage ? (
 									<img
-										src={uploadedFile}
-										alt='Memory File'
+										src={uploadedImage}
+										alt='User avatar'
 										className='object-cover w-12 h-12 rounded-full'
 									/>
 								) : (
@@ -338,20 +341,154 @@ const MemoryForm: React.FC = () => {
 										aria-hidden='true'
 									/>
 								)}
-								<div className='relative px-2 py-1 text-xs text-gray-500 bg-gray-300 rounded-lg'>
+								{/* {mediaType === "image" && ( */}
+								<div className='relative px-4 py-2 text-sm text-gray-500 bg-gray-300 rounded-md'>
+									Upload an Image
 									<input
-										className='block w-full rounded-[3px] border-0 py-2 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
-										id='file_paths'
+										className='absolute top-0 left-0 opacity-0'
+										id='image'
 										type='file'
-										accept='image/*,audio/*,video/*'
+										accept='image/*'
 										multiple
-										{...register("file_paths", {
-											onChange: handleFileChange,
+										{...register("image", {
+											onChange: (e) => {
+												const file = e.target.files?.[0];
+												if (file) {
+													const validTypes = [
+														"image/jpeg",
+														"image/jpg",
+														"image/png",
+														"image/gif",
+														"image/svg+xml",
+													];
+													if (!validTypes.includes(file.type)) {
+														alert(
+															"Invalid file type. Only JPG, JPEG, PNG, GIF, and SVG are allowed."
+														);
+														return;
+													}
+													if (file.size > 2048 * 1024) {
+														// 2 MB
+														alert("File size exceeds 2 MB.");
+														return;
+													}
+													setUploadedImage(URL.createObjectURL(file));
+												} else {
+													setUploadedImage(null);
+												}
+											},
+											// ERRORS NOT AS ALERT
+											// {...register("image", {
+											// 	onChange: (e) => {
+											// 		setUploadedImage(
+											// 			e.target.files?.[0]
+											// 				? URL.createObjectURL(e.target.files[0])
+											// 				: null
+											// 		);
+											// 	},
+											// 	validate: {
+											// 		fileType: (files: FileList | null) =>
+											// 			!files ||
+											// 			(files.length > 0 &&
+											// 				[
+											// 					"image/jpeg",
+											// 					"image/jpg",
+											// 					"image/png",
+											// 					"image/gif",
+											// 					"image/svg+xml",
+											// 				].includes(files[0].type)) ||
+											// 			"Invalid file type. Only JPG, JPEG, PNG, GIF, and SVG are allowed.",
+											// 		fileSize: (files: FileList | null) =>
+											// 			!files ||
+											// 			(files.length > 0 &&
+											// 				files[0].size <= 2048 * 1024) || // 2 MB (in bytes)
+											// 			"File size exceeds 2 MB.",
+											// 	},
 										})}
 									/>
 								</div>
+								{/* )} */}
 							</div>
-							{/* Add URL  */}
+							<p className='mt-1 text-sm font-light text-orange-500'>
+								{errors.image?.message}
+							</p>
+
+							{/* Upload Audio */}
+							<div>
+								<button
+									type='button'
+									className={`text-sm font-light block w-full rounded-[3px] border-0 py-2 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6 ${
+										mediaType === "audio" ? "hidden" : "bg-black text-white"
+									}`}
+									onClick={() => handleMediaType("audio")}>
+									Upload an Audio File
+								</button>
+								{mediaType === "audio" && (
+									<div className='mt-2'>
+										<input
+											type='file'
+											accept='audio/*'
+											{...register("audio", { required: true })}
+											className='block w-full rounded-[3px] border-0 py-2 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
+										/>
+										<p className='mt-1 text-sm font-light text-orange-500'>
+											{errors.audio?.message}
+										</p>
+									</div>
+								)}
+							</div>
+
+							{/* Upload Video */}
+							<div>
+								<button
+									type='button'
+									className={`text-sm font-light block w-full rounded-[3px] border-0 py-2 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6 ${
+										mediaType === "video" ? "hidden" : "bg-black text-white"
+									}`}
+									onClick={() => handleMediaType("video")}>
+									Upload a Video
+								</button>
+								{mediaType === "video" && (
+									<div className='mt-2'>
+										<input
+											type='file'
+											accept='video/*'
+											{...register("video", { required: true })}
+											className='block w-full rounded-[3px] border-0 py-2 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
+										/>
+										<p className='mt-1 text-sm font-light text-orange-500'>
+											{errors.video?.message}
+										</p>
+									</div>
+								)}
+							</div>
+
+							{/* Add URL */}
+							<hr className='relative border-black rounded-lg border-1' />
+							<div>
+								<button
+									type='button'
+									className={`text-sm font-light block w-full rounded-[3px] border-0 py-2 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6 ${
+										mediaType === "url" ? "hidden" : "bg-black text-white"
+									}`}
+									onClick={() => handleMediaType("url")}>
+									Add a URL
+								</button>
+								{mediaType === "url" && (
+									<div className='mt-2'>
+										<input
+											id='url'
+											type='text'
+											placeholder='https://wwww.mySite.com'
+											{...register("url", { required: true })}
+											className='block w-full rounded-[3px] border-0 py-2 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
+										/>
+										<p className='mt-1 text-sm font-light text-orange-500'>
+											{errors.url?.message}
+										</p>
+									</div>
+								)}
+							</div>
 						</div>
 					</div>
 				</div>

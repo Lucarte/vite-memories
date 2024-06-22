@@ -2,10 +2,10 @@ import { AuthContext } from "../context/AuthProvider";
 import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { useContext } from "react";
 
-const AdminLayout = () => {
+const PrivateLayout = () => {
 	const { auth } = useContext(AuthContext);
 	const location = useLocation();
-	return auth.isAdmin === true ? (
+	return auth.id ? (
 		<Outlet />
 	) : (
 		<>
@@ -14,4 +14,4 @@ const AdminLayout = () => {
 	);
 };
 
-export default AdminLayout;
+export default PrivateLayout;
