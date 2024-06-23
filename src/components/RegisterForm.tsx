@@ -9,19 +9,9 @@ import CustomButton from "./CustomButton";
 import http from "../utils/http";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
+import { RegisterFormValues } from "../types/RegisterFormValues";
 
 const relationships = ["Family", "Friend", "Teacher"];
-
-type RegisterFormValues = {
-	firstName: string;
-	lastName: string;
-	email: string;
-	password: string;
-	passwordConfirmation: string;
-	relationshipToKid: "Family" | "Friend" | "Teacher" | "Select a relationship.";
-	terms: boolean;
-	avatar_path: FileList | null;
-};
 
 const RegisterForm = () => {
 	const [avatarPreview, setAvatarPreview] = useState<string | null>(null);

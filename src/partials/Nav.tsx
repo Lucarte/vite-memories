@@ -13,7 +13,7 @@ const navigation = [
 		current: false,
 	},
 	{
-		name: "All Memories",
+		name: "Memories",
 		href: "/memories",
 		page: "AllMemories",
 		current: false,

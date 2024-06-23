@@ -2,6 +2,7 @@ import { Link, useNavigation } from "react-router-dom";
 import CustomButton from "../components/CustomButton";
 import LightAndUpBtns from "../partials/LightAndUpBtns";
 import { useTheme } from "../context/ThemeContext";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const Home = () => {
 	const navigation = useNavigation();
@@ -9,9 +10,9 @@ const Home = () => {
 	return (
 		<article className='flex flex-col items-center'>
 			{navigation.state === "loading" ? (
-				<p>loading, have patience!!</p>
-			) : // or <LoadingSpinner /> statt p-tag
-			null}
+				// <p>loading, have patience!!</p>
+				<LoadingSpinner />
+			) : null}
 			<LightAndUpBtns />
 
 			<img

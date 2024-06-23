@@ -24,11 +24,12 @@ import Registration from "./pages/Registration";
 import Home from "./pages/Home";
 // import Memories, { loader as memoriesLoader } from "./pages/Memories";
 import AuthProvider from "./context/AuthProvider";
-import Memories, { memoryLoader } from "./pages/Memories";
+import Memories, { loader as memoriesLoader } from "./pages/Memories";
 import Pablo from "./pages/Pablo";
 import Gabriella from "./pages/Gabriella";
 import Fans from "./pages/Fans";
 import NotFound from "./pages/NotFound";
+import Memory, { loader as memoryLoader } from "./components/Memory";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -41,25 +42,20 @@ const router = createBrowserRouter(
 				<Route element={<PrivateLayout />}>
 					<Route path='/gabriella' element={<Gabriella />} />
 					<Route path='/pablo' element={<Pablo />} />
-					<Route
-						path='/memories'
-						loader={memoryLoader}
-						element={<Memories />}></Route>
-					<Route
-						path='/memories/:kid'
-						// loader={memoriesLoader}
-						element={<Memories />}></Route>
+					<Route path='/memories'>
+						<Route index element={<Memories />} loader={memoriesLoader} />
+						<Route path=':title' element={<Memory />} loader={memoryLoader} />
+					</Route>
 				</Route>
-
-				{/* Admin Routes */}
-				<Route element={<AdminLayout />}>
-					<Route path='/fans' element={<Fans />} />
-				</Route>
-
-				{/* Not Found */}
-				<Route path='*' element={<NotFound />} />
 			</Route>
 
+			{/* Admin Routes */}
+			<Route element={<AdminLayout />}>
+				<Route path='/fans' element={<Fans />} />
+			</Route>
+
+			{/* Not Found */}
+			<Route path='*' element={<NotFound />} />
 			<Route path='/' element={<HomeLayout />} errorElement={<RootError />}>
 				<Route index element={<Home />} />
 			</Route>
