@@ -131,7 +131,7 @@ const MemoryForm: React.FC = () => {
 	useEffect(() => {
 		const fetchCategories = async () => {
 			try {
-				const response = await http.get("/api/auth/categories");
+				const response = await http.get("/categories");
 				setCategories(response.data);
 			} catch (error) {
 				console.error("Failed to fetch categories", error);
@@ -175,7 +175,7 @@ const MemoryForm: React.FC = () => {
 				});
 			}
 
-			const response = await http.post("/api/auth/memory", data, {
+			const response = await http.post("/memory", data, {
 				headers: {
 					"Content-Type": "multipart/form-data",
 				},

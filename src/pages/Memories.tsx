@@ -1,5 +1,5 @@
 import { MemoryValues } from "../types/MemoryValues";
-import http from "../utils/http";
+import { getAllMemories } from "../utils/api";
 import { Link, LoaderFunction, useLoaderData } from "react-router-dom";
 
 const Memories = () => {
@@ -20,10 +20,54 @@ const Memories = () => {
 									<li>Year: {memory.year}</li>
 									<li>Month: {memory.month}</li>
 									<li>Day: {memory.day}</li>
-									<li>Files: {memory.file_paths}</li>
-									<li>URLs: {memory.urls}</li>
+									<li>Files:</li>
 								</ul>
+								<ul>
+									{memory.file_paths ? (
+										memory.file_paths.map((file) => (
+											<li key={file.id}>
+												<img
+													// href={`http://localhost/storage/${file.file_path}`}
+													src={`http://localhost/api/auth/file/${file.id}`}
+													// target='_blank'
+													rel='noopener noreferrer'>
+													{file.file_path}
+												</img>
+											</li>
+										))
+									) : (
+										<p>No files available</p>
+									)}
+								</ul>
+								{/* {memory.file_paths ? (
+										memory.file_paths.map((file) => (
+											<img
+												key={file.id}
+												// src={`http://localhost/storage/${file.file_path}`}
+												alt={`Memory ${memory.title}`}
+											/>
+										))
+									) : (
+										<p>No files available</p>
+									)} */}
 							</Link>
+							<div>
+								<strong>URLs:</strong>
+								{memory.urls && memory.urls.length > 0 ? (
+									memory.urls.map((url) => (
+										<div key={url.id}>
+											<a
+												href={url.url_address}
+												target='_blank'
+												rel='noopener noreferrer'>
+												{url.url_address}
+											</a>
+										</div>
+									))
+								) : (
+									<p>No URLs available</p>
+								)}
+							</div>
 						</div>
 					);
 				})
@@ -38,16 +82,5 @@ export default Memories;
 
 // Memories loader
 export const loader: LoaderFunction = async () => {
-	try {
-		const res = await http.get("/api/auth/memories");
-
-		if (res.status !== 200) {
-			throw new Error("Failed to fetch memories");
-		}
-
-		return res.data.Memories || [];
-	} catch (error) {
-		console.error("Error fetching memories:", error);
-		throw error; // This will be caught by react-router-dom and trigger the errorElement
-	}
+	return getAllMemories();
 };

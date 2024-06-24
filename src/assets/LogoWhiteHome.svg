@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="299.993" height="271.391" viewBox="0 0 299.993 271.391">
+  <g id="Group_4" data-name="Group 4" transform="translate(4.353 15)">
+    <text id="P" transform="translate(8.647 64)" fill="#fff" font-size="80" font-family="Luminari-Regular, Luminari"><tspan x="0" y="0">P</tspan></text>
+    <path id="Line_10" data-name="Line 10" d="M174.823,5H0A5,5,0,0,1-5,0,5,5,0,0,1,0-5H174.823a5,5,0,0,1,5,5A5,5,0,0,1,174.823,5Z" transform="translate(22.5 248.5)" fill="#fff"/>
+    <path id="Line_12" data-name="Line 12" d="M99.2,90.192a4.98,4.98,0,0,1-3.255-1.207L-3.258,3.793a5,5,0,0,1-.536-7.051,5,5,0,0,1,7.051-.536l99.2,85.192a5,5,0,0,1-3.26,8.793Z" transform="translate(176.323 9.5)" fill="#fff"/>
+    <path id="Line_14" data-name="Line 14" d="M0,162H-.006A5,5,0,0,1-5,156.994l.177-157A5,5,0,0,1,.182-5,5,5,0,0,1,5.177.006L5,157.006A5,5,0,0,1,0,162Z" transform="translate(22.323 88.5)" fill="#fff"/>
+    <text id="G" transform="matrix(-0.052, 0.999, -0.999, -0.052, 216.749, 190.341)" fill="#fff" font-size="80" font-family="Luminari-Regular, Luminari"><tspan x="0" y="0">G</tspan></text>
+    <path id="Path_24" data-name="Path 24" d="M0,94.281a5,5,0,0,1-5-5V0A5,5,0,0,1,0-5,5,5,0,0,1,5,0V89.281A5,5,0,0,1,0,94.281Z" transform="translate(276 95)" fill="#fff"/>
+    <path id="Path_25" data-name="Path 25" d="M0,104.28a5,5,0,0,1-5-5V0A5,5,0,0,1,0-5,5,5,0,0,1,5,0V99.28A5,5,0,0,1,0,104.28Z" transform="translate(176.64 9.64) rotate(90)" fill="#fff"/>
+  </g>
+</svg>

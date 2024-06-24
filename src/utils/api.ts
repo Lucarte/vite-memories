@@ -1,27 +1,41 @@
-// Working with fetch
+import http from "./http";
 
-const API_URL = "http://localhost/api/auth";
-
-// "http://localhost:5173/memories"
-export const getAllMemoriesThenChain = () => {
-	// const data = fetch(API_URL + "/memories").then((response) => {
-	// 	if (!response.ok) {
-	// 		throw response;
-	// 	}
-	// 	return response.json();
-	// });
-	// return data;
-};
-
+// MEMORIES
 export const getAllMemories = async () => {
-	await new Promise((resolve) => setTimeout(resolve, 1000));
+	await new Promise((resolve) => setTimeout(resolve, 3000));
 
-	const response = await fetch(API_URL + "/memories");
+	try {
+		const res = await http.get("/memories");
 
-	if (!response.ok) throw response;
+		if (res.status !== 200) {
+			throw new Error("Failed to fetch memories");
+		}
 
-	return response.json();
+		return res.data.Memories || [];
+	} catch (error) {
+		console.error("Error fetching memories:", error);
+		throw error; // This will be caught by react-router-dom and trigger the errorElement
+	}
 };
+
+// // MEMORY BY TITLE
+// export const getMemoryByTitle = async (params) => {
+// 	await new Promise((resolve) => setTimeout(resolve, 1000));
+
+// 	try {
+// 		const { title } = params;
+// 		const res = await http.get(`/memories/${title}`);
+
+// 		if (res.status !== 200) {
+// 			throw new Error(`Failed to fetch memory with title: ${title}`);
+// 		}
+
+// 		return res.data || {};
+// 	} catch (error) {
+// 		console.error(`Error fetching memory with title:`, error);
+// 		throw error; // This will be caught by react-router-dom and trigger the errorElement
+// 	}
+// };
 
 //  Route::controller()->middleware('auth:sanctum')->group(function () {
 //         Route::post('/logout', [AuthController::class, 'logout']);

@@ -3,7 +3,7 @@ import CustomButton from "../components/CustomButton";
 
 const NotFound = () => {
 	return (
-		<div className='flex flex-col items-center mt-10 mr-3 md:mt-36'>
+		<div className='flex flex-col items-center justify-center h-screen mt-10 mr-3 md:mt-36'>
 			<h1 className='pb-12 ml-3 text-7xl'>404</h1>
 			<div className='flex flex-col items-center gap-10'>
 				<p className='ml-12 text-3xl'>

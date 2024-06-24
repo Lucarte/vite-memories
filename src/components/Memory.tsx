@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import http from "../utils/http";
 import { MemoryValues } from "../types/MemoryValues";
+// import { getMemoryByTitle } from "../utils/api";
 
 const Memory = () => {
 	const memory = useLoaderData() as MemoryValues;
@@ -23,20 +24,8 @@ const Memory = () => {
 
 export default Memory;
 
-export const loader: LoaderFunction = async ({
-	params,
-}: LoaderFunctionArgs) => {
-	try {
-		const { title } = params;
-		const res = await http.get(`api/auth/memories/${title}`);
-
-		if (res.status !== 200) {
-			throw new Error(`Failed to fetch memory with title: ${title}`);
-		}
-
-		return res.data || {};
-	} catch (error) {
-		console.error(`Error fetching memory with title:`, error);
-		throw error; // This will be caught by react-router-dom and trigger the errorElement
-	}
-};
+// export const loader: LoaderFunction = async ({
+// 	params,
+// }: LoaderFunctionArgs) => {
+// 	return getMemoryByTitle();
+// };

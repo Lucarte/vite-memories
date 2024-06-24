@@ -3,8 +3,10 @@ import CustomButton from "../components/CustomButton";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
-import { FieldValues, SubmitErrorHandler, useForm } from "react-hook-form";
+import { FieldValues, SubmitErrorHandler, get, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
+import { useTheme } from "../context/ThemeContext";
+import LightAndUpBtns from "../partials/LightAndUpBtns";
 
 type FormValues = {
 	email: string;
@@ -15,6 +17,7 @@ const Login = () => {
 	const { setAuth } = useContext(AuthContext);
 	const navigate = useNavigate();
 	const { state } = useLocation();
+	const { enabled } = useTheme();
 
 	const form = useForm<FormValues>();
 	const {
@@ -32,8 +35,8 @@ const Login = () => {
 	// Takes place when all fields validate
 	const onValid = async (data: FormValues) => {
 		try {
-			await http.get("/sanctum/csrf-cookie");
-			const response = await http.post("/api/auth/login", data);
+			await get("localhost/sanctum/csrf-cookie");
+			const response = await http.post("/login", data);
 			const userData = response.data.fan;
 
 			setAuth({
@@ -59,10 +62,13 @@ const Login = () => {
 	};
 
 	return (
-		<article className='flex flex-col items-center px-6 py-12 md:mt-28lg:px-8'>
-			{/* <div className='flex flex-col px-6 py-12 md:mt-28 flex-0 lg:px-8'> */}
+		<article className='flex flex-col items-center px-6 py-12 text-center md:mt-28lg:px-8'>
+			<LightAndUpBtns />
 			{/* Title */}
-			<h2 className='mt-8 font-serif text-xl text-center text-gray-900'>
+			<h2
+				className={`${
+					enabled ? "text-white" : "text-gray-900"
+				}, 'mt-8 font-serif text-xl text-center'`}>
 				LOGIN
 			</h2>
 			{/* Form */}
@@ -75,14 +81,20 @@ const Login = () => {
 				<div className='relative'>
 					<label
 						htmlFor='email'
-						className='absolute inline-block px-2 text-xs font-light text-gray-800 bg-white -top-2 left-4'>
+						className={`${
+							enabled ? "bg-black text-white" : "text-gray-800 bg-white"
+						} absolute inline-block px-2 text-xs font-light -top-2 left-4`}>
 						E-Mail
 					</label>
 					<input
 						autoComplete='false'
 						id='email'
 						type='email'
-						className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
+						className={`${
+							enabled
+								? "bg-black border-white text-white placeholder:text-gray-500 focus:ring-gray-400"
+								: "bg-white border-black text-black placeholder:text-gray-500 focus:ring-orange-600"
+						} w-full rounded-[3px] py-4 px-6  shadow-sm ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
 						placeholder='me@gmail.com'
 						aria-invalid={errors.email ? "true" : "false"}
 						{...register("email", {
@@ -104,12 +116,18 @@ const Login = () => {
 				<div className='relative'>
 					<label
 						htmlFor='password'
-						className='absolute inline-block px-2 text-xs font-light text-gray-800 bg-white -top-2 left-4'>
+						className={`${
+							enabled ? "bg-black text-white" : "text-gray-800 bg-white"
+						} absolute inline-block px-2 text-xs font-light -top-2 left-4`}>
 						Password
 					</label>
 					<input
 						id='password'
-						className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
+						className={`${
+							enabled
+								? "bg-black border-white text-white placeholder:text-gray-500 focus:ring-gray-400"
+								: "bg-white border-black text-black placeholder:text-gray-500 focus:ring-orange-600"
+						} w-full rounded-[3px] py-4 px-6  shadow-sm ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
 						placeholder='password'
 						type='password'
 						aria-invalid={errors.password ? "true" : "false"}
@@ -144,16 +162,23 @@ const Login = () => {
 				{/* Register Button */}
 				<CustomButton
 					type='submit'
-					classes='rounded-bl-2xl rounded-tr-2xl bg-gray-900 px-6 py-1.5 text-sm font-medium leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600'
+					classes={`${
+						enabled
+							? "bg-white text-black hover:bg-gray-300"
+							: "bg-black text-white hover:bg-gray-500"
+					} rounded-bl-2xl rounded-tr-2xl bg-gray-900 px-6 py-1.5 text-sm font-medium leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600`}
 					text='Enter Memories Portal'
 				/>{" "}
 			</form>
 			{/* link to registration ! */}
-			<div className='flex justify-center gap-2 text-sm text-gray-900 mt-28'>
+			<div
+				className={`${
+					enabled ? "text-white" : "text-black"
+				} flex justify-center gap-2 text-sm mt-28`}>
 				Not a fan yet?{" "}
 				<p
 					// href=""
-					className='font-semibold text-gray-900 hover:text-gray-500'>
+					className='font-semibold hover:text-gray-500'>
 					<Link to='/registration'>
 						Register <span className='underline'>here!</span>
 					</Link>

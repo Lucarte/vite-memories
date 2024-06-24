@@ -5,6 +5,17 @@ export type MemoryValues = {
 	year: number;
 	month?: string;
 	day?: number;
-	file_paths: string;
-	urls: string;
+	file_paths: Files[];
+	urls: URLs[];
+};
+
+export type Files = {
+	id: number;
+	file_type: string;
+	file_path: string;
+};
+
+export type URLs = {
+	id: number;
+	url_address: string;
 };

@@ -29,7 +29,7 @@ import Pablo from "./pages/Pablo";
 import Gabriella from "./pages/Gabriella";
 import Fans from "./pages/Fans";
 import NotFound from "./pages/NotFound";
-import Memory, { loader as memoryLoader } from "./components/Memory";
+// import Memory, { loader as memoryLoader } from "./components/Memory";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -44,7 +44,7 @@ const router = createBrowserRouter(
 					<Route path='/pablo' element={<Pablo />} />
 					<Route path='/memories'>
 						<Route index element={<Memories />} loader={memoriesLoader} />
-						<Route path=':title' element={<Memory />} loader={memoryLoader} />
+						{/* <Route path=':title' element={<Memory />} loader={memoryLoader} /> */}
 					</Route>
 				</Route>
 			</Route>
