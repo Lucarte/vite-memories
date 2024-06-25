@@ -1,9 +1,7 @@
 import { Link, Outlet } from "react-router-dom";
-import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { useTheme } from "../context/ThemeContext";
 import MenuBarsIcon from "../components/MenuBarsIcon";
-import Nav from "../partials/Nav";
 import { navigation } from "../utils/navigation";
 import classNames from "classnames";
 

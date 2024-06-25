@@ -6,7 +6,7 @@ import { AuthContext, defaultAuth } from "../context/AuthProvider";
 import http from "../utils/http";
 
 const RootLayout = () => {
-	const { auth, setAuth } = useContext(AuthContext);
+	const { setAuth } = useContext(AuthContext);
 
 	const handleLogout = async () => {
 		try {

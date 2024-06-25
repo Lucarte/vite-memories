@@ -1,21 +1,20 @@
 export type MemoryValues = {
+	id: number;
 	kid: string;
 	title: string;
 	description: string;
 	year: number;
 	month?: string;
 	day?: number;
-	file_paths: Files[];
-	urls: URLs[];
+	created_at: string;
+	updated_at: string;
+	user_id: number;
+	files: File[];
+	urls: { id: number; url_address: string }[];
 };
 
-export type Files = {
+export type File = {
 	id: number;
-	file_type: string;
 	file_path: string;
-};
-
-export type URLs = {
-	id: number;
-	url_address: string;
+	file_data: string;
 };

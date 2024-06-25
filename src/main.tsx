@@ -27,6 +27,7 @@ import AuthProvider from "./context/AuthProvider";
 import Memories, { loader as memoriesLoader } from "./pages/Memories";
 import Pablo from "./pages/Pablo";
 import Gabriella from "./pages/Gabriella";
+import NewMemory from "./pages/NewMemory";
 import Fans from "./pages/Fans";
 import NotFound from "./pages/NotFound";
 // import Memory, { loader as memoryLoader } from "./components/Memory";
@@ -46,6 +47,7 @@ const router = createBrowserRouter(
 						<Route index element={<Memories />} loader={memoriesLoader} />
 						{/* <Route path=':title' element={<Memory />} loader={memoryLoader} /> */}
 					</Route>
+					<Route path='/memory' element={<NewMemory />} />
 				</Route>
 			</Route>
 

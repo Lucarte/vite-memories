@@ -1,6 +1,48 @@
-import { MemoryValues } from "../types/MemoryValues";
+import { MemoryValues, File } from "../types/MemoryValues";
 import { getAllMemories } from "../utils/api";
 import { Link, LoaderFunction, useLoaderData } from "react-router-dom";
+import mime from "mime";
+
+const displayFile = (file: File) => {
+	if (!file.file_path || !file.file_data) return null;
+
+	const mimeType = mime.getType(file.file_path); // Replace with actual function to get MIME type
+
+	if (!mimeType) {
+		return <p>Unsupported file type</p>;
+	}
+
+	if (mimeType.startsWith("image/")) {
+		return (
+			<img
+				src={`data:${mimeType};base64,${file.file_data}`}
+				alt={`Memory ${file.id}`}
+			/>
+		);
+	} else if (mimeType.startsWith("video/")) {
+		return (
+			<video controls>
+				<source
+					src={`data:${mimeType};base64,${file.file_data}`}
+					type={mimeType}
+				/>
+				Your browser does not support the video tag.
+			</video>
+		);
+	} else if (mimeType.startsWith("audio/")) {
+		return (
+			<audio controls>
+				<source
+					src={`data:${mimeType};base64,${file.file_data}`}
+					type={mimeType}
+				/>
+				Your browser does not support the audio element.
+			</audio>
+		);
+	} else {
+		return <p>Unsupported file type</p>;
+	}
+};
 
 const Memories = () => {
 	const memories = useLoaderData() as MemoryValues[];
@@ -9,68 +51,47 @@ const Memories = () => {
 		<div className='flex flex-col gap-12'>
 			<h1>Memories</h1>
 			{memories ? (
-				memories.map((memory) => {
-					return (
-						<div key={memory.title}>
-							<Link to={memory.title} key={memory.title}>
-								<ul>
-									<li>Kid: {memory.kid}</li>
-									<li>Title: {memory.title}</li>
-									<li>Description: {memory.description}</li>
-									<li>Year: {memory.year}</li>
-									<li>Month: {memory.month}</li>
-									<li>Day: {memory.day}</li>
-									<li>Files:</li>
-								</ul>
-								<ul>
-									{memory.file_paths ? (
-										memory.file_paths.map((file) => (
-											<li key={file.id}>
-												<img
-													// href={`http://localhost/storage/${file.file_path}`}
-													src={`http://localhost/api/auth/file/${file.id}`}
-													// target='_blank'
-													rel='noopener noreferrer'>
-													{file.file_path}
-												</img>
-											</li>
-										))
-									) : (
-										<p>No files available</p>
-									)}
-								</ul>
-								{/* {memory.file_paths ? (
-										memory.file_paths.map((file) => (
-											<img
-												key={file.id}
-												// src={`http://localhost/storage/${file.file_path}`}
-												alt={`Memory ${memory.title}`}
-											/>
-										))
-									) : (
-										<p>No files available</p>
-									)} */}
-							</Link>
-							<div>
-								<strong>URLs:</strong>
-								{memory.urls && memory.urls.length > 0 ? (
-									memory.urls.map((url) => (
-										<div key={url.id}>
-											<a
-												href={url.url_address}
-												target='_blank'
-												rel='noopener noreferrer'>
-												{url.url_address}
-											</a>
-										</div>
+				memories.map((memory) => (
+					<div key={memory.title}>
+						<Link to={memory.title} key={memory.title}>
+							<ul>
+								<li>Kid: {memory.kid}</li>
+								<li>Title: {memory.title}</li>
+								<li>Description: {memory.description}</li>
+								<li>Year: {memory.year}</li>
+								<li>Month: {memory.month}</li>
+								<li>Day: {memory.day}</li>
+								<li>Files:</li>
+							</ul>
+							<ul>
+								{memory.files.length > 0 ? (
+									memory.files.map((file) => (
+										<li key={file.id}>{displayFile(file)}</li>
 									))
 								) : (
-									<p>No URLs available</p>
+									<p>No files available</p>
 								)}
-							</div>
+							</ul>
+						</Link>
+						<div>
+							<strong>URLs:</strong>
+							{memory.urls && memory.urls.length > 0 ? (
+								memory.urls.map((url) => (
+									<div key={url.id}>
+										<a
+											href={url.url_address}
+											target='_blank'
+											rel='noopener noreferrer'>
+											{url.url_address}
+										</a>
+									</div>
+								))
+							) : (
+								<p>No URLs available</p>
+							)}
 						</div>
-					);
-				})
+					</div>
+				))
 			) : (
 				<p>No Memories found.</p>
 			)}

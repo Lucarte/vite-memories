@@ -1,19 +1,16 @@
 import { DevTool } from "@hookform/devtools";
-import {
-	FieldValues,
-	SubmitErrorHandler,
-	SubmitHandler,
-	useForm,
-} from "react-hook-form";
+import { FieldValues, SubmitErrorHandler, get, useForm } from "react-hook-form";
 import CustomButton from "./CustomButton";
 import http from "../utils/http";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { RegisterFormValues } from "../types/RegisterFormValues";
+import { useNavigation } from "react-router-dom";
 
 const relationships = ["Family", "Friend", "Teacher"];
 
 const RegisterForm = () => {
+	const navigate = useNavigation();
 	const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
 	const {
@@ -54,15 +51,15 @@ const RegisterForm = () => {
 		};
 
 		try {
-			// Request CSRF token
-			await http.get("/sanctum/csrf-cookie");
-			// const response = await http.post("api/auth/register", formData, {
-			await http.post("api/auth/register", data, {
+			// Request CSRF token with full path because 'http' has /auth in it
+			await get("localhost/api/sanctum/csrf-cookie");
+			await http.post("/register", data, {
 				headers: {
 					"Content-Type": "multipart/form-data",
 				},
 			});
 
+			// navigate("/login");
 			console.log("Registration worked!");
 		} catch (error) {
 			console.error("Registration failed:", error);

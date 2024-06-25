@@ -1,4 +1,4 @@
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, get, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import http from "../utils/http";
 import { useEffect, useState } from "react";
@@ -152,7 +152,7 @@ const MemoryForm: React.FC = () => {
 	const onSubmit: SubmitHandler<MemoryFormValues> = async (data) => {
 		try {
 			// Request CSRF token
-			await http.get("/sanctum/csrf-cookie");
+			await get("localhost/api/sanctum/csrf-cookie");
 
 			const formData = new FormData();
 			formData.append("kid", data.kid);
