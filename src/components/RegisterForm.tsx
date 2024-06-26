@@ -52,8 +52,8 @@ const RegisterForm = () => {
 
 		try {
 			// Request CSRF token with full path because 'http' has /auth in it
-			await get("localhost/api/sanctum/csrf-cookie");
-			await http.post("/register", data, {
+			await http("/sanctum/csrf-cookie");
+			await http.post("/api/auth/register", data, {
 				headers: {
 					"Content-Type": "multipart/form-data",
 				},

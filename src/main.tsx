@@ -22,12 +22,11 @@ import Login from "./pages/Login";
 import RootError from "./errors/RootError";
 import Registration from "./pages/Registration";
 import Home from "./pages/Home";
-// import Memories, { loader as memoriesLoader } from "./pages/Memories";
 import AuthProvider from "./context/AuthProvider";
 import Memories, { loader as memoriesLoader } from "./pages/Memories";
 import Pablo from "./pages/Pablo";
 import Gabriella from "./pages/Gabriella";
-import NewMemory from "./pages/NewMemory";
+import NewMemory, { action as createMemoryAction } from "./pages/NewMemory";
 import Fans from "./pages/Fans";
 import NotFound from "./pages/NotFound";
 // import Memory, { loader as memoryLoader } from "./components/Memory";
@@ -36,6 +35,7 @@ const router = createBrowserRouter(
 	createRoutesFromElements(
 		<>
 			<Route path='/' element={<RootLayout />} errorElement={<RootError />}>
+				{/* <Route path='/' element={<RootLayout />}> */}
 				<Route path='/login' element={<Login />} />
 				<Route path='/registration' element={<Registration />} />
 
@@ -47,7 +47,11 @@ const router = createBrowserRouter(
 						<Route index element={<Memories />} loader={memoriesLoader} />
 						{/* <Route path=':title' element={<Memory />} loader={memoryLoader} /> */}
 					</Route>
-					<Route path='/memory' element={<NewMemory />} />
+					<Route
+						path='/memory/create'
+						element={<NewMemory />}
+						action={createMemoryAction}
+					/>
 				</Route>
 			</Route>
 

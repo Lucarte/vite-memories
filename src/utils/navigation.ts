@@ -7,7 +7,7 @@ export const navigation = [
 	},
 	{
 		name: "Create Memory",
-		href: "/memory",
+		href: "/memory/create",
 		page: "Memory Creation",
 		current: false,
 	},

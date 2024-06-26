@@ -35,8 +35,8 @@ const Login = () => {
 	// Takes place when all fields validate
 	const onValid = async (data: FormValues) => {
 		try {
-			await get("localhost/sanctum/csrf-cookie");
-			const response = await http.post("/login", data);
+			await http("/sanctum/csrf-cookie");
+			const response = await http.post("/api/auth/login", data);
 			const userData = response.data.fan;
 
 			setAuth({

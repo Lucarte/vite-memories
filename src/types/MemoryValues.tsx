@@ -9,11 +9,14 @@ export type MemoryValues = {
 	created_at: string;
 	updated_at: string;
 	user_id: number;
-	files: File[];
+	// files: File[];
+	files: FileList[];
+	// files: MemoryFile[];
 	urls: { id: number; url_address: string }[];
+	category_ids: string[];
 };
 
-export type File = {
+export type MemoryFile = {
 	id: number;
 	file_path: string;
 	file_data: string;

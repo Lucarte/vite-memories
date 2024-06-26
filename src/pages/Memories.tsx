@@ -1,9 +1,9 @@
-import { MemoryValues, File } from "../types/MemoryValues";
+import { MemoryValues, MemoryFile } from "../types/MemoryValues";
 import { getAllMemories } from "../utils/api";
 import { Link, LoaderFunction, useLoaderData } from "react-router-dom";
 import mime from "mime";
 
-const displayFile = (file: File) => {
+const displayFile = (file: MemoryFile) => {
 	if (!file.file_path || !file.file_data) return null;
 
 	const mimeType = mime.getType(file.file_path); // Replace with actual function to get MIME type

@@ -10,7 +10,7 @@ const RootLayout = () => {
 
 	const handleLogout = async () => {
 		try {
-			await http.post("/logout");
+			await http.post("/api/auth/logout");
 			setAuth(defaultAuth);
 		} catch (error) {
 			console.error("Logout failed:", error);
