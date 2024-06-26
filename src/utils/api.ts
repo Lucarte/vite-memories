@@ -31,8 +31,8 @@ export const postMemory = async (formData: FormData) => {
 			},
 		});
 
-		if (res.status !== 200) {
-			throw new Error(`Failed to create memory: ${res.statusText}`);
+		if (res.status !== 201) {
+			throw new Error(`Failed to create memory`);
 		}
 
 		return res.data || [];

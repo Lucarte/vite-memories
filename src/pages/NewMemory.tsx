@@ -2,39 +2,18 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useEffect, useState, useContext } from "react";
 import {
-	// useActionData,
-	useLocation,
-	// useNavigation,
 	useSubmit,
+	useLocation,
+	useActionData,
+	Link,
+	ActionFunction,
 } from "react-router-dom";
 import http from "../utils/http";
 import LightAndUpBtns from "../partials/LightAndUpBtns";
 import { AuthContext } from "../context/AuthProvider";
-import LoadingSpinner from "../components/LoadingSpinner";
 import { MemoryValues } from "../types/MemoryValues";
 import { postMemory } from "../utils/api";
-
-// ACTION:
-export const action: ActionFunction = async ({ request }) => {
-	const formData = await request.formData();
-	console.log(Object.fromEntries(formData));
-	try {
-		// Request CSRF token
-		await http("/sanctum/csrf-cookie");
-
-		const res = await postMemory(formData);
-
-		return res;
-	} catch (error: any) {
-		if (error.res && error.res.status === 400) {
-			// Return action data received here
-			const actionData = await error.response.json();
-			return actionData;
-		}
-		// Error Element received here
-		throw error;
-	}
-};
+import axios from "axios";
 
 const kidOptions = [
 	{ id: "both", name: "Both" },
@@ -42,6 +21,7 @@ const kidOptions = [
 	{ id: "gabriella", name: "Gabriella" },
 ];
 
+// Date Constants
 const years = Array.from({ length: 101 }, (_, i) => 2000 + i);
 const months = [
 	"January",
@@ -59,9 +39,9 @@ const months = [
 ];
 const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
-const MemoryForm: React.FC = () => {
+// Component
+const CreateMemory: React.FC = () => {
 	const { auth } = useContext(AuthContext);
-	const [submitting, setSubmitting] = useState(false);
 	const {
 		register,
 		control,
@@ -82,15 +62,15 @@ const MemoryForm: React.FC = () => {
 	});
 	const submit = useSubmit();
 	const location = useLocation();
-	const actionData = useActionData() as any;
-	const navigation = useNavigation();
+	const actionData = useActionData() as MemoryValues | Error;
 
 	const [categories, setCategories] = useState<
 		{ id: string; category: string }[]
 	>([]);
 	const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-	const [mediaType, setMediaType] = useState<string | null>(null);
+	const [previews, setPreviews] = useState<string[]>([]);
 
+	// Handle File Types & Upload
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files;
 
@@ -100,6 +80,7 @@ const MemoryForm: React.FC = () => {
 			const validVideoExtensions = ["mp4", "avi", "quicktime", "mpeg"];
 
 			const validFiles: File[] = [];
+			const validPreviews: string[] = [];
 
 			for (const file of files) {
 				const fileExtension = file.name.split(".").pop()?.toLowerCase();
@@ -124,16 +105,18 @@ const MemoryForm: React.FC = () => {
 
 				if (valid && file.size <= maxSize) {
 					validFiles.push(file);
+					validPreviews.push(URL.createObjectURL(file));
 				} else {
 					alert(`Invalid file: ${file.name}`);
 				}
 			}
 
-			// setUploadedFiles(validFiles);
 			setUploadedFiles((prevFiles) => [...prevFiles, ...validFiles]);
+			setPreviews((prevPreviews) => [...prevPreviews, ...validPreviews]);
 		}
 	};
 
+	// Fetch Categories
 	useEffect(() => {
 		const fetchCategories = async () => {
 			try {
@@ -147,8 +130,8 @@ const MemoryForm: React.FC = () => {
 		fetchCategories();
 	}, []);
 
-	const onValid: SubmitHandler<MemoryValues> = async (_, event) => {
-		setSubmitting(true);
+	// Custom Validation
+	const onValid: SubmitHandler<MemoryValues> = (_, event) => {
 		const formData = new FormData(event?.target);
 		const categoryIds = getValues("category_ids");
 
@@ -159,28 +142,27 @@ const MemoryForm: React.FC = () => {
 			formData.append("category_ids[]", categoryIds);
 		}
 
-		uploadedFiles.forEach((file, index) => {
-			formData.append(`files[${index}]`, file);
-		});
-
 		submit(formData, {
 			method: "POST",
 			action: location.pathname,
 			encType: "multipart/form-data",
 		});
-		setSubmitting(false);
 	};
 
-	return (
+	return auth.isAdmin !== true ? (
 		<div className='flex justify-center'>
 			<form
 				onSubmit={handleSubmit(onValid)}
 				className='max-w-[30rem] px-10 flex flex-col'>
+				{/* Buttons for DarkTheme and goHome */}
 				<LightAndUpBtns />
+
+				{/* Title */}
 				<h1 className='mt-16 font-bold text-center font-titles'>
 					Create a New Memory
 				</h1>
 
+				{/* Memory belongs to... */}
 				<fieldset className='mt-8'>
 					<legend className='text-sm font-semibold leading-6 text-center text-gray-900'>
 						for...
@@ -211,6 +193,7 @@ const MemoryForm: React.FC = () => {
 					)}
 				</fieldset>
 
+				{/* Categories  */}
 				<article className='mt-10 font-light'>
 					<fieldset className='relative flex flex-wrap justify-center w-full p-4 pt-6 border-[2.5px] rounded-[3px] border-black'>
 						<legend className='absolute flex px-2 text-sm text-black bg-white -top-3 left-4'>
@@ -245,6 +228,7 @@ const MemoryForm: React.FC = () => {
 					</fieldset>
 				</article>
 
+				{/* Title */}
 				<div className='mt-10'>
 					<label className='block mb-2 text-sm font-medium text-gray-900'>
 						Title
@@ -261,6 +245,7 @@ const MemoryForm: React.FC = () => {
 					)}
 				</div>
 
+				{/* Description */}
 				<div className='mt-10'>
 					<label className='block mb-2 text-sm font-medium text-gray-900'>
 						Description
@@ -277,6 +262,7 @@ const MemoryForm: React.FC = () => {
 					)}
 				</div>
 
+				{/* Memory Date */}
 				<div className='mt-10'>
 					<label
 						htmlFor='date'
@@ -285,8 +271,8 @@ const MemoryForm: React.FC = () => {
 					</label>
 					<div className='flex space-x-4'>
 						<select
-							{...register("month", { required: true })}
-							className='p-2 border-[2.5px] border-black rounded-sm focus:outline-none focus:border-[2.5px] focus:border-orange-600'>
+							{...register("month")}
+							className='block w-full px-4 py-2 text-sm border rounded-md'>
 							{months.map((month) => (
 								<option key={month} value={month}>
 									{month}
@@ -294,8 +280,8 @@ const MemoryForm: React.FC = () => {
 							))}
 						</select>
 						<select
-							{...register("day", { required: true })}
-							className='p-2 border-[2.5px] border-black rounded-sm focus:outline-none focus:border-[2.5px] focus:border-orange-600'>
+							{...register("day")}
+							className='block w-full px-4 py-2 text-sm border rounded-md'>
 							{days.map((day) => (
 								<option key={day} value={day}>
 									{day}
@@ -303,8 +289,8 @@ const MemoryForm: React.FC = () => {
 							))}
 						</select>
 						<select
-							{...register("year", { required: true })}
-							className='p-2 border-[2.5px] border-black rounded-sm focus:outline-none focus:border-[2.5px] focus:border-orange-600'>
+							{...register("year")}
+							className='block w-full px-4 py-2 text-sm border rounded-md'>
 							{years.map((year) => (
 								<option key={year} value={year}>
 									{year}
@@ -312,50 +298,90 @@ const MemoryForm: React.FC = () => {
 							))}
 						</select>
 					</div>
-					{errors.month && (
-						<p className='mt-1 text-sm text-orange-500'>
-							Please select a valid date.
-						</p>
-					)}
 				</div>
 
+				{/* File Upload */}
 				<div className='mt-10'>
 					<label className='block mb-2 text-sm font-medium text-gray-900'>
-						Media Upload
+						Upload Files
 					</label>
 					<input
+						name='file_paths[]'
 						type='file'
-						onChange={handleFileChange}
 						multiple
-						accept='image/jpeg,image/png,image/gif,audio/mpeg,audio/mp3,audio/aiff,audio/m4a,video/mp4,video/quicktime'
-						className='block w-full px-4 py-2 text-sm border rounded-md'
+						accept='image/*,audio/*,video/*'
+						onChange={handleFileChange}
+						className='block w-full text-sm border rounded-md'
 					/>
 				</div>
 
+				{/* File Previews */}
 				<div className='mt-10'>
-					{uploadedFiles.map((file, index) => (
-						<div key={index} className='flex items-center mt-2'>
-							<span className='text-sm font-medium text-gray-900'>
-								File {index + 1}:
-							</span>
-							<span className='ml-2'>{file.name}</span>
+					{previews.map((preview, index) => (
+						<div key={index} className='mb-4'>
+							{uploadedFiles[index].type.startsWith("image/") ? (
+								<img
+									src={preview}
+									alt={`Preview ${index + 1}`}
+									className='h-auto max-w-full'
+								/>
+							) : uploadedFiles[index].type.startsWith("video/") ? (
+								<video controls className='h-auto max-w-full'>
+									<source src={preview} />
+								</video>
+							) : (
+								<p>Preview not available</p>
+							)}
 						</div>
 					))}
 				</div>
 
-				<div className='mt-10'>
-					{submitting && <LoadingSpinner />}
-
-					<button
-						type='submit'
-						className='w-full px-4 py-2 mt-4 text-sm font-medium text-white bg-black rounded-md hover:bg-gray-900 focus:outline-none focus:bg-gray-900'>
-						Create Memory
-					</button>
-				</div>
+				{/* Submit Button */}
+				<button
+					type='submit'
+					className='px-4 py-2 mt-10 text-white bg-black rounded-md'>
+					Submit
+				</button>
+				{actionData && actionData.message ? (
+					<p>{actionData.message}</p>
+				) : (
+					<p></p>
+				)}
 			</form>
 			<DevTool control={control} /> {/* DevTool for debugging */}
 		</div>
+	) : (
+		<>
+			<Link to={"/login"} />
+			<p>Admin Zone</p>
+		</>
 	);
 };
 
-export default MemoryForm;
+export default CreateMemory;
+
+// ACTION:
+export const action: ActionFunction = async ({ request }) => {
+	const formData = await request.formData();
+	console.log(formData);
+	// because of async & await to catch the errors
+	try {
+		// Request CSRF token
+		await http("/sanctum/csrf-cookie");
+
+		const res = await postMemory(formData);
+
+		return res;
+	} catch (error) {
+		// Type guard for AxiosError
+		if (axios.isAxiosError(error)) {
+			if (error.response && error.response.status === 400) {
+				// action data returned here
+				const actionData = error.response.data;
+				return actionData;
+			}
+			// Error Element received here
+			throw error;
+		}
+	}
+};

@@ -12,8 +12,8 @@ const Fans = () => {
 		</article>
 	) : (
 		<>
-			<p>Admin Zone</p>
 			<Link to={"/login"} />
+			<p>Admin Zone</p>
 		</>
 	);
 };

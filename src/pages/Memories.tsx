@@ -64,7 +64,7 @@ const Memories = () => {
 								<li>Files:</li>
 							</ul>
 							<ul>
-								{memory.files.length > 0 ? (
+								{memory.files ? (
 									memory.files.map((file) => (
 										<li key={file.id}>{displayFile(file)}</li>
 									))
