@@ -1,6 +1,6 @@
+import React, { useState, useContext, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
-import { useEffect, useState, useContext } from "react";
 import {
 	useSubmit,
 	useLocation,
@@ -60,6 +60,7 @@ const CreateMemory: React.FC = () => {
 			files: [],
 		},
 	});
+
 	const submit = useSubmit();
 	const location = useLocation();
 	const actionData = useActionData() as MemoryValues | Error;
@@ -67,56 +68,14 @@ const CreateMemory: React.FC = () => {
 	const [categories, setCategories] = useState<
 		{ id: string; category: string }[]
 	>([]);
-	const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-	const [previews, setPreviews] = useState<string[]>([]);
+	const [uploadedImages, setUploadedImages] = useState<File[]>([]);
+	const [uploadedAudios, setUploadedAudios] = useState<File[]>([]);
+	const [uploadedVideos, setUploadedVideos] = useState<File[]>([]);
+	const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+	const [audioPreviews, setAudioPreviews] = useState<string[]>([]);
+	const [videoPreviews, setVideoPreviews] = useState<string[]>([]);
+	const [fileErrors, setFileErrors] = useState<string[]>([]);
 
-	// Handle File Types & Upload
-	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const files = e.target.files;
-
-		if (files) {
-			const validImageExtensions = ["jpeg", "jpg", "png", "gif", "svg"];
-			const validAudioExtensions = ["aiff", "mpeg", "m4a", "mp3"];
-			const validVideoExtensions = ["mp4", "avi", "quicktime", "mpeg"];
-
-			const validFiles: File[] = [];
-			const validPreviews: string[] = [];
-
-			for (const file of files) {
-				const fileExtension = file.name.split(".").pop()?.toLowerCase();
-				if (!fileExtension) {
-					alert("Unable to determine file extension.");
-					continue;
-				}
-
-				let valid = false;
-				let maxSize = 0;
-
-				if (validImageExtensions.includes(fileExtension)) {
-					valid = true;
-					maxSize = 3 * 1024 * 1024; // 3MB for images
-				} else if (validAudioExtensions.includes(fileExtension)) {
-					valid = true;
-					maxSize = 20 * 1024 * 1024; // 20MB for audio
-				} else if (validVideoExtensions.includes(fileExtension)) {
-					valid = true;
-					maxSize = 200 * 1024 * 1024; // 200MB for video
-				}
-
-				if (valid && file.size <= maxSize) {
-					validFiles.push(file);
-					validPreviews.push(URL.createObjectURL(file));
-				} else {
-					alert(`Invalid file: ${file.name}`);
-				}
-			}
-
-			setUploadedFiles((prevFiles) => [...prevFiles, ...validFiles]);
-			setPreviews((prevPreviews) => [...prevPreviews, ...validPreviews]);
-		}
-	};
-
-	// Fetch Categories
 	useEffect(() => {
 		const fetchCategories = async () => {
 			try {
@@ -130,6 +89,107 @@ const CreateMemory: React.FC = () => {
 		fetchCategories();
 	}, []);
 
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const files = e.target.files;
+
+		if (files) {
+			const validImageExtensions = ["jpeg", "jpg", "png", "gif", "svg"];
+			const validAudioExtensions = ["aiff", "mpeg", "m4a", "mp3"];
+			const validVideoExtensions = ["mp4", "avi", "quicktime", "mov", "mpeg"];
+
+			const imageFiles: File[] = [];
+			const audioFiles: File[] = [];
+			const videoFiles: File[] = [];
+			const errors: string[] = [];
+
+			for (const file of files) {
+				const fileExtension = file.name.split(".").pop()?.toLowerCase();
+				if (!fileExtension) {
+					errors.push(`Unable to determine file extension for ${file.name}.`);
+					continue;
+				}
+
+				let maxSize = 0;
+
+				if (validImageExtensions.includes(fileExtension)) {
+					maxSize = 3 * 1024 * 1024; // 3MB for images
+					imageFiles.push(file);
+					setImagePreviews((prevPreviews) => [
+						...prevPreviews,
+						URL.createObjectURL(file),
+					]);
+				} else if (validAudioExtensions.includes(fileExtension)) {
+					maxSize = 20 * 1024 * 1024; // 20MB for audio
+					audioFiles.push(file);
+					// For audio preview, you might want to use an audio player component
+					setAudioPreviews((prevPreviews) => [
+						...prevPreviews,
+						URL.createObjectURL(file),
+					]);
+				} else if (validVideoExtensions.includes(fileExtension)) {
+					maxSize = 200 * 1024 * 1024; // 200MB for video
+					videoFiles.push(file);
+					setVideoPreviews((prevPreviews) => [
+						...prevPreviews,
+						URL.createObjectURL(file),
+					]);
+				} else {
+					errors.push(`Unsupported file type: ${file.name}`);
+					continue;
+				}
+
+				if (file.size > maxSize) {
+					errors.push(`File too large: ${file.name}`);
+				}
+			}
+
+			setUploadedImages((prevFiles) => [...prevFiles, ...imageFiles]);
+			setUploadedAudios((prevFiles) => [...prevFiles, ...audioFiles]);
+			setUploadedVideos((prevFiles) => [...prevFiles, ...videoFiles]);
+			setFileErrors(errors);
+		}
+	};
+
+	const handleRemoveFile = (
+		type: "image" | "audio" | "video",
+		index: number
+	) => {
+		let updatedFiles: File[] = [];
+		let updatedPreviews: string[] = [];
+
+		switch (type) {
+			case "image":
+				updatedFiles = [...uploadedImages];
+				updatedFiles.splice(index, 1);
+				setUploadedImages(updatedFiles);
+
+				updatedPreviews = [...imagePreviews];
+				updatedPreviews.splice(index, 1);
+				setImagePreviews(updatedPreviews);
+				break;
+			case "audio":
+				updatedFiles = [...uploadedAudios];
+				updatedFiles.splice(index, 1);
+				setUploadedAudios(updatedFiles);
+
+				updatedPreviews = [...audioPreviews];
+				updatedPreviews.splice(index, 1);
+				setAudioPreviews(updatedPreviews);
+				break;
+			case "video":
+				updatedFiles = [...uploadedVideos];
+				updatedFiles.splice(index, 1);
+				setUploadedVideos(updatedFiles);
+
+				updatedPreviews = [...videoPreviews];
+				updatedPreviews.splice(index, 1);
+				setVideoPreviews(updatedPreviews);
+				break;
+			default:
+				break;
+		}
+	};
+
 	// Custom Validation
 	const onValid: SubmitHandler<MemoryValues> = (_, event) => {
 		const formData = new FormData(event?.target);
@@ -142,6 +202,7 @@ const CreateMemory: React.FC = () => {
 			formData.append("category_ids[]", categoryIds);
 		}
 
+		// Submit formData to backend API
 		submit(formData, {
 			method: "POST",
 			action: location.pathname,
@@ -157,7 +218,7 @@ const CreateMemory: React.FC = () => {
 				{/* Buttons for DarkTheme and goHome */}
 				<LightAndUpBtns />
 
-				{/* Title */}
+				{/* Form Title */}
 				<h1 className='mt-16 font-bold text-center font-titles'>
 					Create a New Memory
 				</h1>
@@ -300,40 +361,131 @@ const CreateMemory: React.FC = () => {
 					</div>
 				</div>
 
-				{/* File Upload */}
+				{/* Image Upload */}
 				<div className='mt-10'>
 					<label className='block mb-2 text-sm font-medium text-gray-900'>
-						Upload Files
+						Upload Images
 					</label>
 					<input
-						name='file_paths[]'
+						name='image_paths[]'
 						type='file'
 						multiple
-						accept='image/*,audio/*,video/*'
+						accept='image/*'
 						onChange={handleFileChange}
 						className='block w-full text-sm border rounded-md'
 					/>
+					{imagePreviews.length > 0 && (
+						<div className='grid grid-cols-3 gap-4 mt-2'>
+							{imagePreviews.map((preview, index) => (
+								<div key={index} className='relative'>
+									<img
+										src={preview}
+										alt={`Image Preview ${index}`}
+										className='h-32 mb-2 mr-2'
+									/>
+									<button
+										type='button'
+										onClick={() => handleRemoveFile("image", index)}
+										className='absolute top-0 right-0 p-1 text-white bg-red-500 rounded-full'>
+										X
+									</button>
+								</div>
+							))}
+						</div>
+					)}
+					{fileErrors.length > 0 && (
+						<div className='mt-2'>
+							{fileErrors.map((error, index) => (
+								<p key={index} className='text-sm font-light text-orange-500'>
+									{error}
+								</p>
+							))}
+						</div>
+					)}
 				</div>
 
-				{/* File Previews */}
+				{/* Audio Upload */}
 				<div className='mt-10'>
-					{previews.map((preview, index) => (
-						<div key={index} className='mb-4'>
-							{uploadedFiles[index].type.startsWith("image/") ? (
-								<img
-									src={preview}
-									alt={`Preview ${index + 1}`}
-									className='h-auto max-w-full'
-								/>
-							) : uploadedFiles[index].type.startsWith("video/") ? (
-								<video controls className='h-auto max-w-full'>
-									<source src={preview} />
-								</video>
-							) : (
-								<p>Preview not available</p>
-							)}
+					<label className='block mb-2 text-sm font-medium text-gray-900'>
+						Upload Audio
+					</label>
+					<input
+						name='audio_paths[]'
+						type='file'
+						multiple
+						accept='audio/*'
+						onChange={handleFileChange}
+						className='block w-full text-sm border rounded-md'
+					/>
+					{audioPreviews.length > 0 && (
+						<div className='mt-2'>
+							{audioPreviews.map((preview, index) => (
+								<div key={index} className='relative'>
+									<audio controls className='w-full mt-2'>
+										<source src={preview} type='audio/mpeg' />
+										Your browser does not support the audio element.
+									</audio>
+									<button
+										type='button'
+										onClick={() => handleRemoveFile("audio", index)}
+										className='absolute top-0 right-0 p-1 text-white bg-red-500 rounded-full'>
+										X
+									</button>
+								</div>
+							))}
 						</div>
-					))}
+					)}
+					{fileErrors.length > 0 && (
+						<div className='mt-2'>
+							{fileErrors.map((error, index) => (
+								<p key={index} className='text-sm font-light text-orange-500'>
+									{error}
+								</p>
+							))}
+						</div>
+					)}
+				</div>
+
+				{/* Video Upload */}
+				<div className='mt-10'>
+					<label className='block mb-2 text-sm font-medium text-gray-900'>
+						Upload Video
+					</label>
+					<input
+						name='video_paths[]'
+						type='file'
+						multiple
+						accept='video/*'
+						onChange={handleFileChange}
+						className='block w-full text-sm border rounded-md'
+					/>
+					{videoPreviews.length > 0 && (
+						<div className='mt-2'>
+							{videoPreviews.map((preview, index) => (
+								<div key={index} className='relative'>
+									<video controls className='w-full mt-2'>
+										<source src={preview} type='video/mp4' />
+										Your browser does not support the video tag.
+									</video>
+									<button
+										type='button'
+										onClick={() => handleRemoveFile("video", index)}
+										className='absolute top-0 right-0 p-1 text-white bg-red-500 rounded-full'>
+										X
+									</button>
+								</div>
+							))}
+						</div>
+					)}
+					{fileErrors.length > 0 && (
+						<div className='mt-2'>
+							{fileErrors.map((error, index) => (
+								<p key={index} className='text-sm font-light text-orange-500'>
+									{error}
+								</p>
+							))}
+						</div>
+					)}
 				</div>
 
 				{/* Submit Button */}
@@ -342,17 +494,13 @@ const CreateMemory: React.FC = () => {
 					className='px-4 py-2 mt-10 text-white bg-black rounded-md'>
 					Submit
 				</button>
-				{actionData && actionData.message ? (
-					<p>{actionData.message}</p>
-				) : (
-					<p></p>
-				)}
+				{actionData && actionData.message && <p>{actionData.message}</p>}
 			</form>
 			<DevTool control={control} /> {/* DevTool for debugging */}
 		</div>
 	) : (
 		<>
-			<Link to={"/login"} />
+			<Link to='/login' />
 			<p>Admin Zone</p>
 		</>
 	);

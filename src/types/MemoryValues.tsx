@@ -21,3 +21,8 @@ export type MemoryFile = {
 	file_data: string;
 	preview: string;
 };
+
+export type Preview = {
+	url: string;
+	name: string;
+};
