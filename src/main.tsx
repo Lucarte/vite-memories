@@ -18,7 +18,7 @@ import PrivateLayout from "./layouts/PrivateLayout";
 import AdminLayout from "./layouts/AdminLayout";
 
 // PAGES
-import Login from "./pages/Login";
+import Login, { action as loginAction } from "./pages/Login";
 import RootError from "./errors/RootError";
 import Registration from "./pages/Registration";
 import Home from "./pages/Home";
@@ -36,23 +36,23 @@ const router = createBrowserRouter(
 		<>
 			<Route path='/' element={<RootLayout />} errorElement={<RootError />}>
 				{/* <Route path='/' element={<RootLayout />}> */}
-				<Route path='/login' element={<Login />} />
+				<Route path='/login' element={<Login />} action={loginAction} />
 				<Route path='/registration' element={<Registration />} />
 
 				{/* Private Routes */}
-				<Route element={<PrivateLayout />}>
-					<Route path='/gabriella' element={<Gabriella />} />
-					<Route path='/pablo' element={<Pablo />} />
-					<Route path='/memories'>
-						<Route index element={<Memories />} loader={memoriesLoader} />
-						{/* <Route path=':title' element={<Memory />} loader={memoryLoader} /> */}
-					</Route>
-					<Route
-						path='/memory/create'
-						element={<NewMemory />}
-						action={createMemoryAction}
-					/>
+				{/* <Route element={<PrivateLayout />}> */}
+				<Route path='/gabriella' element={<Gabriella />} />
+				<Route path='/pablo' element={<Pablo />} />
+				<Route path='/memories'>
+					<Route index element={<Memories />} loader={memoriesLoader} />
+					{/* <Route path=':title' element={<Memory />} loader={memoryLoader} /> */}
 				</Route>
+				<Route
+					path='/memory/create'
+					element={<NewMemory />}
+					action={createMemoryAction}
+				/>
+				{/* </Route> */}
 			</Route>
 
 			{/* Admin Routes */}

@@ -1,4 +1,49 @@
+// utils/api.js
 import http from "./http";
+
+const API_URL = "http://localhost/api";
+
+// Fetches the CSRF cookie
+export const getCsrfCookie = async () => {
+	const response = await fetch("http://localhost/sanctum/csrf-cookie", {
+		credentials: "include",
+	});
+
+	if (!response.ok) throw new Error("Failed to get CSRF cookie");
+	console.log("CSRF cookie fetched", response);
+	return response;
+};
+
+// LOGIN
+export const login = async (formData: FormData) => {
+	// Fetch the CSRF cookie first
+	await getCsrfCookie();
+
+	// Fetch the CSRF token from the cookie
+	const csrfToken = document.cookie
+		.split("; ")
+		.find((row) => row.startsWith("XSRF-TOKEN="))
+		?.split("=")[1];
+
+	console.log("CSRF token:", csrfToken);
+
+	const headers: HeadersInit = {
+		"X-XSRF-TOKEN": csrfToken || "",
+	};
+
+	const response = await fetch(API_URL + "/auth/login", {
+		method: "POST",
+		body: formData,
+		credentials: "include",
+		headers,
+	});
+
+	console.log("Login response:", response);
+
+	if (!response.ok) throw response;
+
+	return response.json();
+};
 
 // MEMORIES
 export const getAllMemories = async () => {

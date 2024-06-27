@@ -1,59 +1,67 @@
-import http from "../utils/http";
 import CustomButton from "../components/CustomButton";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthProvider";
-import { FieldValues, SubmitErrorHandler, get, useForm } from "react-hook-form";
+import {
+	ActionFunction,
+	Link,
+	redirect,
+	useLocation,
+	useSubmit,
+} from "react-router-dom";
+import {
+	FieldValues,
+	SubmitErrorHandler,
+	SubmitHandler,
+	useForm,
+} from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useTheme } from "../context/ThemeContext";
 import LightAndUpBtns from "../partials/LightAndUpBtns";
+import { login } from "../utils/api";
 
 type FormValues = {
 	email: string;
 	password: string;
 };
 
+// // TO DO: Replace with modal
+// alert("Going back in time, enjoy!");
+
+export const action: ActionFunction = async ({ request }) => {
+	const formData = await request.formData();
+	try {
+		const response = await login(formData);
+		return redirect("/");
+	} catch (error) {
+		console.error("Login error:", error);
+		return {
+			error: "Login failed. Please check your credentials and try again.",
+		};
+	}
+};
+
 const Login = () => {
-	const { setAuth } = useContext(AuthContext);
-	const navigate = useNavigate();
-	const { state } = useLocation();
 	const { enabled } = useTheme();
 
-	const form = useForm<FormValues>();
 	const {
 		register,
 		control,
 		handleSubmit,
 		formState: { errors },
-		setError,
-	} = form;
+	} = useForm<FormValues>();
+	const submit = useSubmit();
+	const location = useLocation();
 
-	// If a user comes from a private route, we send him back there after login in
-	// If she clicked on login directly we send her home
-	const { from = "/" } = state || {};
+	// useSubmit - wemm eine Navigation/Redirect strattfindet (erst eine Validierung)
+	// Form (react router) - Standard Browser Verhalten
+	// useFetcher - am häufigsten - hoch dynamische UIs
 
 	// Takes place when all fields validate
-	const onValid = async (data: FormValues) => {
-		try {
-			await http("/sanctum/csrf-cookie");
-			const response = await http.post("/api/auth/login", data);
-			const userData = response.data.fan;
+	const onValid: SubmitHandler<FormValues> = (data, event) => {
+		console.log("Form is valid!");
 
-			setAuth({
-				...userData,
-				isAdmin: userData.is_admin ?? false,
-			});
-
-			// Will make sure to take the user back fo priavte page he tried visiting
-			navigate(from);
-
-			// TO DO: Replace with modal
-			alert("Going back in time, enjoy!");
-			console.log("Logged In!");
-		} catch (error) {
-			console.error("Login failed:", error);
-			setError("root", { type: "manual", message: "Login failed" });
-		}
+		submit(data, {
+			action: location.pathname,
+			method: "POST",
+		});
 	};
 
 	// If errors found
@@ -176,9 +184,7 @@ const Login = () => {
 					enabled ? "text-white" : "text-black"
 				} flex justify-center gap-2 text-sm mt-28`}>
 				Not a fan yet?{" "}
-				<p
-					// href=""
-					className='font-semibold hover:text-gray-500'>
+				<p className='font-semibold hover:text-gray-500'>
 					<Link to='/registration'>
 						Register <span className='underline'>here!</span>
 					</Link>
