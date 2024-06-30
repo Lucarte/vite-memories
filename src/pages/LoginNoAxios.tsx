@@ -3,7 +3,6 @@ import {
 	ActionFunction,
 	Link,
 	redirect,
-	useActionData,
 	useLocation,
 	useSubmit,
 } from "react-router-dom";
@@ -16,36 +15,30 @@ import {
 import { DevTool } from "@hookform/devtools";
 import { useTheme } from "../context/ThemeContext";
 import LightAndUpBtns from "../partials/LightAndUpBtns";
-import { login } from "../utils/api";
+import { login } from "../utils/apiNoAxios";
 
 type FormValues = {
 	email: string;
 	password: string;
 };
 
-// // TO DO: Replace with modal
-// alert("Going back in time, enjoy!");
-
 export const action: ActionFunction = async ({ request }) => {
 	const formData = await request.formData();
 
 	try {
-		const data = await login(formData);
-		console.log("Login successful: ", data);
+		const response = await login(formData);
 		return redirect("/");
 	} catch (error) {
 		console.error("Login error:", error);
-		return error;
+		return {
+			error: "Login failed. Please check your credentials and try again.",
+		};
 	}
 };
 
-// type actionData = {
-// 	error: string;
-// 	message: string;
-// };
-
 const Login = () => {
 	const { enabled } = useTheme();
+
 	const {
 		register,
 		control,
@@ -54,7 +47,6 @@ const Login = () => {
 	} = useForm<FormValues>();
 	const submit = useSubmit();
 	const location = useLocation();
-	// const actionData = useActionData() as actionData | undefined;
 
 	// useSubmit - wemm eine Navigation/Redirect strattfindet (erst eine Validierung)
 	// Form (react router) - Standard Browser Verhalten
@@ -62,6 +54,8 @@ const Login = () => {
 
 	// Takes place when all fields validate
 	const onValid: SubmitHandler<FormValues> = (data, event) => {
+		console.log("Form is valid!");
+
 		submit(data, {
 			action: location.pathname,
 			method: "POST",
@@ -181,7 +175,6 @@ const Login = () => {
 					} rounded-bl-2xl rounded-tr-2xl bg-gray-900 px-6 py-1.5 text-sm font-medium leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600`}
 					text='Enter Memories Portal'
 				/>{" "}
-				{/* {actionData && actionData.error ? <p>{actionData.error}</p> : null} */}
 			</form>
 			{/* link to registration ! */}
 			<div

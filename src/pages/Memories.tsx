@@ -1,8 +1,12 @@
 import { MemoryValues, MemoryFile } from "../types/MemoryValues";
-import { getAllMemories } from "../utils/api";
-import { Link, LoaderFunction, useLoaderData } from "react-router-dom";
+import { getAllMemories, isLoggedIn } from "../utils/api";
+import {
+	Link,
+	LoaderFunction,
+	redirect,
+	useLoaderData,
+} from "react-router-dom";
 import mime from "mime";
-
 const displayFile = (file: MemoryFile) => {
 	if (!file.file_path || !file.file_data) return null;
 
@@ -44,8 +48,18 @@ const displayFile = (file: MemoryFile) => {
 	}
 };
 
+// Memories loader
+export const loader: LoaderFunction = async () => {
+	// Are we logged in? if not, redirect!
+	const loggedIn = await isLoggedIn();
+	if (!loggedIn) return redirect("/login");
+
+	return getAllMemories();
+};
+
 const Memories = () => {
 	const memories = useLoaderData() as MemoryValues[];
+	console.log("Memories data:", memories); // Debugging log
 
 	return (
 		<div className='flex flex-col gap-12'>
@@ -100,8 +114,3 @@ const Memories = () => {
 };
 
 export default Memories;
-
-// Memories loader
-export const loader: LoaderFunction = async () => {
-	return getAllMemories();
-};

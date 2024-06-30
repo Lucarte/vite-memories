@@ -30,7 +30,7 @@ const Home = () => {
 				</div>
 
 				<div className='flex gap-6'>
-					<Link to='/Gabriella'>
+					<Link to='/gabriella'>
 						<CustomButton
 							type='button'
 							text='Gabriella'
@@ -39,7 +39,7 @@ const Home = () => {
 							} ,'cursor-pointer mt-20 h-10 text-md font-normal rounded-lg rounded-br-none bg-black px-4 leading-6 text-white shadow-md hover:bg-white hover:text-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600'`}
 						/>
 					</Link>
-					<Link to='/Pablo'>
+					<Link to='/pablo'>
 						<CustomButton
 							type='button'
 							text='Pablo'
