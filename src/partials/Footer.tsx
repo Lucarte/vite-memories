@@ -1,28 +1,21 @@
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthProvider";
-import { Navigate } from "react-router-dom";
+import { ActionFunction, Form, redirect } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
+import { logout } from "../utils/api";
 
-type Props = {
-	handleLogout: () => void;
-};
-
-const Footer = ({ handleLogout }: Props) => {
+const Footer = () => {
 	const { enabled } = useTheme();
-	const { auth } = useContext(AuthContext);
 
 	return (
 		<footer
 			className={`fixed bottom-0 flex items-center justify-center w-[calc(100%-16px)] h-20 -mr-2 font-light ${
 				enabled ? "bg-black text-white" : "bg-white text-black"
 			} `}>
-			{auth.id ? (
-				<div className='flex items-center justify-center gap-4'>
-					{/* Add the firstName of the person to the message */}
+			<div className='flex items-center justify-center gap-4'>
+				{/* Add the firstName of the person to the message */}
+				<Form action='/logout' method='POST'>
 					<p className=''>Welcome into the past!</p>
 					<button
-						onClick={() => handleLogout()}
-						type='button'
+						type='submit'
 						className={`${
 							enabled
 								? "text-white border-gray-800 hover:bg-gray-900"
@@ -30,12 +23,19 @@ const Footer = ({ handleLogout }: Props) => {
 						} px-2 py-1 text-sm border-2 rounded-md shadow-xl  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600`}>
 						Logout
 					</button>
-				</div>
-			) : (
-				<Navigate to='/login' />
-			)}
+				</Form>
+			</div>
 		</footer>
 	);
 };
 
 export default Footer;
+
+export const action: ActionFunction = async () => {
+	try {
+		await logout();
+		return redirect("/login");
+	} catch (error) {
+		console.log(error);
+	}
+};

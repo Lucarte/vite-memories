@@ -12,7 +12,7 @@ import {
 import { ThemeProvider } from "./context/ThemeContext";
 
 // LAYOUTS
-import RootLayout from "./layouts/RootLayout";
+import RootLayout, { loader as rootLoader } from "./layouts/RootLayout";
 import HomeLayout from "./layouts/HomeLayout";
 
 // PAGES
@@ -26,13 +26,19 @@ import Gabriella from "./pages/Gabriella";
 import NewMemory, { action as createMemoryAction } from "./pages/NewMemory";
 import Fans from "./pages/Fans";
 import NotFound from "./pages/NotFound";
+import Footer, { action as footerAction } from "./partials/Footer";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
 		<>
-			<Route path='/' element={<RootLayout />} errorElement={<RootError />}>
+			<Route
+				path='/'
+				element={<RootLayout />}
+				errorElement={<RootError />}
+				loader={rootLoader}>
 				<Route path='/login' element={<Login />} action={loginAction} />
 				<Route path='/registration' element={<Registration />} />
+				<Route path='/logout' element={<Footer />} action={footerAction} />
 				<Route path='/gabriella' element={<Gabriella />} />
 				<Route path='/pablo' element={<Pablo />} />
 				<Route path='/memories'>
@@ -46,7 +52,7 @@ const router = createBrowserRouter(
 			</Route>
 
 			{/* Admin Routes */}
-			<Route path='/fans' element={<Fans />} />
+			<Route path='/fans' element={<Fans />} loader={rootLoader} />
 
 			{/* Not Found */}
 			<Route path='*' element={<NotFound />} />
