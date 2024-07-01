@@ -7,15 +7,15 @@ const Footer = () => {
 
 	return (
 		<footer
-			className={`fixed bottom-0 flex items-center z-10 bg-black text-white rounded-tl-full justify-end pr-4 w-[calc(100%-16px)] h-16 -mr-2 font-light ${
+			className={`fixed bottom-0 flex items-center z-10 bg-gray-100 font-serif italic rounded-tl-full justify-end pr-4 w-[calc(100%-16px)] h-12 -mr-2 font-light ${
 				enabled ? "bg-white text-black" : "bg-black text-white"
 			} `}>
-			<div className='flex items-center justify-center gap-4'>
+			<div className='flex items-center justify-between'>
 				{/* Add the firstName of the person to the message */}
 				<Form
 					action='/logout'
 					method='POST'
-					className='flex items-center gap-2'>
+					className='flex items-center gap-6'>
 					<p className=''>Welcome into the past!</p>
 					<button
 						type='submit'

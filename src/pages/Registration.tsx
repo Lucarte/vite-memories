@@ -1,11 +1,13 @@
 import RegisterForm from "../components/RegisterForm";
-import LightUpBtns from "../partials/LightAndUpBtns";
 import { Link } from "react-router-dom";
+import DarkModeBtn from "../partials/DarkModeBtn";
+import ScrollUpBtn from "../partials/ScrollUpBtn";
 
 const Registration = () => {
 	return (
 		<article className='relative h-full md:mt-16'>
-			<LightUpBtns />
+			<DarkModeBtn />
+			<ScrollUpBtn />
 			<div className='flex flex-col justify-center flex-1 min-h-full px-6 pt-4 lg:px-8'>
 				<h2 className='mb-4 font-serif text-xl leading-8 text-center text-gray-900'>
 					Become fan of my <br />

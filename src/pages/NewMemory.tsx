@@ -8,10 +8,11 @@ import {
 	ActionFunction,
 } from "react-router-dom";
 import http from "../utils/http";
-import LightAndUpBtns from "../partials/LightAndUpBtns";
 import { MemoryValues } from "../types/MemoryValues";
 import { postMemory } from "../utils/api";
 import axios from "axios";
+import DarkModeBtn from "../partials/DarkModeBtn";
+import ScrollUpBtn from "../partials/ScrollUpBtn";
 
 const kidOptions = [
 	{ id: "both", name: "Both" },
@@ -214,7 +215,8 @@ const CreateMemory: React.FC = () => {
 					onSubmit={handleSubmit(onValid)}
 					className='max-w-[30rem] px-10 flex flex-col'>
 					{/* Buttons for DarkTheme and goHome */}
-					<LightAndUpBtns />
+					<DarkModeBtn />
+					<ScrollUpBtn />
 
 					{/* Form Title */}
 					<h1 className='mt-16 font-bold text-center font-titles'>

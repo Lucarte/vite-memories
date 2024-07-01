@@ -12,6 +12,8 @@ import {
 import { Suspense } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ViewMemories from "../components/ViewMemories";
+import ScrollUpBtn from "../partials/ScrollUpBtn";
+import DarkModeBtn from "../partials/DarkModeBtn";
 
 type DeferredLoaderData = {
 	memories: Promise<MemoryValues[]>;
@@ -30,8 +32,12 @@ const Memories = () => {
 	const deferredData = useLoaderData() as DeferredLoaderData;
 
 	return (
-		<section className='flex flex-col gap-12'>
-			<h1 className='text-xl font-bold text-center uppercase'>Memories</h1>
+		<article className='flex flex-col items-center gap-6 pt-6'>
+			<ScrollUpBtn />
+			<DarkModeBtn />
+			<h1 className='pb-6 text-xl font-bold text-center uppercase'>
+				A.l.l..M.e.m.o.r.i.e.s.
+			</h1>
 			<Suspense fallback={<LoadingSpinner />}>
 				<Await
 					resolve={deferredData.memories}
@@ -39,7 +45,12 @@ const Memories = () => {
 					<ViewMemories />
 				</Await>
 			</Suspense>
-		</section>
+			<button
+				className='flex px-3 py-1 my-10 text-black bg-red-600 rounded-md w-fit'
+				type='button'>
+				Delete Memory
+			</button>
+		</article>
 	);
 };
 

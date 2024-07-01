@@ -49,13 +49,13 @@ const router = createBrowserRouter(
 					element={<NewMemory />}
 					action={createMemoryAction}
 				/>
+
+				{/* Admin Routes */}
+				<Route path='/fans' element={<Fans />} loader={rootLoader} />
+
+				{/* Not Found */}
+				<Route path='*' element={<NotFound />} />
 			</Route>
-
-			{/* Admin Routes */}
-			<Route path='/fans' element={<Fans />} loader={rootLoader} />
-
-			{/* Not Found */}
-			<Route path='*' element={<NotFound />} />
 			<Route path='/' element={<HomeLayout />} errorElement={<RootError />}>
 				<Route index element={<Home />} />
 			</Route>

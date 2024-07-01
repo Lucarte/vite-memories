@@ -27,17 +27,17 @@ const Header = () => {
 			<header className='flex items-center justify-between p-8'>
 				{/* Logo in mobile && Logo and Name description other sizes */}
 				<div className='flex items-center justify-start md:min-w-48'>
-					<Link to='/' className='-ml-2'>
+					<Link to='/' className='-mt-[4px]'>
 						{enabled ? (
 							<img
-								src='../src/assets/LogoWhiteHome.svg'
-								className='w-12'
-								alt='Logo White'
+								src='../src/assets/LogoBlack.svg'
+								className='w-11'
+								alt='Logo White Thick'
 							/>
 						) : (
 							<img
-								src='../src/assets/MemoriesLogoBlack.svg'
-								className='w-12'
+								src='../src/assets/LogoWhite.svg'
+								className='w-11'
 								alt='Logo Black'
 							/>
 						)}
@@ -45,7 +45,7 @@ const Header = () => {
 					<p className='hidden md:block md:ml-10'>P.A.B.L.O.</p>
 				</div>
 				{/* Search icon in mobile && h1-tag in other sizes */}
-				<div className='flex justify-center'>
+				<div className='flex justify-center pr-4'>
 					<div className='block md:hidden'>
 						<MagnifyingGlassIcon className='w-5 h-5 mr-4' />
 					</div>

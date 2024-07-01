@@ -3,7 +3,6 @@ import {
 	ActionFunction,
 	Link,
 	redirect,
-	useActionData,
 	useLocation,
 	useSubmit,
 } from "react-router-dom";
@@ -15,8 +14,9 @@ import {
 } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useTheme } from "../context/ThemeContext";
-import LightAndUpBtns from "../partials/LightAndUpBtns";
 import { login } from "../utils/api";
+import DarkModeBtn from "../partials/DarkModeBtn";
+import ScrollUpBtn from "../partials/ScrollUpBtn";
 
 type FormValues = {
 	email: string;
@@ -75,7 +75,8 @@ const Login = () => {
 
 	return (
 		<article className='flex flex-col items-center px-6 py-12 text-center md:mt-28lg:px-8'>
-			<LightAndUpBtns />
+			<DarkModeBtn />
+			<ScrollUpBtn />
 			{/* Title */}
 			<h2
 				className={`${
@@ -107,7 +108,7 @@ const Login = () => {
 							enabled
 								? "bg-black border-white text-white placeholder:text-gray-500 focus:ring-gray-400"
 								: "bg-white border-black text-black placeholder:text-gray-500 focus:ring-orange-600"
-						} w-full rounded-[3px] py-4 px-6  shadow-sm ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
+						} w-full rounded-[3px] py-4 px-6 shadow-sm ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
 						placeholder='me@gmail.com'
 						aria-invalid={errors.email ? "true" : "false"}
 						{...register("email", {

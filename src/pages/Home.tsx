@@ -1,24 +1,24 @@
 import { Link, useNavigation } from "react-router-dom";
 import CustomButton from "../components/CustomButton";
-import LightAndUpBtns from "../partials/LightAndUpBtns";
 import { useTheme } from "../context/ThemeContext";
 import LoadingSpinner from "../components/LoadingSpinner";
+import DarkModeBtn from "../partials/DarkModeBtn";
 
 const Home = () => {
 	const navigation = useNavigation();
 	const { enabled } = useTheme();
 	return (
-		<article className='flex flex-col items-center'>
+		<article className='flex flex-col items-center pt-16'>
 			{navigation.state === "loading" ? <LoadingSpinner /> : null}
-			<LightAndUpBtns />
+			<DarkModeBtn />
 
 			<img
 				className='mb-6 w-60'
 				// className='w-72 scale-x-[-1]'
 				src={
 					enabled
-						? "../src/assets/LogoWhiteHome.svg"
-						: "../src/assets/MemoriesLogoBlack.svg"
+						? "../src/assets/HomeWhite.svg"
+						: "../src/assets/HomeBlack.svg"
 				}
 				alt='Home Page Logo for Mobile version'
 			/>

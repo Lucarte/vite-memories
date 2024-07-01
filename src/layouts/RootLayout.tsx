@@ -18,7 +18,7 @@ const PrivateNav = () => {
 	return (
 		<>
 			<Header />
-			<p>Currently logged in.</p>
+			{/* <p>Currently logged in.</p> */}
 			<main>
 				<Footer />
 				<Outlet />
@@ -31,7 +31,7 @@ const AdminNav = () => {
 	return (
 		<>
 			<Header />
-			<p>Currently logged in as Admin.</p>
+			{/* <p>Currently logged in as Admin.</p> */}
 			<main>
 				<Footer />
 				<Outlet />
