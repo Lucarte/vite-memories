@@ -16,5 +16,16 @@ export default {
 			},
 		},
 	},
-	plugins: [forms],
+	plugins: [
+		function ({ addBase }) {
+			addBase({
+				"input:-webkit-autofill, input:-webkit-autofill:focus": {
+					transition: "background-color 600000s 0s, color 600000s 0s",
+				},
+				"input[data-autocompleted]": {
+					backgroundColor: "transparent !important",
+				},
+			});
+		},
+	],
 };

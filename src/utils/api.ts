@@ -55,16 +55,6 @@ export const postMemory = async (formData: FormData) => {
 	return res.data || [];
 };
 
-// LOGOUT
-// export const logout = async () => {
-// 	const xsrfToken = await http("/sanctum/csrf-cookie");
-// 	const res = await http.post("/api/auth/logout", xsrfToken);
-// 	console.log(res);
-// 	if (res.status !== 200) throw res;
-
-// 	return res.data;
-// };
-
 export const logout = async () => {
 	console.log("Attempting to log out...");
 	const res = await http.post("/api/auth/logout");

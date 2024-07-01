@@ -1,51 +1,20 @@
-import { MemoryValues, MemoryFile } from "../types/MemoryValues";
+import { MemoryValues } from "../types/MemoryValues";
 import { getAllMemories, isLoggedIn } from "../utils/api";
 import {
+	Await,
 	Link,
 	LoaderFunction,
+	defer,
 	redirect,
 	useLoaderData,
 } from "react-router-dom";
-import mime from "mime";
-const displayFile = (file: MemoryFile) => {
-	if (!file.file_path || !file.file_data) return null;
 
-	const mimeType = mime.getType(file.file_path); // Replace with actual function to get MIME type
+import { Suspense } from "react";
+import LoadingSpinner from "../components/LoadingSpinner";
+import ViewMemories from "../components/ViewMemories";
 
-	if (!mimeType) {
-		return <p>Unsupported file type</p>;
-	}
-
-	if (mimeType.startsWith("image/")) {
-		return (
-			<img
-				src={`data:${mimeType};base64,${file.file_data}`}
-				alt={`Memory ${file.id}`}
-			/>
-		);
-	} else if (mimeType.startsWith("video/")) {
-		return (
-			<video controls>
-				<source
-					src={`data:${mimeType};base64,${file.file_data}`}
-					type={mimeType}
-				/>
-				Your browser does not support the video tag.
-			</video>
-		);
-	} else if (mimeType.startsWith("audio/")) {
-		return (
-			<audio controls>
-				<source
-					src={`data:${mimeType};base64,${file.file_data}`}
-					type={mimeType}
-				/>
-				Your browser does not support the audio element.
-			</audio>
-		);
-	} else {
-		return <p>Unsupported file type</p>;
-	}
+type DeferredLoaderData = {
+	memories: Promise<MemoryValues[]>;
 };
 
 // Memories loader
@@ -54,62 +23,23 @@ export const loader: LoaderFunction = async () => {
 	const loggedIn = await isLoggedIn();
 	if (!loggedIn) return redirect("/login");
 
-	return getAllMemories();
+	return defer({ memories: getAllMemories() });
 };
 
 const Memories = () => {
-	const memories = useLoaderData() as MemoryValues[];
-	console.log("Memories data:", memories); // Debugging log
+	const deferredData = useLoaderData() as DeferredLoaderData;
 
 	return (
-		<div className='flex flex-col gap-12'>
-			<h1>Memories</h1>
-			{memories ? (
-				memories.map((memory) => (
-					<div key={memory.title}>
-						<Link to={memory.title} key={memory.title}>
-							<ul>
-								<li>Kid: {memory.kid}</li>
-								<li>Title: {memory.title}</li>
-								<li>Description: {memory.description}</li>
-								<li>Year: {memory.year}</li>
-								<li>Month: {memory.month}</li>
-								<li>Day: {memory.day}</li>
-								<li>Files:</li>
-							</ul>
-							<ul>
-								{memory.files ? (
-									memory.files.map((file) => (
-										<li key={file.id}>{displayFile(file)}</li>
-									))
-								) : (
-									<p>No files available</p>
-								)}
-							</ul>
-						</Link>
-						<div>
-							<strong>URLs:</strong>
-							{memory.urls && memory.urls.length > 0 ? (
-								memory.urls.map((url) => (
-									<div key={url.id}>
-										<a
-											href={url.url_address}
-											target='_blank'
-											rel='noopener noreferrer'>
-											{url.url_address}
-										</a>
-									</div>
-								))
-							) : (
-								<p>No URLs available</p>
-							)}
-						</div>
-					</div>
-				))
-			) : (
-				<p>No Memories found.</p>
-			)}
-		</div>
+		<section className='flex flex-col gap-12'>
+			<h1 className='text-xl font-bold text-center uppercase'>Memories</h1>
+			<Suspense fallback={<LoadingSpinner />}>
+				<Await
+					resolve={deferredData.memories}
+					errorElement={<p>Could not load memories.</p>}>
+					<ViewMemories />
+				</Await>
+			</Suspense>
+		</section>
 	);
 };
 
