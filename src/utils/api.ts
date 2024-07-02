@@ -56,9 +56,19 @@ export const postMemory = async (formData: FormData) => {
 };
 
 export const logout = async () => {
-	console.log("Attempting to log out...");
 	const res = await http.post("/api/auth/logout");
-	console.log("Logout response:", res);
+
+	if (res.status !== 200) throw res;
+
+	return res.data;
+};
+
+// DELETE MEMORY
+export const deleteMemory = async (title: string) => {
+	await new Promise((resolve) => setTimeout(resolve, 3000));
+
+	const res = await http.delete(`/api/auth/memories/${title}`);
+
 	if (res.status !== 200) throw res;
 
 	return res.data;

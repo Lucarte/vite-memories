@@ -20,7 +20,10 @@ import Login, { action as loginAction } from "./pages/Login";
 import RootError from "./errors/RootError";
 import Registration from "./pages/Registration";
 import Home from "./pages/Home";
-import Memories, { loader as memoriesLoader } from "./pages/Memories";
+import Memories, {
+	loader as memoriesLoader,
+	action as memoriesAction,
+} from "./pages/Memories";
 import Pablo from "./pages/Pablo";
 import Gabriella from "./pages/Gabriella";
 import NewMemory, { action as createMemoryAction } from "./pages/NewMemory";
@@ -41,9 +44,13 @@ const router = createBrowserRouter(
 				<Route path='/logout' element={<Footer />} action={footerAction} />
 				<Route path='/gabriella' element={<Gabriella />} />
 				<Route path='/pablo' element={<Pablo />} />
-				<Route path='/memories'>
-					<Route index element={<Memories />} loader={memoriesLoader} />
-				</Route>
+				<Route
+					path='/memories'
+					element={<Memories />}
+					loader={memoriesLoader}
+					action={memoriesAction}
+				/>
+
 				<Route
 					path='/memory/create'
 					element={<NewMemory />}

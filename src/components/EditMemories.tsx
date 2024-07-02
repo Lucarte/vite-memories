@@ -1,14 +1,17 @@
-import { Link, useAsyncValue } from "react-router-dom";
+import { Link, useAsyncValue, useFetcher } from "react-router-dom";
 import { MemoryValues } from "../types/MemoryValues";
-import mime from "mime";
 import IconTrash from "./IconTrash";
+import mime from "mime";
 import { useTheme } from "../context/ThemeContext";
 import displayFile from "../utils/DisplayFile";
+import LineSpinner from "./LineSpinner";
 
-const ViewMemories = () => {
-	const { enabled } = useTheme();
+const EditMemories = () => {
 	const memories = useAsyncValue() as MemoryValues[];
+	const { enabled } = useTheme();
+	const fetcher = useFetcher();
 
+	const isDeleting = fetcher.state === "submitting";
 	return (
 		<>
 			{memories ? (
@@ -99,6 +102,27 @@ const ViewMemories = () => {
 								<p>No URLs available</p>
 							)}
 						</div>
+						<div className=''>
+							<fetcher.Form method='delete' action='/memories'>
+								<input type='hidden' name='title' value={memory.title} />
+								<button
+									disabled={isDeleting}
+									className={`rounded ${
+										enabled
+											? "bg-red-500 hover:bg-red-600 text-white disabled:bg-gray-400"
+											: "bg-red-600 text-black hover:bg-red-500 disabled:bg-gray-400"
+									}`}>
+									{isDeleting ? (
+										<LineSpinner />
+									) : (
+										<IconTrash
+											className='p-1 disabled:cursor-not-allowed'
+											title={`Trashcan icon for deleting memory ${memory.title}`}
+										/>
+									)}
+								</button>
+							</fetcher.Form>
+						</div>
 					</article>
 				))
 			) : (
@@ -108,4 +132,4 @@ const ViewMemories = () => {
 	);
 };
 
-export default ViewMemories;
+export default EditMemories;

@@ -20,8 +20,8 @@ const PrivateNav = () => {
 			<Header />
 			{/* <p>Currently logged in.</p> */}
 			<main>
-				<Footer />
 				<Outlet />
+				<Footer />
 			</main>
 		</>
 	);
@@ -33,8 +33,8 @@ const AdminNav = () => {
 			<Header />
 			{/* <p>Currently logged in as Admin.</p> */}
 			<main>
-				<Footer />
 				<Outlet />
+				<Footer />
 			</main>
 		</>
 	);

@@ -17,6 +17,7 @@ const Footer = () => {
 					method='POST'
 					className='flex items-center gap-6'>
 					<p className=''>Welcome into the past!</p>
+
 					<button
 						type='submit'
 						className={`${
