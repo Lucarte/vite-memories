@@ -1,6 +1,6 @@
 import { LoaderFunction, Outlet, useLoaderData } from "react-router-dom";
 import Header from "../partials/Header";
-import { isLoggedIn, logout } from "../utils/api";
+import { loggedInData } from "../utils/api";
 import Footer from "../partials/Footer";
 
 const PublicNav = () => {
@@ -18,7 +18,6 @@ const PrivateNav = () => {
 	return (
 		<>
 			<Header />
-			{/* <p>Currently logged in.</p> */}
 			<main>
 				<Outlet />
 				<Footer />
@@ -31,7 +30,7 @@ const AdminNav = () => {
 	return (
 		<>
 			<Header />
-			{/* <p>Currently logged in as Admin.</p> */}
+			<p className='mt-4 text-center text-orange-600'>Have fun, Admin!</p>
 			<main>
 				<Outlet />
 				<Footer />
@@ -45,6 +44,7 @@ const RootLayout = () => {
 		loggedIn: boolean;
 		isAdmin: boolean;
 	};
+
 	if (loggedIn) {
 		return isAdmin ? <AdminNav /> : <PrivateNav />;
 	} else {
@@ -55,5 +55,6 @@ const RootLayout = () => {
 export default RootLayout;
 
 export const loader: LoaderFunction = async () => {
-	return await isLoggedIn();
+	const response = await loggedInData();
+	return response;
 };

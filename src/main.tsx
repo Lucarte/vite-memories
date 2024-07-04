@@ -6,6 +6,7 @@ import {
 	RouterProvider,
 	createRoutesFromElements,
 	Route,
+	Navigate,
 } from "react-router-dom";
 
 // CONTEXT
@@ -18,7 +19,7 @@ import HomeLayout from "./layouts/HomeLayout";
 // PAGES
 import Login, { action as loginAction } from "./pages/Login";
 import RootError from "./errors/RootError";
-import Registration from "./pages/Registration";
+import Registration, { action as registerAction } from "./pages/Registration";
 import Home from "./pages/Home";
 import Memories, {
 	loader as memoriesLoader,
@@ -26,7 +27,10 @@ import Memories, {
 } from "./pages/Memories";
 import Pablo from "./pages/Pablo";
 import Gabriella from "./pages/Gabriella";
-import NewMemory, { action as createMemoryAction } from "./pages/NewMemory";
+import NewMemory, {
+	action as createMemoryAction,
+	loader as newMemoryFormLoader,
+} from "./pages/NewMemory";
 import Fans from "./pages/Fans";
 import NotFound from "./pages/NotFound";
 import Footer, { action as footerAction } from "./partials/Footer";
@@ -40,7 +44,11 @@ const router = createBrowserRouter(
 				errorElement={<RootError />}
 				loader={rootLoader}>
 				<Route path='/login' element={<Login />} action={loginAction} />
-				<Route path='/registration' element={<Registration />} />
+				<Route
+					path='/register'
+					element={<Registration />}
+					action={registerAction}
+				/>
 				<Route path='/logout' element={<Footer />} action={footerAction} />
 				<Route path='/gabriella' element={<Gabriella />} />
 				<Route path='/pablo' element={<Pablo />} />
@@ -51,13 +59,13 @@ const router = createBrowserRouter(
 					action={memoriesAction}
 				/>
 
+				{/* Admin Routes */}
 				<Route
 					path='/memory/create'
 					element={<NewMemory />}
+					loader={newMemoryFormLoader}
 					action={createMemoryAction}
 				/>
-
-				{/* Admin Routes */}
 				<Route path='/fans' element={<Fans />} loader={rootLoader} />
 
 				{/* Not Found */}
@@ -73,7 +81,7 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<React.StrictMode>
 		<ThemeProvider>
-			<RouterProvider router={router} />
+			<RouterProvider router={router}></RouterProvider>
 		</ThemeProvider>
 	</React.StrictMode>
 );

@@ -15,6 +15,18 @@ body {
 	@apply bg-black text-white;
 }
 
+.dark input {
+	@apply bg-black border-2 border-white text-white;
+}
+
+.dark label {
+	@apply bg-black text-white;
+}
+
+/* ###################################################################### */
+/* ####################### // LOADING SPINNERS // ####################### */
+/* ###################################################################### */
+
 /* Loading Spinner BIGGER */
 .container {
 	--uib-size: 70px;

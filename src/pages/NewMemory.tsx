@@ -6,10 +6,13 @@ import {
 	useLocation,
 	useActionData,
 	ActionFunction,
+	redirect,
+	LoaderFunction,
+	useLoaderData,
 } from "react-router-dom";
 import http from "../utils/http";
 import { MemoryValues } from "../types/MemoryValues";
-import { postMemory } from "../utils/api";
+import { loggedInData, postMemory } from "../utils/api";
 import axios from "axios";
 import DarkModeBtn from "../partials/DarkModeBtn";
 import ScrollUpBtn from "../partials/ScrollUpBtn";
@@ -40,6 +43,8 @@ const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
 // Component
 const CreateMemory: React.FC = () => {
+	// Using useLoaderData to get the data loaded by the loader function
+	const loaderData = useLoaderData();
 	const {
 		register,
 		control,
@@ -119,7 +124,6 @@ const CreateMemory: React.FC = () => {
 				} else if (validAudioExtensions.includes(fileExtension)) {
 					maxSize = 20 * 1024 * 1024; // 20MB for audio
 					audioFiles.push(file);
-					// For audio preview, you might want to use an audio player component
 					setAudioPreviews((prevPreviews) => [
 						...prevPreviews,
 						URL.createObjectURL(file),
@@ -219,7 +223,7 @@ const CreateMemory: React.FC = () => {
 					<ScrollUpBtn />
 
 					{/* Form Title */}
-					<h1 className='mt-16 font-bold text-center font-titles'>
+					<h1 className='mt-4 font-bold text-center font-titles'>
 						Create a New Memory
 					</h1>
 
@@ -489,12 +493,14 @@ const CreateMemory: React.FC = () => {
 					</div>
 
 					{/* Submit Button */}
+					{/* <Link to='/memories'> */}
 					<button
 						type='submit'
 						className='px-4 py-2 mt-10 text-white bg-black rounded-md'>
 						Submit
 					</button>
 					{actionData && actionData.message && <p>{actionData.message}</p>}
+					{/* </Link> */}
 				</form>
 				<DevTool control={control} /> {/* DevTool for debugging */}
 			</div>
@@ -506,13 +512,17 @@ export default CreateMemory;
 
 // ACTION:
 export const action: ActionFunction = async ({ request }) => {
+	const { loggedIn, isAdmin } = await loggedInData();
 	const formData = await request.formData();
-	console.log(formData);
-	// because of async & await to catch the errors
-	try {
-		// Request CSRF token
-		await http("/sanctum/csrf-cookie");
 
+	if (!loggedIn) {
+		return redirect("/login");
+	}
+	if (!isAdmin) {
+		return "Admin Zone: Access denied";
+	}
+
+	try {
 		const res = await postMemory(formData);
 
 		return res;
@@ -528,4 +538,19 @@ export const action: ActionFunction = async ({ request }) => {
 			throw error;
 		}
 	}
+};
+
+// LOADER for the form itself - a trial
+export const loader: LoaderFunction = async () => {
+	const { loggedIn, isAdmin } = await loggedInData();
+
+	if (!loggedIn) {
+		return redirect("/login");
+	}
+	if (!isAdmin) {
+		// TO DO: Add a modal with useEffekt that displayes the adminZone message
+		return redirect("/login?message=adminZone");
+	}
+
+	return null;
 };

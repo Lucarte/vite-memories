@@ -30,11 +30,9 @@ export const action: ActionFunction = async ({ request }) => {
 	const formData = await request.formData();
 
 	try {
-		const data = await login(formData);
-		console.log("Login successful: ", data);
-		return redirect("/");
+		await login(formData);
+		return redirect("/memories");
 	} catch (error) {
-		console.error("Login error:", error);
 		return error;
 	}
 };
@@ -54,14 +52,8 @@ const Login = () => {
 	} = useForm<FormValues>();
 	const submit = useSubmit();
 	const location = useLocation();
-	// const actionData = useActionData() as actionData | undefined;
-
-	// useSubmit - wemm eine Navigation/Redirect strattfindet (erst eine Validierung)
-	// Form (react router) - Standard Browser Verhalten
-	// useFetcher - am häufigsten - hoch dynamische UIs
-
 	// Takes place when all fields validate
-	const onValid: SubmitHandler<FormValues> = (data, event) => {
+	const onValid: SubmitHandler<FormValues> = (data) => {
 		submit(data, {
 			action: location.pathname,
 			method: "POST",

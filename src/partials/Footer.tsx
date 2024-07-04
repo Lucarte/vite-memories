@@ -7,7 +7,7 @@ const Footer = () => {
 
 	return (
 		<footer
-			className={`fixed bottom-0 flex items-center z-10 bg-gray-100 font-serif italic rounded-tl-full justify-end pr-4 w-[calc(100%-16px)] h-12 -mr-2 font-light ${
+			className={`fixed bottom-0 flex items-center z-10 font-serif italic rounded-tl-full justify-end pr-4 w-[calc(100%-16px)] h-12 -mr-2 font-light ${
 				enabled ? "bg-white text-black" : "bg-black text-white"
 			} `}>
 			<div className='flex items-center justify-between'>
@@ -23,7 +23,7 @@ const Footer = () => {
 						className={`${
 							enabled
 								? "text-black border-gray-100 hover:bg-gray-500"
-								: "text-white border-gray-800 hover:bg-gray-900"
+								: "text-black bg-gray-200 border-gray-800 hover:bg-gray-300"
 						} px-2 py-1 text-sm border-2 rounded-md shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600`}>
 						Logout
 					</button>

@@ -1,7 +1,6 @@
 import { Link, useAsyncValue } from "react-router-dom";
 import { MemoryValues } from "../types/MemoryValues";
 import mime from "mime";
-import IconTrash from "./IconTrash";
 import { useTheme } from "../context/ThemeContext";
 import displayFile from "../utils/DisplayFile";
 
@@ -15,7 +14,7 @@ const ViewMemories = () => {
 				memories.map((memory) => (
 					<article
 						key={memory.title}
-						className='flex flex-col items-end gap-6 pt-16 text-gray-300 mx-9 font-extralight'>
+						className='flex flex-col items-end gap-6 pt-16 overflow-hidden text-gray-300 screen mx-9 font-extralight'>
 						{/* <Link to={memory.title} key={memory.title}> */}
 						{/* Entry Header */}
 						<section className='flex flex-col w-full'>
@@ -38,19 +37,11 @@ const ViewMemories = () => {
 							</div>
 						</section>
 						{/* Entry Body */}
-						<section className=''>
+						<section className='w-screen'>
 							<h1 className='mb-2 font-sans text-xl text-gray-200'>
 								{memory.title}
 							</h1>
-							<p className='text-right'>
-								{memory.description}
-								Lorem ipsum dolor sit amet consectetur adipisicing elit.
-								Corrupti eius temporibus vel. Debitis suscipit porro, asperiores
-								iure ullam nulla voluptas rem, accusantium earum a est
-								aspernatur eligendi sint? Dicta quibusdam illum magnam labore,
-								vero possimus magni, eos ad officiis reiciendis maxime aut natus
-								sapiente tenetur odio a nesciunt quaerat molestiae!
-							</p>
+							<p className='break-words'>{memory.description}</p>
 						</section>
 						<div>
 							<h2 className='font-medium'>Date of Memory</h2>

@@ -1,5 +1,5 @@
 import { MemoryValues } from "../types/MemoryValues";
-import { deleteMemory, getAllMemories, isLoggedIn } from "../utils/api";
+import { deleteMemory, getAllMemories, loggedInData } from "../utils/api";
 import {
 	ActionFunction,
 	Await,
@@ -24,13 +24,28 @@ type DeferredLoaderData = {
 // Loader - All Memories
 export const loader: LoaderFunction = async () => {
 	// Are we logged in? if not, redirect!
-	const loggedIn = await isLoggedIn();
+	const { loggedIn, isAdmin } = await loggedInData();
+
+	console.log("loggedIn state:", loggedIn);
+
 	if (!loggedIn) return redirect("/login");
 
 	return defer({ memories: getAllMemories() });
 };
 
+// Action - delete
 export const action: ActionFunction = async ({ request }) => {
+	const { loggedIn, isAdmin } = await loggedInData();
+
+	// Check if the user is logged in and is an admin
+	if (!loggedIn) {
+		return redirect("/login");
+	}
+
+	if (!isAdmin) {
+		console.log("Admin Zone: Access denied");
+		return "Admin Zone: Access denied";
+	}
 	const formData = await request.formData();
 
 	const title = formData.get("title");
@@ -47,7 +62,6 @@ export const action: ActionFunction = async ({ request }) => {
 	return null;
 };
 
-// Action - delete
 const Memories = () => {
 	const [view, setView] = useState<"view" | "edit">("view");
 	const deferredData = useLoaderData() as DeferredLoaderData;
@@ -85,7 +99,7 @@ const Memories = () => {
 					</button>
 				</div>
 			</aside>
-			<section>
+			<section className='w-screen'>
 				<Suspense fallback={<LoadingSpinner />}>
 					<Await
 						resolve={deferredData.memories}

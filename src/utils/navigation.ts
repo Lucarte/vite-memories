@@ -6,7 +6,7 @@ export const navigation = [
 		current: false,
 	},
 	{
-		name: "Create Memory",
+		name: "Create",
 		href: "/memory/create",
 		page: "Memory Creation",
 		current: false,
@@ -42,9 +42,9 @@ export const navigation = [
 		current: false,
 	},
 	{
-		name: "My Profile",
+		name: "Profile",
 		href: "/fan/{id}",
-		page: "MyProfile",
+		page: "Profile",
 		current: false,
 	},
 	{
@@ -61,7 +61,7 @@ export const navigation = [
 	},
 	{
 		name: "Register",
-		href: "/registration",
+		href: "/register",
 		page: "Register",
 		current: false,
 	},

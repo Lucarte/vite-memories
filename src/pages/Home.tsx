@@ -7,11 +7,11 @@ import DarkModeBtn from "../partials/DarkModeBtn";
 const Home = () => {
 	const navigation = useNavigation();
 	const { enabled } = useTheme();
+
 	return (
 		<article className='flex flex-col items-center pt-16'>
 			{navigation.state === "loading" ? <LoadingSpinner /> : null}
 			<DarkModeBtn />
-
 			<img
 				className='mb-6 w-60'
 				// className='w-72 scale-x-[-1]'

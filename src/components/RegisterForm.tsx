@@ -1,21 +1,20 @@
-import { DevTool } from "@hookform/devtools";
-import { FieldValues, SubmitErrorHandler, get, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import CustomButton from "./CustomButton";
-import http from "../utils/http";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { RegisterFormValues } from "../types/RegisterFormValues";
-import { useNavigation } from "react-router-dom";
+import { useSubmit } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
+import classNames from "classnames";
 
 const relationships = ["Family", "Friend", "Teacher"];
 
 const RegisterForm = () => {
-	const navigate = useNavigation();
+	const { enabled } = useTheme();
 	const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 
 	const {
 		register,
-		control,
 		handleSubmit,
 		formState: { errors },
 		watch,
@@ -31,39 +30,17 @@ const RegisterForm = () => {
 			avatar_path: null,
 		},
 	});
+	const submit = useSubmit();
 
-	// for the onSubmit inside the form tag
-	const onValid = async (formData: RegisterFormValues) => {
-		const data = new FormData();
-		data.append("firstName", formData.firstName);
-		data.append("lastName", formData.lastName);
-		data.append("email", formData.email);
-		data.append("password", formData.password);
-		data.append("passwordConfirmation", formData.passwordConfirmation);
-		data.append("relationshipToKid", formData.relationshipToKid);
-		data.append("terms", formData.terms ? "1" : "0");
-		if (formData.avatar_path) {
-			data.append("avatar_path", formData.avatar_path[0]);
-		}
+	const onValid: SubmitHandler<RegisterFormValues> = (_, event) => {
+		const formData = new FormData(event?.target);
 
-		const onInvalid: SubmitErrorHandler<FieldValues> = (errors, event) => {
-			console.log("Errors in Form: ", errors);
-		};
-
-		try {
-			// Request CSRF token with full path because 'http' has /auth in it
-			await http("/sanctum/csrf-cookie");
-			await http.post("/api/auth/register", data, {
-				headers: {
-					"Content-Type": "multipart/form-data",
-				},
-			});
-
-			// navigate("/login");
-			console.log("Registration worked!");
-		} catch (error) {
-			console.error("Registration failed:", error);
-		}
+		submit(formData, {
+			method: "POST",
+			action: location.pathname,
+			encType: "multipart/form-data",
+		});
+		console.log("Registration Data: ", formData);
 	};
 
 	useEffect(() => {
@@ -79,7 +56,6 @@ const RegisterForm = () => {
 			<form
 				className='mt-4 space-y-6 text-center'
 				noValidate
-				// onSubmit={handleSubmit(onValid, onInvalid)}>
 				onSubmit={handleSubmit(onValid)}>
 				{/* Avatar Preview */}
 				<div className='flex flex-col items-center gap-y-2'>
@@ -87,16 +63,23 @@ const RegisterForm = () => {
 						<img
 							src={avatarPreview}
 							alt='User avatar'
-							className='object-cover w-12 h-12 rounded-full'
+							className={`${
+								enabled ? "bg-white" : "bg-gray-400"
+							} object-cover w-12 h-12 rounded-full`}
 						/>
 					) : (
 						<UserCircleIcon
-							className='w-12 h-12 text-gray-300'
+							className={`${
+								enabled ? "text-gray-100" : "text-gray-300"
+							} w-12 h-12 `}
 							aria-hidden='true'
 						/>
 					)}
 					{/* Avatar */}
-					<div className='relative px-[9px] py-[5px] text-xs text-gray-500 bg-gray-300 rounded-md'>
+					<div
+						className={`${
+							enabled ? "bg-white" : "bg-gray-300"
+						} relative px-[9px] py-[5px] text-xs text-gray-500  rounded-md`}>
 						Upload avatar!
 						<input
 							className='absolute top-0 opacity-0 cursor-pointer -left-20'
@@ -176,7 +159,7 @@ const RegisterForm = () => {
 						</label>
 						<input
 							type='text'
-							className='"block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6"'
+							className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
 							placeholder='Lucht'
 							aria-invalid={errors.lastName ? "true" : "false"}
 							{...register("lastName", {
@@ -343,11 +326,13 @@ const RegisterForm = () => {
 				{/* Register Button */}
 				<CustomButton
 					type='submit'
-					classes='rounded-bl-2xl rounded-tr-2xl bg-gray-900 px-6 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600'
+					classes={classNames(
+						enabled ? "bg-white text-black" : "bg-black text-white",
+						"rounded-bl-2xl rounded-tr-2xl px-6 py-1.5 text-sm font-semibold leading-6 shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
+					)}
 					text='Register'
 				/>{" "}
 			</form>
-			<DevTool control={control} />
 		</>
 	);
 };
