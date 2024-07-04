@@ -1,6 +1,6 @@
 const LineSpinner = () => {
 	return (
-		<div className='container'>
+		<div className='containerLineSpinner'>
 			<div className='line'></div>
 			<div className='line'></div>
 			<div className='line'></div>

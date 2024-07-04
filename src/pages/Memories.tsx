@@ -16,6 +16,7 @@ import ScrollUpBtn from "../partials/ScrollUpBtn";
 import DarkModeBtn from "../partials/DarkModeBtn";
 import EditMemories from "../components/EditMemories";
 import classNames from "classnames";
+import HourGlassSpinner from "../components/HourGlassSpinner";
 
 type DeferredLoaderData = {
 	memories: Promise<MemoryValues[]>;
@@ -24,12 +25,8 @@ type DeferredLoaderData = {
 // Loader - All Memories
 export const loader: LoaderFunction = async () => {
 	// Are we logged in? if not, redirect!
-	const { loggedIn, isAdmin } = await loggedInData();
-
-	console.log("loggedIn state:", loggedIn);
-
+	const { loggedIn } = await loggedInData();
 	if (!loggedIn) return redirect("/login");
-
 	return defer({ memories: getAllMemories() });
 };
 
@@ -80,8 +77,8 @@ const Memories = () => {
 						className={classNames(
 							"py-1 text-sm px-3 rounded-md rounded-bl-none",
 							{
-								"bg-black text-white": view === "view",
-								"bg-white text-black": view !== "view",
+								"bg-black text-white": view !== "view",
+								"bg-white text-black": view === "view",
 							}
 						)}>
 						View Memories
@@ -89,10 +86,10 @@ const Memories = () => {
 					<button
 						onClick={() => setView("edit")}
 						className={classNames(
-							"py-1 text-sm px-3 rounded-xl rounded-br-none",
+							"py-1 text-sm px-3 rounded-md rounded-br-none",
 							{
-								"bg-black text-white": view === "edit",
-								"bg-white text-black": view !== "edit",
+								"bg-black border-1 border-white text-white": view !== "edit",
+								"bg-white border-1 border-black text-black": view === "edit",
 							}
 						)}>
 						Update Memories
@@ -100,7 +97,7 @@ const Memories = () => {
 				</div>
 			</aside>
 			<section className='w-screen'>
-				<Suspense fallback={<LoadingSpinner />}>
+				<Suspense fallback={<HourGlassSpinner />}>
 					<Await
 						resolve={deferredData.memories}
 						errorElement={<p>Could not load memories.</p>}>

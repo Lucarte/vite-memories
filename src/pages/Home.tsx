@@ -1,8 +1,8 @@
 import { Link, useNavigation } from "react-router-dom";
 import CustomButton from "../components/CustomButton";
 import { useTheme } from "../context/ThemeContext";
-import LoadingSpinner from "../components/LoadingSpinner";
 import DarkModeBtn from "../partials/DarkModeBtn";
+import HourGlassSpinner from "../components/HourGlassSpinner";
 
 const Home = () => {
 	const navigation = useNavigation();
@@ -10,7 +10,7 @@ const Home = () => {
 
 	return (
 		<article className='flex flex-col items-center pt-16'>
-			{navigation.state === "loading" ? <LoadingSpinner /> : null}
+			{navigation.state === "loading" ? <HourGlassSpinner /> : null}
 			<DarkModeBtn />
 			<img
 				className='mb-6 w-60'

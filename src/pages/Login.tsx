@@ -37,11 +37,6 @@ export const action: ActionFunction = async ({ request }) => {
 	}
 };
 
-// type actionData = {
-// 	error: string;
-// 	message: string;
-// };
-
 const Login = () => {
 	const { enabled } = useTheme();
 	const {

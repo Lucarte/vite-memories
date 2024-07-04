@@ -20,7 +20,7 @@ export const loggedInData = async () => {
 // REGISTER
 export const register = async (formData: FormData) => {
 	const res = await http.post("api/auth/register", formData);
-	if (res.status !== 200) throw res;
+	if (res.status !== 201) throw res;
 	return res.data;
 };
 
@@ -48,9 +48,7 @@ export const getAllMemories = async () => {
 // CREATE MEMORY
 export const postMemory = async (formData: FormData) => {
 	const res = await http.post("/api/auth/memory/create", formData);
-	if (res.status !== 201) {
-		throw new Error(`Failed to create memory`);
-	}
+	if (res.status !== 201) throw res;
 	return res.data || [];
 };
 

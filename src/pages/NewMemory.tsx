@@ -523,20 +523,10 @@ export const action: ActionFunction = async ({ request }) => {
 	}
 
 	try {
-		const res = await postMemory(formData);
-
-		return res;
+		await postMemory(formData);
+		return redirect("/memories");
 	} catch (error) {
-		// Type guard for AxiosError
-		if (axios.isAxiosError(error)) {
-			if (error.response && error.response.status === 400) {
-				// action data returned here
-				const actionData = error.response.data;
-				return actionData;
-			}
-			// Error Element received here
-			throw error;
-		}
+		return error;
 	}
 };
 
