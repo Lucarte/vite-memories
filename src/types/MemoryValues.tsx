@@ -13,6 +13,7 @@ export type MemoryValues = {
 	urls: { id: number; url_address: string }[];
 	category_ids: string[];
 	message: string;
+	user: User;
 };
 
 export type MemoryFile = {
@@ -25,4 +26,26 @@ export type MemoryFile = {
 export type Preview = {
 	url: string;
 	name: string;
+};
+
+type User = {
+	first_name: string;
+	last_name: string;
+	avatar: Avatar;
+};
+
+type Avatar = {
+	avatar_path: string;
+};
+
+export type PatchValues = {
+	id: number;
+	kid: string;
+	title: string;
+	year: number;
+	month?: string;
+	day?: number;
+	description: string;
+	category_ids: string[];
+	intent: string;
 };

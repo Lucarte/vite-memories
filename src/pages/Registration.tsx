@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import RegisterForm from "../components/RegisterForm";
 import { ActionFunction, Link, redirect } from "react-router-dom";
 import DarkModeBtn from "../partials/DarkModeBtn";

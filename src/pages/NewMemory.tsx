@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
@@ -13,7 +14,6 @@ import {
 import http from "../utils/http";
 import { MemoryValues } from "../types/MemoryValues";
 import { loggedInData, postMemory } from "../utils/api";
-import axios from "axios";
 import DarkModeBtn from "../partials/DarkModeBtn";
 import ScrollUpBtn from "../partials/ScrollUpBtn";
 
@@ -57,8 +57,6 @@ const CreateMemory: React.FC = () => {
 			title: "",
 			description: "",
 			month: "",
-			day: 1,
-			year: new Date().getFullYear(),
 			category_ids: [],
 			files: [],
 		},

@@ -1,5 +1,11 @@
+/* eslint-disable react-refresh/only-export-components */
 import { MemoryValues } from "../types/MemoryValues";
-import { deleteMemory, getAllMemories, loggedInData } from "../utils/api";
+import {
+	deleteMemory,
+	getAllMemories,
+	loggedInData,
+	patchMemory,
+} from "../utils/api";
 import {
 	ActionFunction,
 	Await,
@@ -10,13 +16,12 @@ import {
 } from "react-router-dom";
 
 import { Suspense, useState } from "react";
-import LoadingSpinner from "../components/LoadingSpinner";
 import ViewMemories from "../components/ViewMemories";
 import ScrollUpBtn from "../partials/ScrollUpBtn";
 import DarkModeBtn from "../partials/DarkModeBtn";
 import EditMemories from "../components/EditMemories";
 import classNames from "classnames";
-import HourGlassSpinner from "../components/HourGlassSpinner";
+import HerzSpinner from "../components/HerzSpinner";
 
 type DeferredLoaderData = {
 	memories: Promise<MemoryValues[]>;
@@ -30,7 +35,7 @@ export const loader: LoaderFunction = async () => {
 	return defer({ memories: getAllMemories() });
 };
 
-// Action - delete
+// Action - delete or update
 export const action: ActionFunction = async ({ request }) => {
 	const { loggedIn, isAdmin } = await loggedInData();
 
@@ -43,19 +48,39 @@ export const action: ActionFunction = async ({ request }) => {
 		console.log("Admin Zone: Access denied");
 		return "Admin Zone: Access denied";
 	}
+
 	const formData = await request.formData();
-
 	const title = formData.get("title");
+	const intent = formData.get("intent");
 
-	if (typeof title === "string") {
-		try {
-			const deleteRes = await deleteMemory(title);
-			return deleteRes;
-		} catch (error) {
-			console.error("Error deleting memory:", error);
-			return { message: "Error deleting memory :/" };
+	// Check first if there is an existing intent
+	if (intent && intent === "delete") {
+		if (typeof title === "string") {
+			try {
+				const deleteRes = await deleteMemory(title);
+				return deleteRes;
+			} catch (error) {
+				console.error("Error deleting memory:", error);
+				return { message: "Error deleting memory :/" };
+			}
 		}
 	}
+
+	const id = formData.get("id");
+	console.log("ID from formData:", id); // Debugging statement
+
+	if (intent && intent === "patch") {
+		if (typeof id === "number") {
+			try {
+				const patchRes = await patchMemory(id, formData);
+				return patchRes;
+			} catch (error) {
+				console.error("Error updating memory:", error);
+				return { message: "Error updating memory :/" };
+			}
+		}
+	}
+
 	return null;
 };
 
@@ -97,7 +122,12 @@ const Memories = () => {
 				</div>
 			</aside>
 			<section className='w-screen'>
-				<Suspense fallback={<HourGlassSpinner />}>
+				<Suspense
+					fallback={
+						<div className='flex justify-center w-screen'>
+							<HerzSpinner />
+						</div>
+					}>
 					<Await
 						resolve={deferredData.memories}
 						errorElement={<p>Could not load memories.</p>}>

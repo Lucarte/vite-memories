@@ -2,14 +2,19 @@ import { LoaderFunction, Outlet, useLoaderData } from "react-router-dom";
 import Header from "../partials/Header";
 import { loggedInData } from "../utils/api";
 import Footer from "../partials/Footer";
+import LoadingLayout from "./LoadingLayout";
 
 const PublicNav = () => {
 	return (
 		<>
-			<Header />
-			<main>
-				<Outlet />
-			</main>
+			<LoadingLayout>
+				<>
+					<Header />
+					<main>
+						<Outlet />
+					</main>
+				</>
+			</LoadingLayout>
 		</>
 	);
 };
@@ -17,11 +22,15 @@ const PublicNav = () => {
 const PrivateNav = () => {
 	return (
 		<>
-			<Header />
-			<main>
-				<Outlet />
-				<Footer />
-			</main>
+			<LoadingLayout>
+				<>
+					<Header />
+					<main>
+						<Outlet />
+					</main>
+					<Footer />
+				</>
+			</LoadingLayout>
 		</>
 	);
 };
@@ -29,12 +38,16 @@ const PrivateNav = () => {
 const AdminNav = () => {
 	return (
 		<>
-			<Header />
-			<p className='mt-4 text-center text-orange-600'>Have fun, Admin!</p>
-			<main>
-				<Outlet />
-				<Footer />
-			</main>
+			<LoadingLayout>
+				<>
+					<Header />
+					<p className='mt-4 text-center text-orange-600'>Have fun, Admin!</p>
+					<main>
+						<Outlet />
+					</main>
+					<Footer />
+				</>
+			</LoadingLayout>
 		</>
 	);
 };

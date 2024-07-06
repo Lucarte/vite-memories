@@ -1,4 +1,4 @@
-import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import MenuBarsIcon from "../components/MenuBarsIcon";
 import { useEffect, useState } from "react";
 import { useTheme } from "../context/ThemeContext";
@@ -47,7 +47,7 @@ const Header = () => {
 				{/* Search icon in mobile && h1-tag in other sizes */}
 				<div className='flex justify-center pr-4'>
 					<div className='block md:hidden'>
-						<MagnifyingGlassIcon className='w-5 h-5 mr-4' />
+						<MagnifyingGlassIcon className='w-5 h-5 mr-7' />
 					</div>
 					<div className='hidden md:block'>
 						<p>G.A.B.I.</p>

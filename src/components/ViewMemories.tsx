@@ -1,13 +1,22 @@
-import { Link, useAsyncValue } from "react-router-dom";
+import { useAsyncValue } from "react-router-dom";
 import { MemoryValues } from "../types/MemoryValues";
 import mime from "mime";
-import { useTheme } from "../context/ThemeContext";
 import displayFile from "../utils/DisplayFile";
 
-const ViewMemories = () => {
-	const { enabled } = useTheme();
-	const memories = useAsyncValue() as MemoryValues[];
+// Helper function to format the date
+const formatDate = (dateString: string): string => {
+	const date = new Date(dateString);
 
+	const options: Intl.DateTimeFormatOptions = {
+		year: "numeric",
+		month: "long",
+		day: "numeric",
+	};
+	return date.toLocaleDateString("en-US", options);
+};
+
+const ViewMemories = () => {
+	const memories = useAsyncValue() as MemoryValues[];
 	return (
 		<>
 			{memories ? (
@@ -18,22 +27,20 @@ const ViewMemories = () => {
 						{/* <Link to={memory.title} key={memory.title}> */}
 						{/* Entry Header */}
 						<section className='flex flex-col w-full'>
-							<div className='flex justify-between'>
-								<Link className='' to={"#"}>
-									<img
-										src='/src/media/featherEdit.png'
-										alt='link to edit entry'
-									/>
-								</Link>
-								<div className=''>
-									<img src='#' alt='' className='w-8 h-8 bg-white rounded' />
-								</div>
+							<div className='flex justify-end mb-2'>
+								<img
+									className='w-12 h-12 rounded'
+									src={
+										memory.user.avatar
+											? memory.user.avatar.avatar_path
+											: "/src/media/defaultAvatar.png"
+									}
+									alt={`Picture of ${memory.user.first_name} ${memory.user.last_name}`}
+								/>
 							</div>
 							<div className='flex flex-col items-end w-full text-gray-700'>
-								<p>
-									{memory.month} <span> {memory.day},</span> {memory.year}
-								</p>
-								<p>By: Mariana Lucht</p>
+								<p>{`By: ${memory.user.first_name} ${memory.user.last_name}`}</p>
+								<p>{formatDate(memory.created_at)}</p>
 							</div>
 						</section>
 						{/* Entry Body */}
@@ -41,7 +48,7 @@ const ViewMemories = () => {
 							<h1 className='mb-2 font-sans text-xl text-gray-200'>
 								{memory.title}
 							</h1>
-							<p className='break-words'>{memory.description}</p>
+							<p className='pl-20 break-words'>{memory.description}</p>
 						</section>
 						<div>
 							<h2 className='font-medium'>Date of Memory</h2>
@@ -56,12 +63,12 @@ const ViewMemories = () => {
 								{memory.files && memory.files.length > 0 ? (
 									memory.files.map((file) => (
 										<li
-											className={`object-cover w-full mt-10 ${
+											className={`object-cover mt-10 ${
 												(file.file_path &&
 													mime.getType(file.file_path)?.startsWith("image/")) ||
 												mime.getType(file.file_path)?.startsWith("video/")
 													? "h-64"
-													: "h-auto"
+													: "h-auto min-w-[80vw]"
 											}`}
 											key={file.id}>
 											{displayFile(file)}

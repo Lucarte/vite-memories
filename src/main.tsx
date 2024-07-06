@@ -6,7 +6,6 @@ import {
 	RouterProvider,
 	createRoutesFromElements,
 	Route,
-	Navigate,
 } from "react-router-dom";
 
 // CONTEXT
