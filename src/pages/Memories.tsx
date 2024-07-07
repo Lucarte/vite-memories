@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { MemoryValues } from "../types/MemoryValues";
+import { MemoryValues, PatchValues } from "../types/MemoryValues";
 import {
 	deleteMemory,
 	getAllMemories,
@@ -68,11 +68,28 @@ export const action: ActionFunction = async ({ request }) => {
 
 	const id = formData.get("id");
 	console.log("ID from formData:", id); // Debugging statement
+	const data = Object.fromEntries(formData);
 
 	if (intent && intent === "patch") {
-		if (typeof id === "number") {
+		const parsedId = typeof id === "string" ? parseInt(id, 10) : NaN;
+		if (!isNaN(parsedId)) {
+			// Convert form data to the PatchValues type
+			const data: PatchValues = {
+				id: parsedId,
+				kid: formData.get("kid") as string,
+				title: formData.get("title") as string,
+				description: formData.get("description") as string,
+				year: parseInt(formData.get("year") as string, 10),
+				month: formData.get("month") as string,
+				day: formData.get("day")
+					? parseInt(formData.get("day") as string, 10)
+					: undefined,
+				category_ids: formData.getAll("category_ids") as string[],
+				intent: formData.get("intent") as string,
+			};
+
 			try {
-				const patchRes = await patchMemory(id, formData);
+				const patchRes = await patchMemory(parsedId, data);
 				return patchRes;
 			} catch (error) {
 				console.error("Error updating memory:", error);
@@ -131,7 +148,13 @@ const Memories = () => {
 					<Await
 						resolve={deferredData.memories}
 						errorElement={<p>Could not load memories.</p>}>
-						{view === "view" ? <ViewMemories /> : <EditMemories />}
+						{view === "view" ? (
+							<ViewMemories />
+						) : (
+							// <ViewMemories memories={resolvedMemories} />
+							<EditMemories />
+							// <EditMemories memories={resolvedMemories} />
+						)}
 					</Await>
 				</Suspense>
 			</section>

@@ -60,7 +60,7 @@ const EditSingleMemory = ({ memory }: Props) => {
 		handleSubmit,
 		formState: { errors },
 		getValues,
-	} = useForm<PatchValues>({});
+	} = useForm<MemoryValues>({});
 
 	const [categories, setCategories] = useState<
 		{ id: string; category: string }[]
@@ -79,7 +79,8 @@ const EditSingleMemory = ({ memory }: Props) => {
 		fetchCategories();
 	}, []);
 
-	const onValid: SubmitHandler<PatchValues> = (data) => {
+	const onValid: SubmitHandler<MemoryValues> = (data) => {
+		// const onValid: SubmitHandler<PatchValues> = (data) => {
 		// not sure if i should use data:PatchValues or formData:FormData
 		console.log("VALID FORM SUBMISSION", data);
 		// With fetcher.submit, we as developers decide when we send the form. In this case, we want to do it after validation.
@@ -98,7 +99,12 @@ const EditSingleMemory = ({ memory }: Props) => {
 		console.log(fetcher.state);
 	}, [fetcher.state]);
 
-	const isDeleting = fetcher.state === "submitting";
+	const submitting = fetcher.state === "submitting";
+	const intentDelete = fetcher.formData?.get("intent") === "delete";
+	const intentPatch = fetcher.formData?.get("intent") === "patch";
+	const isDeleting = submitting && intentDelete;
+	const isPatching = submitting && intentPatch;
+
 	return (
 		<>
 			<article
@@ -364,9 +370,16 @@ const EditSingleMemory = ({ memory }: Props) => {
 
 					{/* Submit Button */}
 					<button
-						type='submit'
-						className='px-4 py-2 mt-10 text-white bg-black rounded-md'>
-						Update
+						disabled={isPatching}
+						className={`rounded-md px-4 py-2 mt-10 ${
+							enabled
+								? "bg-gray-200 hover:bg-gray-100 text-black disabled:bg-gray-400"
+								: "bg-gray-400 text-black hover:bg-gray-300 disabled:bg-gray-400"
+						}`}>
+						{isPatching ? <Tailspin /> : "Update"}
+						{/* // type='submit'
+							// className='px-4 py-2 mt-10 text-white bg-black rounded-md'>
+							// Update */}
 					</button>
 				</form>
 			) : // <DevTool control={control} />

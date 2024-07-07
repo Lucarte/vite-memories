@@ -1,4 +1,4 @@
-import { PatchValues } from "../types/MemoryValues";
+import { MemoryValues, PatchValues } from "../types/MemoryValues";
 import http from "./http";
 
 // STATUS
@@ -64,10 +64,12 @@ export const deleteMemory = async (title: string) => {
 };
 
 // UPDATE MEMORY
-// export const patchMemory = async (id: number, data: PatchValues) => {
-export const patchMemory = async (id: number, formData: FormData) => {
+// export const patchMemory = async (id: number, data: MemoryValues) => {
+export const patchMemory = async (id: number, data: PatchValues) => {
+	// export const patchMemory = async (id: number, formData: FormData) => {
 	await new Promise((resolve) => setTimeout(resolve, 3000));
-	const res = await http.patch(`/api/auth/memories/${id}`, formData);
+	const res = await http.patch(`/api/auth/memories/${id}`, data);
+	// const res = await http.patch(`/api/auth/memories/${id}`, formData);
 	if (res.status !== 200) throw res;
 	return res.data;
 };

@@ -14,6 +14,7 @@ export type MemoryValues = {
 	category_ids: string[];
 	message: string;
 	user: User;
+	intent: string;
 };
 
 export type MemoryFile = {
