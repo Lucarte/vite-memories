@@ -67,7 +67,6 @@ export const action: ActionFunction = async ({ request }) => {
 	}
 
 	const id = formData.get("id");
-	console.log("ID from formData:", id); // Debugging statement
 	const data = Object.fromEntries(formData);
 
 	if (intent && intent === "patch") {
@@ -148,13 +147,7 @@ const Memories = () => {
 					<Await
 						resolve={deferredData.memories}
 						errorElement={<p>Could not load memories.</p>}>
-						{view === "view" ? (
-							<ViewMemories />
-						) : (
-							// <ViewMemories memories={resolvedMemories} />
-							<EditMemories />
-							// <EditMemories memories={resolvedMemories} />
-						)}
+						{view === "view" ? <ViewMemories /> : <EditMemories />}
 					</Await>
 				</Suspense>
 			</section>

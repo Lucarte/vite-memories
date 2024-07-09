@@ -4,11 +4,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useLoaderData, useFetcher } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 import displayFile from "../utils/DisplayFile";
-import { MemoryValues, PatchValues } from "../types/MemoryValues";
+import { MemoryValues } from "../types/MemoryValues";
 import Tailspin from "./Tailspin";
 import { useEffect, useState } from "react";
 import http from "../utils/http";
-
+import { days, kidOptions, months, years } from "../utils/memoryUtils";
 // Helper function to format the date
 const formatDate = (dateString: string): string => {
 	const date = new Date(dateString);
@@ -20,30 +20,6 @@ const formatDate = (dateString: string): string => {
 	};
 	return date.toLocaleDateString("en-US", options);
 };
-
-const kidOptions = [
-	{ id: "both", name: "Both" },
-	{ id: "pablo", name: "Pablo" },
-	{ id: "gabriella", name: "Gabriella" },
-];
-
-// Date Constants
-const years = Array.from({ length: 101 }, (_, i) => 2000 + i);
-const months = [
-	"January",
-	"February",
-	"March",
-	"April",
-	"May",
-	"June",
-	"July",
-	"August",
-	"September",
-	"October",
-	"November",
-	"December",
-];
-const days = Array.from({ length: 31 }, (_, i) => i + 1);
 
 type Props = {
 	memory: MemoryValues;
@@ -80,24 +56,15 @@ const EditSingleMemory = ({ memory }: Props) => {
 	}, []);
 
 	const onValid: SubmitHandler<MemoryValues> = (data) => {
-		// const onValid: SubmitHandler<PatchValues> = (data) => {
-		// not sure if i should use data:PatchValues or formData:FormData
-		console.log("VALID FORM SUBMISSION", data);
 		// With fetcher.submit, we as developers decide when we send the form. In this case, we want to do it after validation.
 		fetcher.submit(
 			{ ...data, id: memory.id },
 			{
 				method: "PATCH",
-				// action: "/api/auth/memories/{memory.id}", //already tested does not work
-				action: "", // tested saturday 10:28 works
+				action: "",
 			}
 		);
 	};
-
-	// just for debugging purposes
-	useEffect(() => {
-		console.log(fetcher.state);
-	}, [fetcher.state]);
 
 	const submitting = fetcher.state === "submitting";
 	const intentDelete = fetcher.formData?.get("intent") === "delete";
@@ -110,7 +77,6 @@ const EditSingleMemory = ({ memory }: Props) => {
 			<article
 				key={memory.title}
 				className='flex flex-col items-end gap-6 pt-16 overflow-hidden text-gray-300 screen mx-9 font-extralight'>
-				{/* <Link to={memory.title} key={memory.title}> */}
 				{/* Entry Header */}
 				<section className='flex flex-col w-full'>
 					<div className='flex justify-end mb-2'>
@@ -165,10 +131,9 @@ const EditSingleMemory = ({ memory }: Props) => {
 						)}
 					</ul>
 				</div>
-				{/* </Link> */}
 				<div className=''>
 					<h2 className='font-medium'>URLs</h2>
-					{memory.urls && memory.urls.length > 0 ? (
+					{memory.urls ? (
 						memory.urls.map((url) => (
 							<div className='' key={url.id}>
 								<a
@@ -186,7 +151,6 @@ const EditSingleMemory = ({ memory }: Props) => {
 				<div className='flex justify-between gap-4'>
 					<img
 						className='w-8 h-8 cursor-pointer'
-						// src='/src/media/featherEdit.png'
 						src='src/assets/EditIcon.svg'
 						alt='link to edit entry'
 						onClick={() => setShowEdit(!showEdit)}
@@ -223,7 +187,6 @@ const EditSingleMemory = ({ memory }: Props) => {
 					className='max-w-[30rem] px-10 flex flex-col'>
 					<input type='hidden' {...register("intent")} value='patch' />
 					<input type='hidden' name='id' value={memory.id} />
-					{/* <input type='hidden' name='title' value={memory.title} /> */}
 					{/* Form Title */}
 					<h1 className='mt-4 font-bold text-center font-titles'>
 						UPDATE MEMORY
@@ -301,6 +264,7 @@ const EditSingleMemory = ({ memory }: Props) => {
 							{...register("title", { required: true })}
 							type='text'
 							className='block w-full px-4 py-2 text-sm border rounded-md'
+							defaultValue={memory.title}
 						/>
 						{errors.title && (
 							<p className='mt-1 text-sm font-light text-orange-500'>
@@ -320,6 +284,7 @@ const EditSingleMemory = ({ memory }: Props) => {
 							{...register("description", { required: true })}
 							className='block w-full px-4 py-2 text-sm border rounded-md'
 							rows={4}
+							// defaultValue={memory.description}
 						/>
 						{errors.description && (
 							<p className='mt-1 text-sm font-light text-orange-500'>
@@ -338,7 +303,9 @@ const EditSingleMemory = ({ memory }: Props) => {
 							<select
 								id='month'
 								{...register("month")}
-								className='block w-full px-4 py-2 text-sm border rounded-md'>
+								className='block w-full px-4 py-2 text-sm border rounded-md'
+								// defaultValue={memory.month}
+							>
 								{months.map((month) => (
 									<option key={month} value={month}>
 										{month}
@@ -348,7 +315,9 @@ const EditSingleMemory = ({ memory }: Props) => {
 							<select
 								id='day'
 								{...register("day")}
-								className='block w-full px-4 py-2 text-sm border rounded-md'>
+								className='block w-full px-4 py-2 text-sm border rounded-md'
+								// defaultValue={memory.day}
+							>
 								{days.map((day) => (
 									<option key={day} value={day}>
 										{day}
@@ -358,7 +327,9 @@ const EditSingleMemory = ({ memory }: Props) => {
 							<select
 								id='year'
 								{...register("year")}
-								className='block w-full px-4 py-2 text-sm border rounded-md'>
+								className='block w-full px-4 py-2 text-sm border rounded-md'
+								// defaultValue={memory.year}
+							>
 								{years.map((year) => (
 									<option key={year} value={year}>
 										{year}
@@ -366,6 +337,35 @@ const EditSingleMemory = ({ memory }: Props) => {
 								))}
 							</select>
 						</div>
+					</div>
+					<div className='mt-10'>
+						<label className='block mb-2 text-sm font-medium text-gray-900'>
+							URLs
+						</label>
+						<input
+							{...register("urls", {
+								validate: (value) => {
+									if (!value.trim()) {
+										return true; // Allow empty strings
+									}
+
+									const urls = value.split(",").map((url) => url.trim());
+									return (
+										urls.every((url) =>
+											url.match(/^(https?:\/\/)?([^\s$.?#].[^\s]*)$/)
+										) || "One or more URLs are invalid."
+									);
+								},
+							})}
+							type='text'
+							placeholder='example.com, another-example.com'
+							className='block w-full px-4 py-2 text-sm border rounded-md'
+						/>
+						{errors.urls && (
+							<p className='text-sm font-light text-red-500'>
+								{errors.urls.message}
+							</p>
+						)}
 					</div>
 
 					{/* Submit Button */}
@@ -377,14 +377,9 @@ const EditSingleMemory = ({ memory }: Props) => {
 								: "bg-gray-400 text-black hover:bg-gray-300 disabled:bg-gray-400"
 						}`}>
 						{isPatching ? <Tailspin /> : "Update"}
-						{/* // type='submit'
-							// className='px-4 py-2 mt-10 text-white bg-black rounded-md'>
-							// Update */}
 					</button>
 				</form>
-			) : // <DevTool control={control} />
-			// </>
-			null}
+			) : null}
 		</>
 	);
 };

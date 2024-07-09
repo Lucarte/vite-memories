@@ -1,53 +1,31 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { useState, useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
+import { useForm, SubmitHandler } from "react-hook-form";
 import {
 	useSubmit,
 	useLocation,
 	useActionData,
-	ActionFunction,
 	redirect,
+	ActionFunction,
 	LoaderFunction,
-	useLoaderData,
 } from "react-router-dom";
 import http from "../utils/http";
 import { MemoryValues } from "../types/MemoryValues";
 import { loggedInData, postMemory } from "../utils/api";
 import DarkModeBtn from "../partials/DarkModeBtn";
 import ScrollUpBtn from "../partials/ScrollUpBtn";
+import {
+	days,
+	kidOptions,
+	months,
+	useFileUpload,
+	years,
+} from "../utils/memoryUtils";
 
-const kidOptions = [
-	{ id: "both", name: "Both" },
-	{ id: "pablo", name: "Pablo" },
-	{ id: "gabriella", name: "Gabriella" },
-];
-
-// Date Constants
-const years = Array.from({ length: 101 }, (_, i) => 2000 + i);
-const months = [
-	"January",
-	"February",
-	"March",
-	"April",
-	"May",
-	"June",
-	"July",
-	"August",
-	"September",
-	"October",
-	"November",
-	"December",
-];
-const days = Array.from({ length: 31 }, (_, i) => i + 1);
-
-// Component
 const CreateMemory: React.FC = () => {
-	// Using useLoaderData to get the data loaded by the loader function
-	const loaderData = useLoaderData();
+	// const loaderData = useLoaderData();
 	const {
 		register,
-		control,
 		handleSubmit,
 		formState: { errors },
 		getValues,
@@ -59,23 +37,24 @@ const CreateMemory: React.FC = () => {
 			month: "",
 			category_ids: [],
 			files: [],
+			urls: "",
 		},
 	});
 
+	const {
+		handleFileChange,
+		handleRemoveFile,
+		imagePreviews,
+		audioPreviews,
+		videoPreviews,
+		fileErrors,
+	} = useFileUpload();
 	const submit = useSubmit();
 	const location = useLocation();
 	const actionData = useActionData() as MemoryValues | Error;
-
 	const [categories, setCategories] = useState<
 		{ id: string; category: string }[]
 	>([]);
-	const [uploadedImages, setUploadedImages] = useState<File[]>([]);
-	const [uploadedAudios, setUploadedAudios] = useState<File[]>([]);
-	const [uploadedVideos, setUploadedVideos] = useState<File[]>([]);
-	const [imagePreviews, setImagePreviews] = useState<string[]>([]);
-	const [audioPreviews, setAudioPreviews] = useState<string[]>([]);
-	const [videoPreviews, setVideoPreviews] = useState<string[]>([]);
-	const [fileErrors, setFileErrors] = useState<string[]>([]);
 
 	useEffect(() => {
 		const fetchCategories = async () => {
@@ -90,109 +69,8 @@ const CreateMemory: React.FC = () => {
 		fetchCategories();
 	}, []);
 
-	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const files = e.target.files;
-
-		if (files) {
-			const validImageExtensions = ["jpeg", "jpg", "png", "gif", "svg"];
-			const validAudioExtensions = ["aiff", "mpeg", "m4a", "mp3"];
-			const validVideoExtensions = ["mp4", "avi", "quicktime", "mov", "mpeg"];
-
-			const imageFiles: File[] = [];
-			const audioFiles: File[] = [];
-			const videoFiles: File[] = [];
-			const errors: string[] = [];
-
-			for (const file of files) {
-				const fileExtension = file.name.split(".").pop()?.toLowerCase();
-				if (!fileExtension) {
-					errors.push(`Unable to determine file extension for ${file.name}.`);
-					continue;
-				}
-
-				let maxSize = 0;
-
-				if (validImageExtensions.includes(fileExtension)) {
-					maxSize = 3 * 1024 * 1024; // 3MB for images
-					imageFiles.push(file);
-					setImagePreviews((prevPreviews) => [
-						...prevPreviews,
-						URL.createObjectURL(file),
-					]);
-				} else if (validAudioExtensions.includes(fileExtension)) {
-					maxSize = 20 * 1024 * 1024; // 20MB for audio
-					audioFiles.push(file);
-					setAudioPreviews((prevPreviews) => [
-						...prevPreviews,
-						URL.createObjectURL(file),
-					]);
-				} else if (validVideoExtensions.includes(fileExtension)) {
-					maxSize = 200 * 1024 * 1024; // 200MB for video
-					videoFiles.push(file);
-					setVideoPreviews((prevPreviews) => [
-						...prevPreviews,
-						URL.createObjectURL(file),
-					]);
-				} else {
-					errors.push(`Unsupported file type: ${file.name}`);
-					continue;
-				}
-
-				if (file.size > maxSize) {
-					errors.push(`File too large: ${file.name}`);
-				}
-			}
-
-			setUploadedImages((prevFiles) => [...prevFiles, ...imageFiles]);
-			setUploadedAudios((prevFiles) => [...prevFiles, ...audioFiles]);
-			setUploadedVideos((prevFiles) => [...prevFiles, ...videoFiles]);
-			setFileErrors(errors);
-		}
-	};
-
-	const handleRemoveFile = (
-		type: "image" | "audio" | "video",
-		index: number
-	) => {
-		let updatedFiles: File[] = [];
-		let updatedPreviews: string[] = [];
-
-		switch (type) {
-			case "image":
-				updatedFiles = [...uploadedImages];
-				updatedFiles.splice(index, 1);
-				setUploadedImages(updatedFiles);
-
-				updatedPreviews = [...imagePreviews];
-				updatedPreviews.splice(index, 1);
-				setImagePreviews(updatedPreviews);
-				break;
-			case "audio":
-				updatedFiles = [...uploadedAudios];
-				updatedFiles.splice(index, 1);
-				setUploadedAudios(updatedFiles);
-
-				updatedPreviews = [...audioPreviews];
-				updatedPreviews.splice(index, 1);
-				setAudioPreviews(updatedPreviews);
-				break;
-			case "video":
-				updatedFiles = [...uploadedVideos];
-				updatedFiles.splice(index, 1);
-				setUploadedVideos(updatedFiles);
-
-				updatedPreviews = [...videoPreviews];
-				updatedPreviews.splice(index, 1);
-				setVideoPreviews(updatedPreviews);
-				break;
-			default:
-				break;
-		}
-	};
-
-	// Custom Validation
-	const onValid: SubmitHandler<MemoryValues> = (_, event) => {
-		const formData = new FormData(event?.target);
+	const onValid: SubmitHandler<MemoryValues> = (data, event) => {
+		const formData = new FormData(event?.target as HTMLFormElement);
 		const categoryIds = getValues("category_ids");
 
 		formData.delete("category_ids");
@@ -202,7 +80,19 @@ const CreateMemory: React.FC = () => {
 			formData.append("category_ids[]", categoryIds);
 		}
 
-		// Submit formData to backend API
+		const urlList = data.urls.split(",").map((url) => url.trim());
+		const formattedUrls = urlList.map((url, index) => ({
+			id: Date.now() + index,
+			url_address: url,
+		}));
+
+		const payload = {
+			...data,
+			urls: formattedUrls,
+		};
+
+		console.log("Form submitted with payload:", payload);
+
 		submit(formData, {
 			method: "POST",
 			action: location.pathname,
@@ -216,16 +106,11 @@ const CreateMemory: React.FC = () => {
 				<form
 					onSubmit={handleSubmit(onValid)}
 					className='max-w-[30rem] px-10 flex flex-col'>
-					{/* Buttons for DarkTheme and goHome */}
 					<DarkModeBtn />
 					<ScrollUpBtn />
-
-					{/* Form Title */}
 					<h1 className='mt-4 font-bold text-center font-titles'>
 						Create a New Memory
 					</h1>
-
-					{/* Memory belongs to... */}
 					<fieldset className='mt-8'>
 						<legend className='text-sm font-semibold leading-6 text-center text-gray-900'>
 							for...
@@ -255,8 +140,6 @@ const CreateMemory: React.FC = () => {
 							</p>
 						)}
 					</fieldset>
-
-					{/* Categories  */}
 					<article className='mt-10 font-light'>
 						<fieldset className='relative flex flex-wrap justify-center w-full p-4 pt-6 border-[2.5px] rounded-[3px] border-black'>
 							<legend className='absolute flex px-2 text-sm text-black bg-white -top-3 left-4'>
@@ -290,8 +173,6 @@ const CreateMemory: React.FC = () => {
 							)}
 						</fieldset>
 					</article>
-
-					{/* Title */}
 					<div className='mt-10'>
 						<label className='block mb-2 text-sm font-medium text-gray-900'>
 							Title
@@ -307,8 +188,6 @@ const CreateMemory: React.FC = () => {
 							</p>
 						)}
 					</div>
-
-					{/* Description */}
 					<div className='mt-10'>
 						<label className='block mb-2 text-sm font-medium text-gray-900'>
 							Description
@@ -324,8 +203,6 @@ const CreateMemory: React.FC = () => {
 							</p>
 						)}
 					</div>
-
-					{/* Memory Date */}
 					<div className='mt-10'>
 						<label
 							htmlFor='date'
@@ -362,8 +239,6 @@ const CreateMemory: React.FC = () => {
 							</select>
 						</div>
 					</div>
-
-					{/* Image Upload */}
 					<div className='mt-10'>
 						<label className='block mb-2 text-sm font-medium text-gray-900'>
 							Upload Images
@@ -405,8 +280,6 @@ const CreateMemory: React.FC = () => {
 							</div>
 						)}
 					</div>
-
-					{/* Audio Upload */}
 					<div className='mt-10'>
 						<label className='block mb-2 text-sm font-medium text-gray-900'>
 							Upload Audio
@@ -447,8 +320,6 @@ const CreateMemory: React.FC = () => {
 							</div>
 						)}
 					</div>
-
-					{/* Video Upload */}
 					<div className='mt-10'>
 						<label className='block mb-2 text-sm font-medium text-gray-900'>
 							Upload Video
@@ -489,18 +360,36 @@ const CreateMemory: React.FC = () => {
 							</div>
 						)}
 					</div>
-
-					{/* Submit Button */}
-					{/* <Link to='/memories'> */}
+					<div className='mt-10'>
+						<label className='block mb-2 text-sm font-medium text-gray-900'>
+							URLs
+						</label>
+						<input
+							{...register("urls", {
+								validate: (value) =>
+									value
+										.split(",")
+										.every((url) =>
+											url.trim().match(/^(https?:\/\/)?([^\s$.?#].[^\s]*)$/)
+										) || "One or more URLs are invalid.",
+							})}
+							type='text'
+							placeholder='example.com, another-example.com'
+							className='block w-full px-4 py-2 text-sm border rounded-md'
+						/>
+						{errors.urls && (
+							<p className='text-sm font-light text-red-500'>
+								{errors.urls.message}
+							</p>
+						)}
+					</div>
 					<button
 						type='submit'
 						className='px-4 py-2 mt-10 text-white bg-black rounded-md'>
 						Submit
 					</button>
 					{actionData && actionData.message && <p>{actionData.message}</p>}
-					{/* </Link> */}
 				</form>
-				<DevTool control={control} /> {/* DevTool for debugging */}
 			</div>
 		</>
 	);
@@ -508,7 +397,7 @@ const CreateMemory: React.FC = () => {
 
 export default CreateMemory;
 
-// ACTION:
+// ACTION
 export const action: ActionFunction = async ({ request }) => {
 	const { loggedIn, isAdmin } = await loggedInData();
 	const formData = await request.formData();
@@ -528,7 +417,7 @@ export const action: ActionFunction = async ({ request }) => {
 	}
 };
 
-// LOADER for the form itself - a trial
+// LOADER for the form itself
 export const loader: LoaderFunction = async () => {
 	const { loggedIn, isAdmin } = await loggedInData();
 
@@ -536,7 +425,6 @@ export const loader: LoaderFunction = async () => {
 		return redirect("/login");
 	}
 	if (!isAdmin) {
-		// TO DO: Add a modal with useEffekt that displayes the adminZone message
 		return redirect("/login?message=adminZone");
 	}
 

@@ -10,7 +10,7 @@ export type MemoryValues = {
 	updated_at: string;
 	user_id: number;
 	files: MemoryFile[];
-	urls: { id: number; url_address: string }[];
+	urls: URLs;
 	category_ids: string[];
 	message: string;
 	user: User;
@@ -24,12 +24,17 @@ export type MemoryFile = {
 	preview: string;
 };
 
+export type URLs = {
+	id: number;
+	url_address: string;
+};
+
 export type Preview = {
 	url: string;
 	name: string;
 };
 
-type User = {
+export type User = {
 	first_name: string;
 	last_name: string;
 	avatar: Avatar;

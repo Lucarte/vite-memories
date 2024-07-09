@@ -1,5 +1,5 @@
 import { useAsyncValue } from "react-router-dom";
-import { MemoryValues } from "../types/MemoryValues";
+import { MemoryValues, URLs } from "../types/MemoryValues";
 import mime from "mime";
 import displayFile from "../utils/DisplayFile";
 
@@ -17,6 +17,7 @@ const formatDate = (dateString: string): string => {
 
 const ViewMemories = () => {
 	const memories = useAsyncValue() as MemoryValues[];
+
 	return (
 		<>
 			{memories ? (
@@ -80,11 +81,12 @@ const ViewMemories = () => {
 							</ul>
 						</div>
 						{/* </Link> */}
+						{/* URLs */}
 						<div className=''>
 							<h2 className='font-medium'>URLs</h2>
-							{memory.urls && memory.urls.length > 0 ? (
+							{memory.urls ? (
 								memory.urls.map((url) => (
-									<div className='' key={url.id}>
+									<div className='' key={url.url_address}>
 										<a
 											href={url.url_address}
 											target='_blank'
