@@ -57,8 +57,25 @@ const EditSingleMemory = ({ memory }: Props) => {
 
 	const onValid: SubmitHandler<MemoryValues> = (data) => {
 		// With fetcher.submit, we as developers decide when we send the form. In this case, we want to do it after validation.
+		const formData = new FormData(event?.target as HTMLFormElement);
+		const categoryIds = getValues("category_ids");
+		formData.delete("category_ids");
+		if (Array.isArray(categoryIds)) {
+			categoryIds.forEach((id) => formData.append("category_ids[]", id));
+		} else {
+			formData.append("category_ids[]", categoryIds);
+		}
+
+		// Ensure data.urls is properly initialized as an array
+		const urlList = Array.isArray(data.urls) ? data.urls : []; // Fallback to empty array if data.urls is not an array
+
+		const formattedUrls = urlList.map((url) => ({
+			id: url.url_address,
+			url_address: url.url_address,
+		}));
+
 		fetcher.submit(
-			{ ...data, id: memory.id },
+			{ ...data, id: memory.id, urls: formattedUrls },
 			{
 				method: "PATCH",
 				action: "",
@@ -193,9 +210,9 @@ const EditSingleMemory = ({ memory }: Props) => {
 					</h1>
 					{/* Memory belongs to... */}
 					<fieldset className='mt-8'>
-						<div className='mt-3 space-y-3'>
+						<div className='flex flex-row justify-between'>
 							{kidOptions.map((option) => (
-								<div key={option.id} className='flex items-center'>
+								<div key={option.id} className='flex item-center'>
 									<input
 										id={option.id}
 										{...register("kid", { required: true })}
@@ -338,40 +355,11 @@ const EditSingleMemory = ({ memory }: Props) => {
 							</select>
 						</div>
 					</div>
-					<div className='mt-10'>
-						<label className='block mb-2 text-sm font-medium text-gray-900'>
-							URLs
-						</label>
-						<input
-							{...register("urls", {
-								validate: (value) => {
-									if (!value.trim()) {
-										return true; // Allow empty strings
-									}
-
-									const urls = value.split(",").map((url) => url.trim());
-									return (
-										urls.every((url) =>
-											url.match(/^(https?:\/\/)?([^\s$.?#].[^\s]*)$/)
-										) || "One or more URLs are invalid."
-									);
-								},
-							})}
-							type='text'
-							placeholder='example.com, another-example.com'
-							className='block w-full px-4 py-2 text-sm border rounded-md'
-						/>
-						{errors.urls && (
-							<p className='text-sm font-light text-red-500'>
-								{errors.urls.message}
-							</p>
-						)}
-					</div>
 
 					{/* Submit Button */}
 					<button
 						disabled={isPatching}
-						className={`rounded-md px-4 py-2 mt-10 ${
+						className={`text-center rounded-md px-4 py-2 mt-10 ${
 							enabled
 								? "bg-gray-200 hover:bg-gray-100 text-black disabled:bg-gray-400"
 								: "bg-gray-400 text-black hover:bg-gray-300 disabled:bg-gray-400"

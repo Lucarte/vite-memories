@@ -4,8 +4,8 @@ import { useState } from "react";
 
 export const kidOptions = [
 	{ id: "both", name: "Both" },
-	{ id: "pablo", name: "Pablo" },
 	{ id: "gabriella", name: "Gabriella" },
+	{ id: "pablo", name: "Pablo" },
 ];
 
 export const years = Array.from({ length: 101 }, (_, i) => 2000 + i);

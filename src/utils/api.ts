@@ -48,6 +48,14 @@ export const getAllMemories = async () => {
 	return res.data.Memories || [];
 };
 
+// GET MEMORY BY TITLE
+export const getMemoryByTitle = async (title: string) => {
+	const res = await http(`/api/auth/memories/title/${title}`);
+	if (res.status !== 200)
+		throw new Error(`Memory with title ${title} not found`);
+	return res.data;
+};
+
 // CREATE MEMORY
 export const postMemory = async (formData: FormData) => {
 	const res = await http.post("/api/auth/memory/create", formData);
@@ -67,32 +75,7 @@ export const deleteMemory = async (title: string) => {
 export const patchMemory = async (id: number, data: PatchValues) => {
 	await new Promise((resolve) => setTimeout(resolve, 3000));
 	const res = await http.patch(`/api/auth/memories/${id}`, data);
-	// const res = await http.patch(`/api/auth/memories/${id}`, formData);
 	console.log(`Patching memory with ID ${id}:`, data);
 	if (res.status !== 200) throw res;
 	return res.data;
 };
-
-// // UPDATE MEMORY FILE
-// export const patchFile = async (id: number, files: MemoryFile[]) => {
-// 	await new Promise((resolve) => setTimeout(resolve, 3000));
-
-// 	try {
-// 		// Iterate over files and handle each one by its ID
-// 		for (const file of files) {
-// 			// Perform necessary actions for each file using its ID and other data
-// 			console.log(`Patching file with ID ${id}:`, file);
-
-// 			// Send the file to the endpoint using its ID
-// 			const res = await http.post(`/api/auth/file/${id}`, file);
-// 			if (res.status !== 200) {
-// 				throw new Error(`Failed to patch file with ID ${id}`);
-// 			}
-// 		}
-
-// 		return { message: "Files updated successfully" };
-// 	} catch (error) {
-// 		console.error("Error updating files:", error);
-// 		throw error; // Rethrow the error to be caught by the caller
-// 	}
-// };

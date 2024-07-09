@@ -80,8 +80,8 @@ const ViewMemories = () => {
 								)}
 							</ul>
 						</div>
-						{/* </Link> */}
 						{/* URLs */}
+						{/* </Link> */}
 						<div>
 							<h2 className='font-medium'>URLs</h2>
 							<ul>
