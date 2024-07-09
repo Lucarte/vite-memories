@@ -18,7 +18,6 @@ export const loggedInData = async () => {
 	}
 };
 
-// TO DO: Check if i need to extra add the xsrfToken
 // REGISTER
 export const register = async (formData: FormData) => {
 	const res = await http.post("api/auth/register", formData);

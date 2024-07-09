@@ -33,6 +33,9 @@ import NewMemory, {
 import Fans from "./pages/Fans";
 import NotFound from "./pages/NotFound";
 import Footer, { action as footerAction } from "./partials/Footer";
+import SingleMemory, {
+	loader as singleMemoryLoader,
+} from "./components/SingleMemory";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -56,6 +59,11 @@ const router = createBrowserRouter(
 					element={<Memories />}
 					loader={memoriesLoader}
 					action={memoriesAction}
+				/>
+				<Route
+					path='/memories/title/:title'
+					element={<SingleMemory />}
+					loader={singleMemoryLoader}
 				/>
 
 				{/* Admin Routes */}
