@@ -1,5 +1,5 @@
 import { useAsyncValue } from "react-router-dom";
-import { MemoryValues, URLs } from "../types/MemoryValues";
+import { MemoryValues } from "../types/MemoryValues";
 import mime from "mime";
 import displayFile from "../utils/DisplayFile";
 
@@ -82,22 +82,24 @@ const ViewMemories = () => {
 						</div>
 						{/* </Link> */}
 						{/* URLs */}
-						<div className=''>
+						<div>
 							<h2 className='font-medium'>URLs</h2>
-							{memory.urls ? (
-								memory.urls.map((url) => (
-									<div className='' key={url.url_address}>
-										<a
-											href={url.url_address}
-											target='_blank'
-											rel='noopener noreferrer'>
-											{url.url_address}
-										</a>
-									</div>
-								))
-							) : (
-								<p>No URLs available</p>
-							)}
+							<ul>
+								{memory.urls && memory.urls.length > 0 ? (
+									memory.urls.map((url) => (
+										<li key={url.id}>
+											<a
+												href={url.url_address}
+												target='_blank'
+												rel='noopener noreferrer'>
+												{url.url_address}
+											</a>
+										</li>
+									))
+								) : (
+									<p>No URLs available</p>
+								)}
+							</ul>
 						</div>
 					</article>
 				))

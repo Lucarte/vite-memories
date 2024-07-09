@@ -37,7 +37,6 @@ const CreateMemory: React.FC = () => {
 			month: "",
 			category_ids: [],
 			files: [],
-			urls: "",
 		},
 	});
 
@@ -80,10 +79,12 @@ const CreateMemory: React.FC = () => {
 			formData.append("category_ids[]", categoryIds);
 		}
 
-		const urlList = data.urls.split(",").map((url) => url.trim());
-		const formattedUrls = urlList.map((url, index) => ({
-			id: Date.now() + index,
-			url_address: url,
+		// Ensure data.urls is properly initialized as an array
+		const urlList = Array.isArray(data.urls) ? data.urls : []; // Fallback to empty array if data.urls is not an array
+
+		const formattedUrls = urlList.map((url) => ({
+			id: url.url_address,
+			url_address: url.url_address,
 		}));
 
 		const payload = {
@@ -365,14 +366,7 @@ const CreateMemory: React.FC = () => {
 							URLs
 						</label>
 						<input
-							{...register("urls", {
-								validate: (value) =>
-									value
-										.split(",")
-										.every((url) =>
-											url.trim().match(/^(https?:\/\/)?([^\s$.?#].[^\s]*)$/)
-										) || "One or more URLs are invalid.",
-							})}
+							{...register("urls")}
 							type='text'
 							placeholder='example.com, another-example.com'
 							className='block w-full px-4 py-2 text-sm border rounded-md'
