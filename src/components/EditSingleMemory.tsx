@@ -9,6 +9,7 @@ import Tailspin from "./Tailspin";
 import { useEffect, useState } from "react";
 import http from "../utils/http";
 import { days, kidOptions, months, years } from "../utils/memoryUtils";
+
 // Helper function to format the date
 const formatDate = (dateString: string): string => {
 	const date = new Date(dateString);
@@ -36,6 +37,7 @@ const EditSingleMemory = ({ memory }: Props) => {
 		handleSubmit,
 		formState: { errors },
 		getValues,
+		setValue,
 	} = useForm<MemoryValues>({});
 
 	const [categories, setCategories] = useState<
@@ -55,8 +57,14 @@ const EditSingleMemory = ({ memory }: Props) => {
 		fetchCategories();
 	}, []);
 
+	useEffect(() => {
+		const categoryIds = getValues("category_ids");
+		if (!Array.isArray(categoryIds)) {
+			setValue("category_ids", []);
+		}
+	}, [getValues, setValue]);
+
 	const onValid: SubmitHandler<MemoryValues> = (data) => {
-		// With fetcher.submit, we as developers decide when we send the form. In this case, we want to do it after validation.
 		const formData = new FormData(event?.target as HTMLFormElement);
 		const categoryIds = getValues("category_ids");
 		formData.delete("category_ids");
@@ -168,7 +176,7 @@ const EditSingleMemory = ({ memory }: Props) => {
 				<div className='flex justify-between gap-4'>
 					<img
 						className='w-8 h-8 cursor-pointer'
-						src='src/assets/EditIcon.svg'
+						src='/src/assets/EditIcon.svg'
 						alt='link to edit entry'
 						onClick={() => setShowEdit(!showEdit)}
 					/>
@@ -246,7 +254,8 @@ const EditSingleMemory = ({ memory }: Props) => {
 									key={category.id}
 									htmlFor={`category-${category.id}`}
 									className={`relative flex px-3 mx-2 my-1 border border-black rounded cursor-pointer w-fit ${
-										getValues("category_ids")?.includes(category.id.toString())
+										Array.isArray(getValues("category_ids")) &&
+										getValues("category_ids").includes(category.id.toString())
 											? "bg-white text-black"
 											: "bg-black text-white"
 									} hover:bg-white hover:text-black`}>
@@ -301,7 +310,7 @@ const EditSingleMemory = ({ memory }: Props) => {
 							{...register("description", { required: true })}
 							className='block w-full px-4 py-2 text-sm border rounded-md'
 							rows={4}
-							// defaultValue={memory.description}
+							defaultValue={memory.description}
 						/>
 						{errors.description && (
 							<p className='mt-1 text-sm font-light text-orange-500'>
@@ -321,8 +330,7 @@ const EditSingleMemory = ({ memory }: Props) => {
 								id='month'
 								{...register("month")}
 								className='block w-full px-4 py-2 text-sm border rounded-md'
-								// defaultValue={memory.month}
-							>
+								defaultValue={memory.month}>
 								{months.map((month) => (
 									<option key={month} value={month}>
 										{month}
@@ -333,8 +341,7 @@ const EditSingleMemory = ({ memory }: Props) => {
 								id='day'
 								{...register("day")}
 								className='block w-full px-4 py-2 text-sm border rounded-md'
-								// defaultValue={memory.day}
-							>
+								defaultValue={memory.day}>
 								{days.map((day) => (
 									<option key={day} value={day}>
 										{day}
@@ -345,8 +352,7 @@ const EditSingleMemory = ({ memory }: Props) => {
 								id='year'
 								{...register("year")}
 								className='block w-full px-4 py-2 text-sm border rounded-md'
-								// defaultValue={memory.year}
-							>
+								defaultValue={memory.year}>
 								{years.map((year) => (
 									<option key={year} value={year}>
 										{year}

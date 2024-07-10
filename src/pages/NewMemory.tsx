@@ -23,7 +23,6 @@ import {
 } from "../utils/memoryUtils";
 
 const CreateMemory: React.FC = () => {
-	// const loaderData = useLoaderData();
 	const {
 		register,
 		handleSubmit,

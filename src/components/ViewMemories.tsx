@@ -1,4 +1,4 @@
-import { useAsyncValue, Link } from "react-router-dom";
+import { useAsyncValue, useNavigate } from "react-router-dom";
 import { MemoryValues } from "../types/MemoryValues";
 import mime from "mime";
 import displayFile from "../utils/DisplayFile";
@@ -17,12 +17,20 @@ const formatDate = (dateString: string): string => {
 
 const ViewMemories = () => {
 	const memories = useAsyncValue() as MemoryValues[];
+	const navigate = useNavigate();
+
+	const handleMemoryLoad = (title: string) => {
+		navigate(`/memories/title/${title}`);
+	};
 
 	return (
 		<>
 			{memories ? (
 				memories.map((memory) => (
-					<Link to={`/memories/title/${memory.title}`} key={memory.title}>
+					<div
+						key={memory.title}
+						onClick={() => handleMemoryLoad(memory.title)}
+						className='cursor-pointer'>
 						<article
 							key={memory.title}
 							className='flex flex-col items-end gap-6 pt-16 overflow-hidden text-gray-300 screen mx-9 font-extralight'>
@@ -85,7 +93,6 @@ const ViewMemories = () => {
 								</ul>
 							</div>
 							{/* URLs */}
-							{/* </Link> */}
 							<div>
 								<h2 className='font-medium'>URLs</h2>
 								<ul>
@@ -106,7 +113,8 @@ const ViewMemories = () => {
 								</ul>
 							</div>
 						</article>
-					</Link>
+						//{" "}
+					</div>
 				))
 			) : (
 				<p>No Memories found.</p>

@@ -105,7 +105,7 @@ const Memories = () => {
 	const deferredData = useLoaderData() as DeferredLoaderData;
 
 	return (
-		<article className='flex flex-col items-center gap-6 pt-6 text-right'>
+		<article className='flex flex-col items-center gap-6 pt-6 pb-24 text-right'>
 			<ScrollUpBtn />
 			<DarkModeBtn />
 			<h1 className='pb-6 text-xl font-bold text-center uppercase'>
