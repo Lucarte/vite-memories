@@ -76,7 +76,7 @@ const router = createBrowserRouter(
 				<Route path='/fans' element={<Fans />} loader={rootLoader} />
 
 				{/* Not Found */}
-				<Route path='*' element={<NotFound />} />
+				<Route path='*' element={<NotFound />} loader={rootLoader} />
 			</Route>
 			<Route path='/' element={<HomeLayout />} errorElement={<RootError />}>
 				<Route index element={<Home />} />

@@ -64,7 +64,6 @@ const Login = () => {
 	return (
 		<article className='flex flex-col items-center px-6 py-12 text-center md:mt-28lg:px-8'>
 			<DarkModeBtn />
-			<ScrollUpBtn />
 			{/* Title */}
 			<h2
 				className={`${

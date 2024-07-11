@@ -101,7 +101,7 @@ const EditSingleMemory = ({ memory }: Props) => {
 		<>
 			<article
 				key={memory.title}
-				className='flex flex-col items-end gap-6 pt-16 overflow-hidden text-gray-300 screen mx-9 font-extralight'>
+				className='flex flex-col items-end gap-6 overflow-hidden text-gray-300 screen mx-9 font-extralight'>
 				{/* Entry Header */}
 				<section className='flex flex-col w-full'>
 					<div className='flex justify-end mb-2'>

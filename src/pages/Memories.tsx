@@ -105,38 +105,12 @@ const Memories = () => {
 	const deferredData = useLoaderData() as DeferredLoaderData;
 
 	return (
-		<article className='flex flex-col items-center gap-6 pt-6 pb-24 text-right'>
+		<article className='flex flex-col items-center gap-6 pt-6 text-right'>
 			<ScrollUpBtn />
 			<DarkModeBtn />
-			<h1 className='pb-6 text-xl font-bold text-center uppercase'>
-				A.l.l..M.e.m.o.r.i.e.s.
+			<h1 className='pt-4 pb-6 text-xl font-bold text-center'>
+				a.l.l <br /> .M.e.m.o.r.i.e.S.
 			</h1>
-			<aside className='flex items-center cursor-pointer'>
-				<div className='flex justify-center gap-1'>
-					<button
-						onClick={() => setView("view")}
-						className={classNames(
-							"py-1 text-sm px-3 rounded-md rounded-bl-none",
-							{
-								"bg-black text-white": view !== "view",
-								"bg-white text-black": view === "view",
-							}
-						)}>
-						View Memories
-					</button>
-					<button
-						onClick={() => setView("edit")}
-						className={classNames(
-							"py-1 text-sm px-3 rounded-md rounded-br-none",
-							{
-								"bg-black border-1 border-white text-white": view !== "edit",
-								"bg-white border-1 border-black text-black": view === "edit",
-							}
-						)}>
-						Update Memories
-					</button>
-				</div>
-			</aside>
 			<section className='w-screen'>
 				<Suspense
 					fallback={
@@ -151,6 +125,36 @@ const Memories = () => {
 					</Await>
 				</Suspense>
 			</section>
+			<aside
+				className={classNames("flex items-center cursor-pointer", {
+					"mt-10": view !== "edit",
+					"mt-16": view === "edit",
+				})}>
+				<div className='flex justify-center gap-1'>
+					<button
+						onClick={() => setView("view")}
+						className={classNames(
+							"py-1 text-sm px-3 rounded-md rounded-bl-none border-2 ",
+							{
+								"border-black bg-black text-white": view !== "view",
+								"border-black bg-white text-black": view === "view",
+							}
+						)}>
+						View <br /> Memories
+					</button>
+					<button
+						onClick={() => setView("edit")}
+						className={classNames(
+							"py-1 text-sm px-3 rounded-md rounded-br-none border-2",
+							{
+								"border-black bg-black text-white": view !== "edit",
+								"border-black bg-white text-black": view === "edit",
+							}
+						)}>
+						Update <br /> Memories
+					</button>
+				</div>
+			</aside>
 		</article>
 	);
 };

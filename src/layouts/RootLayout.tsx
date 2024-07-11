@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { LoaderFunction, Outlet, useLoaderData } from "react-router-dom";
 import Header from "../partials/Header";
 import { loggedInData } from "../utils/api";
@@ -41,7 +42,7 @@ const AdminNav = () => {
 			<LoadingLayout>
 				<>
 					<Header />
-					<p className='mt-4 text-center text-orange-600'>Have fun, Admin!</p>
+					{/* <p className='mt-4 text-center text-orange-600'>Have fun, Admin!</p> */}
 					<main>
 						<Outlet />
 					</main>
@@ -53,9 +54,10 @@ const AdminNav = () => {
 };
 
 const RootLayout = () => {
-	const { loggedIn, isAdmin } = useLoaderData() as {
+	const { loggedIn, isAdmin, user } = useLoaderData() as {
 		loggedIn: boolean;
 		isAdmin: boolean;
+		user: { id: number; firstName: string; lastName: string } | null;
 	};
 
 	if (loggedIn) {

@@ -1,6 +1,22 @@
 import { MemoryFile, MemoryValues, PatchValues } from "../types/MemoryValues";
 import http from "./http";
 
+// // STATUS
+// export const loggedInData = async () => {
+// 	await new Promise((resolve) => setTimeout(resolve, 3000));
+// 	try {
+// 		const res = await http("/api/auth/login/status");
+// 		const data = res.data;
+// 		// Check if loggedIn is true and userId is present
+// 		if (data && data.loggedIn && data.userId) {
+// 			return { loggedIn: true, isAdmin: data.isAdmin };
+// 		}
+// 		return { loggedIn: false, isAdmin: false };
+// 	} catch (error) {
+// 		console.error("Error checking login status:", error);
+// 		return { loggedIn: false, isAdmin: false };
+// 	}
+// };
 // STATUS
 export const loggedInData = async () => {
 	await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -9,12 +25,20 @@ export const loggedInData = async () => {
 		const data = res.data;
 		// Check if loggedIn is true and userId is present
 		if (data && data.loggedIn && data.userId) {
-			return { loggedIn: true, isAdmin: data.isAdmin };
+			return {
+				loggedIn: true,
+				isAdmin: data.isAdmin,
+				user: {
+					id: data.userId,
+					firstName: data.firstName,
+					lastName: data.lastName,
+				},
+			};
 		}
-		return { loggedIn: false, isAdmin: false };
+		return { loggedIn: false, isAdmin: false, user: null };
 	} catch (error) {
 		console.error("Error checking login status:", error);
-		return { loggedIn: false, isAdmin: false };
+		return { loggedIn: false, isAdmin: false, user: null };
 	}
 };
 
@@ -76,5 +100,12 @@ export const patchMemory = async (id: number, data: PatchValues) => {
 	const res = await http.patch(`/api/auth/memories/${id}`, data);
 	console.log(`Patching memory with ID ${id}:`, data);
 	if (res.status !== 200) throw res;
+	return res.data;
+};
+
+// GET FAN BY ID
+export const getFanById = async (id: number) => {
+	const res = await http(`/api/auth/status`);
+	if (res.status !== 200) throw new Error(`Fan with id ${id} not found`);
 	return res.data;
 };
