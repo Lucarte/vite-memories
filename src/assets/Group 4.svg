@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="293.481" height="277.365" viewBox="0 0 293.481 277.365">
   <g id="Group_4" data-name="Group 4" transform="translate(7.353 22)">
     <text id="P" transform="translate(8.647 76)" fill="#fff" font-size="100" font-family="Luminari-Regular, Luminari"><tspan x="0" y="0">P</tspan></text>
-    <line id="Line_12" data-name="Line 12" x1="91.649" y1="91.846" transform="translate(183.873 2.845)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="15"/>
-    <line id="Line_14" data-name="Line 14" y2="133" transform="translate(22.323 112.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="15"/>
+    <line id="Line_12" data-name="Line 12" x1="91.649" y1="91.846" transform="translate(183.873 2.845)" fill="none" stroke="#fff" stroke-linecap="round" strokeWidth="15"/>
+    <line id="Line_14" data-name="Line 14" y2="133" transform="translate(22.323 112.5)" fill="none" stroke="#fff" stroke-linecap="round" strokeWidth="15"/>
     <text id="G" transform="matrix(-0.052, 0.999, -0.999, -0.052, 186.192, 173.341)" fill="#fff" font-size="100" font-family="Luminari-Regular, Luminari"><tspan x="0" y="0">G</tspan></text>
-    <path id="Path_25" data-name="Path 25" d="M0,0V80.229" transform="translate(183.712 2.569) rotate(90)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="15"/>
-    <line id="Line_139" data-name="Line 139" y2="133" transform="translate(155.999 246.175) rotate(90)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="15"/>
-    <path id="Path_26" data-name="Path 26" d="M0,0V80.229" transform="translate(275.826 94.684)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="15"/>
+    <path id="Path_25" data-name="Path 25" d="M0,0V80.229" transform="translate(183.712 2.569) rotate(90)" fill="none" stroke="#fff" stroke-linecap="round" strokeWidth="15"/>
+    <line id="Line_139" data-name="Line 139" y2="133" transform="translate(155.999 246.175) rotate(90)" fill="none" stroke="#fff" stroke-linecap="round" strokeWidth="15"/>
+    <path id="Path_26" data-name="Path 26" d="M0,0V80.229" transform="translate(275.826 94.684)" fill="none" stroke="#fff" stroke-linecap="round" strokeWidth="15"/>
   </g>
 </svg>

@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="45.86" height="47.63" viewBox="0 0 45.86 47.63">
   <g id="Group_4" data-name="Group 4" transform="translate(65 48.277) rotate(-90)">
-    <text id="P" transform="translate(4.647 -49)" fill="#fff" stroke="#fff" stroke-width="1" font-size="15" font-family="Luminari-Regular, Luminari"><tspan x="0" y="0">P</tspan></text>
-    <text id="G" transform="translate(32.277 -32.14) rotate(90)" fill="#fff" stroke="#fff" stroke-width="1" font-size="15" font-family="Luminari-Regular, Luminari"><tspan x="0" y="0">G</tspan></text>
-    <line id="Line_140" data-name="Line 140" y2="18" transform="translate(7.647 -40.918)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4"/>
-    <line id="Line_141" data-name="Line 141" y2="17" transform="translate(25.147 -22.418) rotate(90)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4"/>
-    <line id="Line_142" data-name="Line 142" y2="10" transform="translate(31.147 -59.418) rotate(90)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4"/>
-    <line id="Line_143" data-name="Line 143" y2="10" transform="translate(44.147 -46.418)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4"/>
-    <line id="Line_144" data-name="Line 144" y2="17" transform="translate(43.657 -47.408) rotate(135)" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4"/>
+    <text id="P" transform="translate(4.647 -49)" fill="#fff" stroke="#fff" strokeWidth="1" font-size="15" font-family="Luminari-Regular, Luminari"><tspan x="0" y="0">P</tspan></text>
+    <text id="G" transform="translate(32.277 -32.14) rotate(90)" fill="#fff" stroke="#fff" strokeWidth="1" font-size="15" font-family="Luminari-Regular, Luminari"><tspan x="0" y="0">G</tspan></text>
+    <line id="Line_140" data-name="Line 140" y2="18" transform="translate(7.647 -40.918)" fill="none" stroke="#fff" stroke-linecap="round" strokeWidth="4"/>
+    <line id="Line_141" data-name="Line 141" y2="17" transform="translate(25.147 -22.418) rotate(90)" fill="none" stroke="#fff" stroke-linecap="round" strokeWidth="4"/>
+    <line id="Line_142" data-name="Line 142" y2="10" transform="translate(31.147 -59.418) rotate(90)" fill="none" stroke="#fff" stroke-linecap="round" strokeWidth="4"/>
+    <line id="Line_143" data-name="Line 143" y2="10" transform="translate(44.147 -46.418)" fill="none" stroke="#fff" stroke-linecap="round" strokeWidth="4"/>
+    <line id="Line_144" data-name="Line 144" y2="17" transform="translate(43.657 -47.408) rotate(135)" fill="none" stroke="#fff" stroke-linecap="round" strokeWidth="4"/>
   </g>
 </svg>

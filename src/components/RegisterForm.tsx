@@ -65,7 +65,7 @@ const RegisterForm = () => {
 							alt='User avatar'
 							className={`${
 								enabled ? "bg-white" : "bg-gray-400"
-							} object-cover w-12 h-12 rounded-full`}
+							} object-cover w-10 h-10 rounded rounded-tl-xl-full`}
 						/>
 					) : (
 						<UserCircleIcon

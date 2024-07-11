@@ -1,5 +1,4 @@
 import { useFetchers, useNavigation } from "react-router-dom";
-import LineSpinner from "../components/LineSpinner";
 import Tailspin from "../components/Tailspin";
 
 type Props = {

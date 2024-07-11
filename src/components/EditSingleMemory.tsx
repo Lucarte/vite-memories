@@ -106,12 +106,8 @@ const EditSingleMemory = ({ memory }: Props) => {
 				<section className='flex flex-col w-full'>
 					<div className='flex justify-end mb-2'>
 						<img
-							className='w-12 h-12 rounded'
-							src={
-								memory.user.avatar
-									? memory.user.avatar.avatar_path
-									: "/src/media/defaultAvatar.png"
-							}
+							className='w-10 h-10 rounded rounded-tl-xl'
+							src={`http://localhost/storage/${memory.user.avatar.avatar_path}`}
 							alt={`Picture of ${memory.user.first_name} ${memory.user.last_name}`}
 						/>
 					</div>

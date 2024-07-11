@@ -22,7 +22,6 @@ const ViewMemories = () => {
 	const handleMemoryLoad = (title: string) => {
 		navigate(`/memories/title/${title}`);
 	};
-
 	return (
 		<>
 			{memories ? (
@@ -38,11 +37,8 @@ const ViewMemories = () => {
 							<section className='flex flex-col w-full'>
 								<div className='flex justify-end mb-2'>
 									<img
-										className='w-12 h-12 rounded'
-										src={
-											memory.user.avatar?.avatar_path ||
-											"/src/media/defaultAvatar.png"
-										}
+										className='w-10 h-10 rounded rounded-tl-xl'
+										src={`http://localhost/storage/${memory.user.avatar.avatar_path}`}
 										alt={`Picture of ${memory.user.first_name} ${memory.user.last_name}`}
 										onError={(e) => {
 											console.error("Failed to load avatar:", e);
@@ -75,10 +71,7 @@ const ViewMemories = () => {
 										memory.files.map((file) => (
 											<li
 												className={`object-cover mt-10 ${
-													(file.file_path &&
-														mime
-															.getType(file.file_path)
-															?.startsWith("image/")) ||
+													mime.getType(file.file_path)?.startsWith("image/") ||
 													mime.getType(file.file_path)?.startsWith("video/")
 														? "h-64"
 														: "h-auto min-w-[80vw]"
