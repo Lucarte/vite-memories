@@ -64,9 +64,10 @@ const EditSingleMemory = ({ memory }: Props) => {
 		}
 	}, [getValues, setValue]);
 
-	const onValid: SubmitHandler<MemoryValues> = (data) => {
+	const onValid: SubmitHandler<MemoryValues> = (data, event) => {
 		const formData = new FormData(event?.target as HTMLFormElement);
 		const categoryIds = getValues("category_ids");
+
 		formData.delete("category_ids");
 		if (Array.isArray(categoryIds)) {
 			categoryIds.forEach((id) => formData.append("category_ids[]", id));

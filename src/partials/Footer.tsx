@@ -20,16 +20,15 @@ const Footer = () => {
 
 	return (
 		<footer
-			className={`fixed bottom-0 flex shadow-inner rounded-t-full items-center z-10 justify-center w-[calc(100%-16px)] h-16 font-titles ${
+			className={`fixed bottom-0 flex shadow-inner rounded-t-3xl items-center z-10 justify-center w-[calc(100%-16px)] h-16 font-titles ${
 				enabled ? "text-white bg-black" : " text-black bg-white"
 			} `}>
 			<div className='flex items-center justify-between'>
-				{/* Add the firstName of the person to the message */}
 				<Form
 					action='/logout'
 					method='POST'
 					className='flex items-center gap-4'>
-					<p className='text-sm text-gray-300 font-titles font-extralight'>
+					<p className='text-sm text-gray-400'>
 						{loggedIn
 							? `Welcome into the past, ${userName}!`
 							: "Welcome into the past!"}

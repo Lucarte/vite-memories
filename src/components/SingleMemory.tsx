@@ -51,8 +51,28 @@ const SingleMemory = () => {
 				S.i.N.G.L.e..M.e.M.o.R.y.
 			</h1>
 			<aside className='flex items-center cursor-pointer'>
-				<div className='flex justify-center gap-1'>
-					<button
+				<div className='flex flex-col items-center gap-1'>
+					<section className='w-[94vw]'>
+						<Suspense
+							fallback={
+								<div className='flex justify-center w-screen'>
+									<HerzSpinner />
+								</div>
+							}>
+							<Await
+								resolve={deferredData.memory}
+								errorElement={<p>Could not load memory.</p>}>
+								{(memory) =>
+									view === "view" ? (
+										<ViewSingleMemory memory={memory} />
+									) : (
+										<EditSingleMemory memory={memory} />
+									)
+								}
+							</Await>
+						</Suspense>
+					</section>
+					{/* <button
 						onClick={() => setView("view")}
 						className={classNames(
 							"py-1 text-sm px-3 rounded-md rounded-bl-none",
@@ -61,7 +81,7 @@ const SingleMemory = () => {
 								"bg-white text-black": view === "view",
 							}
 						)}>
-						View Memory
+						View
 					</button>
 					<button
 						onClick={() => setView("edit")}
@@ -72,30 +92,10 @@ const SingleMemory = () => {
 								"bg-white border-1 border-black text-black": view === "edit",
 							}
 						)}>
-						Update Memory
-					</button>
+						Update
+					</button> */}
 				</div>
 			</aside>
-			<section className='w-[94vw]'>
-				<Suspense
-					fallback={
-						<div className='flex justify-center w-screen'>
-							<HerzSpinner />
-						</div>
-					}>
-					<Await
-						resolve={deferredData.memory}
-						errorElement={<p>Could not load memory.</p>}>
-						{(memory) =>
-							view === "view" ? (
-								<ViewSingleMemory memory={memory} />
-							) : (
-								<EditSingleMemory memory={memory} />
-							)
-						}
-					</Await>
-				</Suspense>
-			</section>
 		</article>
 	);
 };
