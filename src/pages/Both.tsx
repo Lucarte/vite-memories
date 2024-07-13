@@ -1,4 +1,4 @@
-// Gabriella.tsx
+// Both.tsx
 /* eslint-disable react-refresh/only-export-components */
 import { Suspense } from "react";
 import { useLoaderData, Await } from "react-router-dom";
@@ -13,16 +13,14 @@ interface DeferredLoaderData {
 
 export const loader = memoryLoader;
 
-const Gabriella = () => {
+const Both = () => {
 	const deferredData = useLoaderData() as DeferredLoaderData;
 	console.log("Deferred Data:", deferredData);
 	return (
 		<>
 			<div className='flex flex-col items-center gap-6 pt-6 text-right'>
-				<h1 className='pt-4 pb-6 text-xl font-bold text-center'>
-					G.A.B.R.I.E.L.L.A
-				</h1>
-				<p>Welcome to Gabriella's MEMORIES!</p>
+				<h1 className='pt-4 pb-6 text-xl font-bold text-center'>B.O.T.H</h1>
+				<p>Welcome to Both MEMORIES!</p>
 			</div>
 			<section className='w-screen'>
 				<Suspense
@@ -42,4 +40,4 @@ const Gabriella = () => {
 	);
 };
 
-export default Gabriella;
+export default Both;

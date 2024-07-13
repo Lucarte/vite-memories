@@ -24,7 +24,7 @@ import Memories, {
 	loader as memoriesLoader,
 	action as memoriesAction,
 } from "./pages/Memories";
-import Pablo from "./pages/Pablo";
+import Pablo, { loader as pabloMemoriesLoader } from "./pages/Pablo";
 import Gabriella, {
 	loader as gabriellaMemoriesLoader,
 } from "./pages/Gabriella";
@@ -32,12 +32,16 @@ import NewMemory, {
 	action as createMemoryAction,
 	loader as newMemoryFormLoader,
 } from "./pages/NewMemory";
-import Fans from "./pages/Fans";
+import Fans, { loader as fansLoader } from "./pages/Fans";
 import NotFound from "./pages/NotFound";
 import Footer, { action as footerAction } from "./partials/Footer";
 import SingleMemory, {
 	loader as singleMemoryLoader,
 } from "./components/SingleMemory";
+import GabIntro from "./pages/GabIntro";
+import PabloIntro from "./pages/PabloIntro";
+import Both, { loader as bothMemoryloader } from "./pages/Both";
+import BothIntro from "./pages/BothIntro";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -54,12 +58,24 @@ const router = createBrowserRouter(
 					action={registerAction}
 				/>
 				<Route path='/logout' element={<Footer />} action={footerAction} />
+				<Route path='/gabriella' element={<GabIntro />} />
+				<Route path='/pablo' element={<PabloIntro />} />
+				<Route path='/both' element={<BothIntro />} />
 				<Route
-					path='memories/kid/:kid'
+					path='/memories/kid/:kid'
 					element={<Gabriella />}
 					loader={gabriellaMemoriesLoader}
 				/>
-				<Route path='/pablo' element={<Pablo />} />
+				<Route
+					path='/memories/kid/:kid'
+					element={<Pablo />}
+					loader={pabloMemoriesLoader}
+				/>
+				<Route
+					path='/memories/kid/:kid'
+					element={<Both />}
+					loader={bothMemoryloader}
+				/>
 				<Route
 					path='/memories'
 					element={<Memories />}
@@ -71,11 +87,6 @@ const router = createBrowserRouter(
 					element={<SingleMemory />}
 					loader={singleMemoryLoader}
 				/>
-				{/* <Route
-					path='/memories/kid/:kid'
-					element={<Memories />}
-					loader={memoriesLoader}
-				/> */}
 
 				{/* Admin Routes */}
 				<Route
@@ -84,7 +95,7 @@ const router = createBrowserRouter(
 					loader={newMemoryFormLoader}
 					action={createMemoryAction}
 				/>
-				<Route path='/fans' element={<Fans />} loader={rootLoader} />
+				<Route path='/fans' element={<Fans />} loader={fansLoader} />
 
 				{/* Not Found */}
 				<Route path='*' element={<NotFound />} loader={rootLoader} />

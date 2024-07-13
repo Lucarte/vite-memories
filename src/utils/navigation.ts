@@ -13,7 +13,7 @@ export const navigation = [
 	},
 	{
 		name: "Both",
-		href: "/memories/kid/Both",
+		href: "/both",
 		page: "Both",
 		current: false,
 	},
@@ -25,7 +25,7 @@ export const navigation = [
 	},
 	{
 		name: "Gabriella",
-		href: "/memories/kid/gabriella",
+		href: "/gabriella",
 		page: "Gabriella",
 		current: false,
 	},

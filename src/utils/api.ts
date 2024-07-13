@@ -83,16 +83,29 @@ export const patchMemory = async (id: number, data: PatchValues) => {
 	return res.data;
 };
 
-// GET FAN BY ID
-export const getFanById = async (id: number) => {
-	const res = await http(`/api/auth/status`);
-	if (res.status !== 200) throw new Error(`Fan with id ${id} not found`);
-	return res.data;
-};
-
 // GET MEMORIES BY KID
 export const getMemoriesByKid = async (kid: string) => {
 	const res = await http(`/api/auth/memories/kid/${kid}`);
 	if (res.status !== 200) throw new Error(`Memorie for ${kid} not found`);
+	return res.data;
+};
+
+export const getAllFans = async () => {
+	try {
+		const res = await http.get("/api/auth/fans");
+		if (res.status !== 200) {
+			throw new Error("Failed to fetch fans");
+		}
+		return res.data.users || [];
+	} catch (error) {
+		console.error("Error fetching fans:", error);
+		return []; // Handle error and return appropriate value
+	}
+};
+
+// GET FAN BY ID
+export const getFanById = async (id: number) => {
+	const res = await http(`/api/auth/status`);
+	if (res.status !== 200) throw new Error(`Fan with id ${id} not found`);
 	return res.data;
 };
