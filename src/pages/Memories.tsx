@@ -29,10 +29,19 @@ type DeferredLoaderData = {
 
 // Loader - All Memories
 export const loader: LoaderFunction = async () => {
-	// Are we logged in? if not, redirect!
+	// Check if logged in
 	const { loggedIn } = await loggedInData();
-	if (!loggedIn) return redirect("/login");
-	return defer({ memories: getAllMemories() });
+	if (!loggedIn) {
+		return redirect("/login");
+	}
+
+	try {
+		const memories = await getAllMemories();
+		return defer({ memories });
+	} catch (error) {
+		console.error("Error fetching all memories:", error);
+		return defer({ memories: [] }); // Return empty array or handle error
+	}
 };
 
 // Action - delete or update
@@ -45,6 +54,7 @@ export const action: ActionFunction = async ({ request }) => {
 	}
 
 	if (!isAdmin) {
+		// TO DO: show this message as a modal!
 		console.log("Admin Zone: Access denied");
 		return "Admin Zone: Access denied";
 	}
@@ -121,7 +131,13 @@ const Memories = () => {
 					<Await
 						resolve={deferredData.memories}
 						errorElement={<p>Could not load memories.</p>}>
-						{view === "view" ? <ViewMemories /> : <EditMemories />}
+						{(loadedMemories) =>
+							view === "view" ? (
+								<ViewMemories memories={loadedMemories} />
+							) : (
+								<EditMemories />
+							)
+						}
 					</Await>
 				</Suspense>
 			</section>

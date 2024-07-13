@@ -25,7 +25,9 @@ import Memories, {
 	action as memoriesAction,
 } from "./pages/Memories";
 import Pablo from "./pages/Pablo";
-import Gabriella from "./pages/Gabriella";
+import Gabriella, {
+	loader as gabriellaMemoriesLoader,
+} from "./pages/Gabriella";
 import NewMemory, {
 	action as createMemoryAction,
 	loader as newMemoryFormLoader,
@@ -52,7 +54,11 @@ const router = createBrowserRouter(
 					action={registerAction}
 				/>
 				<Route path='/logout' element={<Footer />} action={footerAction} />
-				<Route path='/gabriella' element={<Gabriella />} />
+				<Route
+					path='memories/kid/:kid'
+					element={<Gabriella />}
+					loader={gabriellaMemoriesLoader}
+				/>
 				<Route path='/pablo' element={<Pablo />} />
 				<Route
 					path='/memories'
@@ -65,6 +71,11 @@ const router = createBrowserRouter(
 					element={<SingleMemory />}
 					loader={singleMemoryLoader}
 				/>
+				{/* <Route
+					path='/memories/kid/:kid'
+					element={<Memories />}
+					loader={memoriesLoader}
+				/> */}
 
 				{/* Admin Routes */}
 				<Route

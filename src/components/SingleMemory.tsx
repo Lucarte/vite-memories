@@ -11,7 +11,6 @@ import { getMemoryByTitle, loggedInData } from "../utils/api";
 import ScrollUpBtn from "../partials/ScrollUpBtn";
 import DarkModeBtn from "../partials/DarkModeBtn";
 import { Suspense, useState } from "react";
-import classNames from "classnames";
 import HerzSpinner from "./HerzSpinner";
 import ViewSingleMemory from "./ViewSingleMemory";
 import EditSingleMemory from "./EditSingleMemory";

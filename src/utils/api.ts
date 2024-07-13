@@ -1,25 +1,7 @@
 import { MemoryFile, MemoryValues, PatchValues } from "../types/MemoryValues";
 import http from "./http";
 
-// // STATUS
-// export const loggedInData = async () => {
-// 	await new Promise((resolve) => setTimeout(resolve, 3000));
-// 	try {
-// 		const res = await http("/api/auth/login/status");
-// 		const data = res.data;
-// 		// Check if loggedIn is true and userId is present
-// 		if (data && data.loggedIn && data.userId) {
-// 			return { loggedIn: true, isAdmin: data.isAdmin };
-// 		}
-// 		return { loggedIn: false, isAdmin: false };
-// 	} catch (error) {
-// 		console.error("Error checking login status:", error);
-// 		return { loggedIn: false, isAdmin: false };
-// 	}
-// };
-// STATUS
 export const loggedInData = async () => {
-	await new Promise((resolve) => setTimeout(resolve, 3000));
 	try {
 		const res = await http("/api/auth/login/status");
 		const data = res.data;
@@ -65,7 +47,6 @@ export const logout = async () => {
 
 // MEMORIES
 export const getAllMemories = async () => {
-	await new Promise((resolve) => setTimeout(resolve, 3000));
 	const res = await http("/api/auth/memories");
 	if (res.status !== 200) throw res;
 	return res.data.Memories || [];
@@ -96,7 +77,6 @@ export const deleteMemory = async (title: string) => {
 
 // UPDATE MEMORY
 export const patchMemory = async (id: number, data: PatchValues) => {
-	await new Promise((resolve) => setTimeout(resolve, 3000));
 	const res = await http.patch(`/api/auth/memories/${id}`, data);
 	console.log(`Patching memory with ID ${id}:`, data);
 	if (res.status !== 200) throw res;
@@ -107,5 +87,12 @@ export const patchMemory = async (id: number, data: PatchValues) => {
 export const getFanById = async (id: number) => {
 	const res = await http(`/api/auth/status`);
 	if (res.status !== 200) throw new Error(`Fan with id ${id} not found`);
+	return res.data;
+};
+
+// GET MEMORIES BY KID
+export const getMemoriesByKid = async (kid: string) => {
+	const res = await http(`/api/auth/memories/kid/${kid}`);
+	if (res.status !== 200) throw new Error(`Memorie for ${kid} not found`);
 	return res.data;
 };
