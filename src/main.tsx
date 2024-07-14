@@ -42,6 +42,7 @@ import GabIntro from "./pages/GabIntro";
 import PabloIntro from "./pages/PabloIntro";
 import Both, { loader as bothMemoryloader } from "./pages/Both";
 import BothIntro from "./pages/BothIntro";
+import SingleFan, { loader as singleFanLoader } from "./pages/SingleFan";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -96,6 +97,11 @@ const router = createBrowserRouter(
 					action={createMemoryAction}
 				/>
 				<Route path='/fans' element={<Fans />} loader={fansLoader} />
+				<Route
+					path='/fan/:id'
+					element={<SingleFan />}
+					loader={singleFanLoader}
+				/>
 
 				{/* Not Found */}
 				<Route path='*' element={<NotFound />} loader={rootLoader} />

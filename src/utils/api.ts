@@ -1,7 +1,17 @@
-import { MemoryFile, MemoryValues, PatchValues } from "../types/MemoryValues";
+import { FanValues } from "../types/FanValues";
+import {
+	MemoryFile,
+	MemoryValues,
+	PatchValues,
+	User,
+} from "../types/MemoryValues";
 import http from "./http";
-
-export const loggedInData = async () => {
+export const loggedInData = async (): Promise<{
+	loggedIn: boolean;
+	isAdmin: boolean;
+	user: User | null;
+}> => {
+	// export const loggedInData = async () => {
 	try {
 		const res = await http("/api/auth/login/status");
 		const data = res.data;
@@ -11,9 +21,10 @@ export const loggedInData = async () => {
 				loggedIn: true,
 				isAdmin: data.isAdmin,
 				user: {
+					avatar: data.avatar,
 					id: data.userId,
-					firstName: data.firstName,
-					lastName: data.lastName,
+					first_name: data.firstName,
+					last_name: data.lastName,
 				},
 			};
 		}
@@ -90,6 +101,7 @@ export const getMemoriesByKid = async (kid: string) => {
 	return res.data;
 };
 
+// FANS
 export const getAllFans = async () => {
 	try {
 		const res = await http.get("/api/auth/fans");
@@ -103,9 +115,20 @@ export const getAllFans = async () => {
 	}
 };
 
+// // GET FAN BY ID
+// export const getFanById = async (id: number) => {
+// 	const res = await http(`/api/auth/fan/{id}`);
+// 	if (res.status !== 200) throw new Error(`Fan with id ${id} not found`);
+// 	return res.data;
+// };
 // GET FAN BY ID
-export const getFanById = async (id: number) => {
-	const res = await http(`/api/auth/status`);
-	if (res.status !== 200) throw new Error(`Fan with id ${id} not found`);
-	return res.data;
+export const getFanById = async (id: number): Promise<FanValues> => {
+	try {
+		const response = await http(`/api/auth/fan/${id}`);
+		if (response.status !== 200) throw new Error(`Fan with id ${id} not found`);
+		return response.data.user;
+	} catch (error) {
+		console.error("Error fetching fan by ID:", error);
+		throw error;
+	}
 };

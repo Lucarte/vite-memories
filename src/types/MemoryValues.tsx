@@ -35,6 +35,7 @@ export type Preview = {
 };
 
 export type User = {
+	id: number;
 	first_name: string;
 	last_name: string;
 	avatar: Avatar;
