@@ -115,12 +115,6 @@ export const getAllFans = async () => {
 	}
 };
 
-// // GET FAN BY ID
-// export const getFanById = async (id: number) => {
-// 	const res = await http(`/api/auth/fan/{id}`);
-// 	if (res.status !== 200) throw new Error(`Fan with id ${id} not found`);
-// 	return res.data;
-// };
 // GET FAN BY ID
 export const getFanById = async (id: number): Promise<FanValues> => {
 	try {

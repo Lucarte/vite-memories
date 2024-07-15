@@ -37,7 +37,7 @@ export const navigation = [
 	},
 	{
 		name: "Title List",
-		href: "/memories/{title}",
+		href: "/title-list",
 		page: "TitleList",
 		current: false,
 	},
@@ -45,13 +45,6 @@ export const navigation = [
 		name: "Profile",
 		href: "/fan/{id}",
 		page: "Profile",
-		current: false,
-	},
-	{
-		name: "Search",
-		href: "/search",
-		page: "Search",
-		current: false,
 	},
 	{
 		name: "Login",

@@ -17,7 +17,6 @@ import { DevTool } from "@hookform/devtools";
 import { useTheme } from "../context/ThemeContext";
 import { login } from "../utils/api";
 import DarkModeBtn from "../partials/DarkModeBtn";
-import ScrollUpBtn from "../partials/ScrollUpBtn";
 
 type FormValues = {
 	email: string;

@@ -43,6 +43,7 @@ import PabloIntro from "./pages/PabloIntro";
 import Both, { loader as bothMemoryloader } from "./pages/Both";
 import BothIntro from "./pages/BothIntro";
 import SingleFan, { loader as singleFanLoader } from "./pages/SingleFan";
+import TitleList, { loader as titleListLoader } from "./pages/TitleList";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -88,7 +89,11 @@ const router = createBrowserRouter(
 					element={<SingleMemory />}
 					loader={singleMemoryLoader}
 				/>
-
+				<Route
+					path='/title-list'
+					element={<TitleList />}
+					loader={titleListLoader}
+				/>
 				{/* Admin Routes */}
 				<Route
 					path='/memory/create'

@@ -3,24 +3,35 @@ import MenuBarsIcon from "../components/MenuBarsIcon";
 import { useEffect, useState } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { Link } from "react-router-dom";
-import { navigation } from "../utils/navigation";
+import { loggedInData } from "../utils/api";
 import classNames from "classnames";
+import { navigation } from "../utils/navigation";
 
 const Header = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+	const [loggedIn, setLoggedIn] = useState(false);
 	const { enabled } = useTheme();
+	const [userId, setUserId] = useState<number | null>(null); // Explicitly define userId type
+
+	useEffect(() => {
+		const fetchUserData = async () => {
+			try {
+				const { loggedIn, user } = await loggedInData();
+				setLoggedIn(loggedIn);
+				if (loggedIn && user) {
+					setUserId(user.id); // Set userId only if user is not null
+				}
+			} catch (error) {
+				console.error("Failed to fetch user data:", error);
+			}
+		};
+
+		fetchUserData();
+	}, [loggedIn]); // Dependency on loggedIn state to re-fetch user data when login status changes
 
 	const handleClick = () => {
 		setIsMenuOpen(!isMenuOpen);
 	};
-
-	useEffect(() => {
-		if (isMenuOpen) {
-			document.body.classList.add("overflow-hidden");
-		} else {
-			document.body.classList.remove("overflow-hidden");
-		}
-	}, [isMenuOpen]);
 
 	return (
 		<>
@@ -85,7 +96,13 @@ const Header = () => {
 					{navigation.map((item) => (
 						<Link
 							key={item.name}
-							to={item.href}
+							to={
+								item.href === "/fan/{id}"
+									? userId
+										? `/fan/${userId}`
+										: "/login"
+									: item.href
+							}
 							aria-current={item.current ? "page" : undefined}
 							onClick={handleClick}
 							className={classNames(
