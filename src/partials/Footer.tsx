@@ -13,10 +13,9 @@ const Footer = () => {
 	const { enabled } = useTheme();
 	const { loggedIn, user } = useLoaderData() as {
 		loggedIn: boolean;
-		user: { id: number; firstName: string; lastName: string } | null;
+		user: { id: number; first_name: string } | null;
 	};
-
-	const userName = loggedIn && user ? `${user.firstName}` : "";
+	const userName = loggedIn && user ? `${user.first_name}` : "";
 
 	return (
 		<footer

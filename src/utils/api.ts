@@ -94,10 +94,24 @@ export const patchMemory = async (id: number, data: PatchValues) => {
 	return res.data;
 };
 
-// GET MEMORIES BY KID
-export const getMemoriesByKid = async (kid: string) => {
-	const res = await http(`/api/auth/memories/kid/${kid}`);
-	if (res.status !== 200) throw new Error(`Memorie for ${kid} not found`);
+// GET PABLOS MEMORIES
+export const getPablosMemories = async () => {
+	const res = await http(`/api/auth/pablo/memories`);
+	if (res.status !== 200) throw new Error(`Memories for Pablo not found`);
+	return res.data;
+};
+
+// GET GABIS MEMORIES
+export const getGabisMemories = async () => {
+	const res = await http(`/api/auth/gabriella/memories`);
+	if (res.status !== 200) throw new Error(`Memories for Gabriella not found`);
+	return res.data;
+};
+
+// GET BRUNNIS MEMORIES
+export const getBrunnisMemories = async () => {
+	const res = await http(`/api/auth/brunnis/memories`);
+	if (res.status !== 200) throw new Error(`Memories for Brunnis not found`);
 	return res.data;
 };
 

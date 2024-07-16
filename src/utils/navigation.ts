@@ -12,9 +12,9 @@ export const navigation = [
 		current: false,
 	},
 	{
-		name: "Both",
-		href: "/both",
-		page: "Both",
+		name: "Brunnis",
+		href: "/brunnis",
+		page: "Brunnis",
 		current: false,
 	},
 	{

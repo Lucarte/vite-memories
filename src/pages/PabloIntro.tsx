@@ -10,7 +10,7 @@ const PabloIntro: React.FC = () => {
 				memories.
 			</p>
 			<Link
-				to='/memories/kid/pablo'
+				to='/pablo/memories'
 				className='px-4 py-2 mt-4 font-bold text-white bg-gray-500 rounded hover:bg-blue-700'>
 				View Pablo's Memories
 			</Link>

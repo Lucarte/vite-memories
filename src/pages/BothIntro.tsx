@@ -12,7 +12,7 @@ const BothIntro: React.FC = () => {
 				about them and see their memories.
 			</p>
 			<Link
-				to='/memories/kid/both'
+				to='/brunnis/memories'
 				className='px-4 py-2 mt-4 font-bold text-white bg-gray-500 rounded hover:bg-blue-700'>
 				View Gabriella & Pablo's Memories
 			</Link>

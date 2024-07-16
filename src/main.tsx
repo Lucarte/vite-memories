@@ -40,10 +40,13 @@ import SingleMemory, {
 } from "./components/SingleMemory";
 import GabIntro from "./pages/GabIntro";
 import PabloIntro from "./pages/PabloIntro";
-import Both, { loader as bothMemoryloader } from "./pages/Both";
+import Both, { loader as bothMemoriesloader } from "./pages/Both";
 import BothIntro from "./pages/BothIntro";
 import SingleFan, { loader as singleFanLoader } from "./pages/SingleFan";
 import TitleList, { loader as titleListLoader } from "./pages/TitleList";
+import GabriellaLayout from "./layouts/GabriellaLayout";
+import PabloLayout from "./layouts/PabloLayout";
+import BothLayout from "./layouts/BothLayout";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -60,24 +63,6 @@ const router = createBrowserRouter(
 					action={registerAction}
 				/>
 				<Route path='/logout' element={<Footer />} action={footerAction} />
-				<Route path='/gabriella' element={<GabIntro />} />
-				<Route path='/pablo' element={<PabloIntro />} />
-				<Route path='/both' element={<BothIntro />} />
-				<Route
-					path='/memories/kid/:kid'
-					element={<Gabriella />}
-					loader={gabriellaMemoriesLoader}
-				/>
-				<Route
-					path='/memories/kid/:kid'
-					element={<Pablo />}
-					loader={pabloMemoriesLoader}
-				/>
-				<Route
-					path='/memories/kid/:kid'
-					element={<Both />}
-					loader={bothMemoryloader}
-				/>
 				<Route
 					path='/memories'
 					element={<Memories />}
@@ -111,8 +96,43 @@ const router = createBrowserRouter(
 				{/* Not Found */}
 				<Route path='*' element={<NotFound />} loader={rootLoader} />
 			</Route>
+
+			{/* HOME LAYOUT */}
 			<Route path='/' element={<HomeLayout />} errorElement={<RootError />}>
 				<Route index element={<Home />} />
+			</Route>
+
+			{/* BRUNNIS LAYOUT */}
+			<Route path='/' element={<BothLayout />} errorElement={<RootError />}>
+				<Route path='/brunnis' element={<BothIntro />} />
+				<Route
+					path='/brunnis/memories'
+					element={<Both />}
+					loader={bothMemoriesloader}
+				/>
+			</Route>
+
+			{/* PABLOS LAYOUT */}
+			<Route path='/' element={<PabloLayout />} errorElement={<RootError />}>
+				<Route path='/pablo' element={<PabloIntro />} />
+				<Route
+					path='/pablo/memories'
+					element={<Pablo />}
+					loader={pabloMemoriesLoader}
+				/>
+			</Route>
+
+			{/* GABIS LAYOUT */}
+			<Route
+				path='/'
+				element={<GabriellaLayout />}
+				errorElement={<RootError />}>
+				<Route path='/gabriella' element={<GabIntro />} />
+				<Route
+					path='/gabriella/memories'
+					element={<Gabriella />}
+					loader={gabriellaMemoriesLoader}
+				/>
 			</Route>
 		</>
 	)

@@ -1,26 +1,47 @@
 /* eslint-disable react-refresh/only-export-components */
 import { Suspense } from "react";
-import { useLoaderData, Await } from "react-router-dom";
+import {
+	useLoaderData,
+	Await,
+	LoaderFunction,
+	redirect,
+	defer,
+} from "react-router-dom";
 import HerzSpinner from "../components/HerzSpinner"; // Loading spinner component
 import ViewMemories from "../components/ViewMemories";
 import { MemoryValues } from "../types/MemoryValues";
-import { memoryLoader } from "../utils/memoryLoader"; // Import the loader function
+import { getPablosMemories, loggedInData } from "../utils/api";
 
 interface DeferredLoaderData {
 	memories: MemoryValues[];
 }
 
-export const loader = memoryLoader; // Correctly assign the loader function
+export const loader: LoaderFunction = async () => {
+	// Check if logged in
+	const { loggedIn } = await loggedInData();
+	if (!loggedIn) {
+		return redirect("/login");
+	}
+
+	try {
+		const response = await getPablosMemories();
+		const memories = response.Memories;
+		return defer({ memories });
+	} catch (error) {
+		console.error(`Error fetching memories for Pablo:`, error);
+		return defer({ memories: [] }); // Return empty array or handle error
+	}
+};
 
 const Pablo = () => {
 	const deferredData = useLoaderData() as DeferredLoaderData;
 	console.log("Deferred Data:", deferredData);
 	return (
 		<>
-			<div className='flex flex-col items-center gap-6 pt-6 text-right'>
+			{/* <div className='flex flex-col items-center gap-6 pt-6 text-right'>
 				<h1 className='pt-4 pb-6 text-xl font-bold text-center'>P.A.B.L.O</h1>
 				<p>Welcome to Pablo's MEMORIES!</p>
-			</div>
+			</div> */}
 			<section className='w-screen'>
 				<Suspense
 					fallback={
