@@ -1,10 +1,5 @@
 import { FanValues } from "../types/FanValues";
-import {
-	MemoryFile,
-	MemoryValues,
-	PatchValues,
-	User,
-} from "../types/MemoryValues";
+import { PatchValues, User } from "../types/MemoryValues";
 import http from "./http";
 export const loggedInData = async (): Promise<{
 	loggedIn: boolean;

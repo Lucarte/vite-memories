@@ -29,8 +29,8 @@ const Footer = () => {
 					className='flex items-center gap-4'>
 					<p className='text-sm text-gray-400'>
 						{loggedIn
-							? `Welcome into the past, ${userName}!`
-							: "Welcome into the past!"}
+							? `Welcome to the past, ${userName}!`
+							: "Welcome to the past!"}
 					</p>
 
 					<button

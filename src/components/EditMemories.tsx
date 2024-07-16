@@ -12,7 +12,7 @@ const EditMemories = () => {
 					<EditSingleMemory key={memory.title} memory={memory} />
 				))
 			) : (
-				<p>No Memories found.</p>
+				<p className='text-center text-orange-500'>No memories founD</p>
 			)}
 		</>
 	);

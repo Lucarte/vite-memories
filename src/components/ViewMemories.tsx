@@ -115,7 +115,7 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 					</div>
 				))
 			) : (
-				<p>No Memories found.</p>
+				<p className='text-center text-orange-500'>No memories founD</p>
 			)}
 		</>
 	);

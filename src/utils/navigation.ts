@@ -47,6 +47,11 @@ export const navigation = [
 		page: "Profile",
 	},
 	{
+		name: "Fans",
+		href: "/fans",
+		page: "Fans",
+	},
+	{
 		name: "Login",
 		href: "/login",
 		page: "Login",
