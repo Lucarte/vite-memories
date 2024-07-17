@@ -1,11 +1,14 @@
 /* eslint-disable react-refresh/only-export-components */
+import React, { useEffect, useState } from "react";
 import CustomButton from "../components/CustomButton";
 import {
 	ActionFunction,
 	Link,
-	redirect,
+	useActionData,
 	useLocation,
 	useSubmit,
+	useNavigate,
+	json,
 } from "react-router-dom";
 import {
 	FieldValues,
@@ -23,17 +26,35 @@ type FormValues = {
 	password: string;
 };
 
-// // TO DO: Replace with modal
-// alert("Going back in time, enjoy!");
+type ActionData = {
+	message?: string;
+	error?: string;
+};
+
+// Success/Error Messages with alerts:
+// 	try {
+// 		await login(formData);
+// 		alert("Going back in time, enjoy!");
+// 		return redirect("/memories");
+// 	} catch (error) {
+// 		alert("WRONG CREDENTIALS!");
+// 		return "An error occurred during login.";
+// 	}
+// };
 
 export const action: ActionFunction = async ({ request }) => {
 	const formData = await request.formData();
 
 	try {
 		await login(formData);
-		return redirect("/memories");
+		// Return a success message
+		return json({ message: "You have successfully logged in!" });
 	} catch (error) {
-		return error;
+		// Return an error message
+		return json(
+			{ error: "Login failed. Please check your credentials." },
+			{ status: 400 }
+		);
 	}
 };
 
@@ -47,6 +68,13 @@ const Login = () => {
 	} = useForm<FormValues>();
 	const submit = useSubmit();
 	const location = useLocation();
+	const navigate = useNavigate();
+	const actionData = useActionData() as ActionData; // Get the action data
+
+	// Local state to handle messages and redirection
+	const [message, setMessage] = useState<string | null>(null);
+	const [error, setError] = useState<string | null>(null);
+
 	// Takes place when all fields validate
 	const onValid: SubmitHandler<FormValues> = (data) => {
 		submit(data, {
@@ -60,24 +88,36 @@ const Login = () => {
 		console.log("Errors in Form: ", errors);
 	};
 
+	useEffect(() => {
+		if (actionData) {
+			if (actionData.message) {
+				setMessage(actionData.message);
+				// Redirect after a delay. Otherwise message cannot display
+				setTimeout(() => {
+					navigate("/memories");
+				}, 2000);
+			}
+			if (actionData.error) {
+				setError(actionData.error);
+			}
+		}
+	}, [actionData, navigate]);
+
 	return (
-		<article className='flex flex-col items-center px-6 py-12 text-center md:mt-28lg:px-8'>
+		<article className='flex flex-col items-center px-6 py-12 text-center md:mt-28 lg:px-8'>
 			<DarkModeBtn />
-			{/* Title */}
 			<h2
 				className={`${
 					enabled ? "text-white" : "text-gray-900"
 				}, 'mt-8 font-serif text-xl text-center'`}>
 				LOGIN
 			</h2>
-			{/* Form */}
 			<form
 				noValidate
 				autoComplete='off'
 				onSubmit={handleSubmit(onValid, onInvalid)}
 				className='mt-12 space-y-8 w-[16rem] md:w-[19rem] flex flex-col
 				items-center'>
-				{/* E-mail */}
 				<div className='relative'>
 					<label
 						htmlFor='email'
@@ -112,7 +152,6 @@ const Login = () => {
 						{errors.email?.message}
 					</p>
 				</div>
-				{/* Password from Component*/}
 				<div className='relative'>
 					<label
 						htmlFor='password'
@@ -139,19 +178,19 @@ const Login = () => {
 							validate: {
 								minLength: (value) =>
 									value.length >= 8 ||
-									"Passwort muss mindestens 8 Zeichen lang sein",
+									"Password must be at least 8 characters long",
 								lowercase: (value) =>
 									/^(?=.*[a-z])/.test(value) ||
-									"Passwort muss mindestens einen Kleinbuchstaben enthalten",
+									"Password must contain at least one lowercase letter",
 								uppercase: (value) =>
 									/^(?=.*[A-Z])/.test(value) ||
-									"Passwort muss mindestens einen Großbuchstaben enthalten",
+									"Password must contain at least one uppercase letter",
 								number: (value) =>
 									/^(?=.*\d)/.test(value) ||
-									"Passwort muss mindestens eine Zahl enthalten",
+									"Password must contain at least one number",
 								specialChar: (value) =>
 									/^(?=.*[@$!%*?&])/.test(value) ||
-									"Passwort muss mindestens ein Sonderzeichen enthalten",
+									"Password must contain at least one special character",
 							},
 						})}
 					/>
@@ -159,7 +198,6 @@ const Login = () => {
 						{errors.password?.message}
 					</p>
 				</div>
-				{/* Register Button */}
 				<CustomButton
 					type='submit'
 					classes={`${
@@ -169,9 +207,10 @@ const Login = () => {
 					} rounded-bl-2xl rounded-tr-2xl bg-gray-900 px-6 py-1.5 text-sm font-medium leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600`}
 					text='Enter Memories Portal'
 				/>{" "}
-				{/* {actionData && actionData.error ? <p>{actionData.error}</p> : null} */}
 			</form>
-			{/* link to registration ! */}
+			{/* Displaying action messages */}
+			{message && <p className='mt-4 text-green-500'>{message}</p>}
+			{error && <p className='mt-4 text-red-500'>{error}</p>}
 			<div
 				className={`${
 					enabled ? "text-white" : "text-black"

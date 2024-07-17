@@ -404,7 +404,8 @@ export const action: ActionFunction = async ({ request }) => {
 
 	try {
 		await postMemory(formData);
-		return redirect("/memories");
+		return { message: "Memory created successfully" };
+		// return redirect("/memories");
 	} catch (error) {
 		return error;
 	}
