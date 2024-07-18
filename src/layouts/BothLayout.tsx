@@ -6,6 +6,7 @@ import { loggedInData } from "../utils/api";
 import classNames from "classnames";
 import { navigation } from "../utils/navigation";
 import DarkModeBtn from "../partials/DarkModeBtn";
+import Footer from "../partials/Footer";
 
 const BothLayout: React.FC = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -73,6 +74,7 @@ const BothLayout: React.FC = () => {
 			<main>
 				<Outlet />
 			</main>
+			{/* <Footer /> */}
 			{isMenuOpen && (
 				<nav
 					className={`${

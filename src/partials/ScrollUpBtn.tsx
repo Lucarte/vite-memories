@@ -32,7 +32,7 @@ const ScrollUpBtn = () => {
 	return (
 		isVisible && (
 			<div
-				className='fixed z-40 flex cursor-pointer right-3 md:pr-8 bottom-20'
+				className='fixed z-40 flex cursor-pointer right-3 md:pr-8 bottom-24'
 				onClick={scrollToTop}>
 				{enabled ? (
 					<svg

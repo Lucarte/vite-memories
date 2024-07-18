@@ -3,15 +3,24 @@ import CustomButton from "./CustomButton";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { RegisterFormValues } from "../types/RegisterFormValues";
-import { useSubmit } from "react-router-dom";
+import { useSubmit, useNavigate } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 import classNames from "classnames";
 
 const relationships = ["Family", "Friend", "Teacher"];
 
-const RegisterForm = () => {
+const RegisterForm = ({
+	actionData,
+}: {
+	actionData?: {
+		successMessage?: string;
+		errorMessage?: string;
+		redirectTo?: string;
+	};
+}) => {
 	const { enabled } = useTheme();
 	const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+	const navigate = useNavigate();
 
 	const {
 		register,
@@ -34,7 +43,6 @@ const RegisterForm = () => {
 
 	const onValid: SubmitHandler<RegisterFormValues> = (_, event) => {
 		const formData = new FormData(event?.target);
-
 		submit(formData, {
 			method: "POST",
 			action: location.pathname,
@@ -50,6 +58,24 @@ const RegisterForm = () => {
 			}
 		};
 	}, [avatarPreview]);
+
+	useEffect(() => {
+		// Handle successful registration
+		if (actionData?.successMessage && actionData?.redirectTo) {
+			setTimeout(() => {
+				if (actionData.redirectTo) {
+					navigate(actionData.redirectTo);
+				}
+			}, 3000);
+		}
+
+		// Handle registration error
+		if (actionData?.errorMessage) {
+			setTimeout(() => {
+				navigate("/register");
+			}, 22000);
+		}
+	}, [actionData, navigate]);
 
 	return (
 		<>
@@ -113,7 +139,6 @@ const RegisterForm = () => {
 							})}
 						/>
 					</div>
-
 					<p className='mt-2 text-sm text-orange-500'>
 						{errors.avatar_path?.message}
 					</p>
@@ -284,8 +309,8 @@ const RegisterForm = () => {
 									);
 								},
 							})}>
-							<option value='Select a relationship.' disabled>
-								Select a relationship
+							<option value='Select a relationship.'>
+								Select a relationship.
 							</option>
 							{relationships.map((relationship) => (
 								<option key={relationship} value={relationship}>
@@ -326,12 +351,31 @@ const RegisterForm = () => {
 				{/* Register Button */}
 				<CustomButton
 					type='submit'
+					// label='Register'
 					classes={classNames(
 						enabled ? "bg-white text-black" : "bg-black text-white",
 						"rounded-bl-2xl rounded-tr-2xl px-6 py-1.5 text-sm font-semibold leading-6 shadow-sm hover:bg-gray-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600"
 					)}
 					text='Register'
-				/>{" "}
+					disabled={Object.keys(errors).length > 0}
+				/>
+				{/* Overlay for success messages */}
+				{actionData?.successMessage && (
+					<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
+						<div className='w-64 p-8 text-lg font-extrabold uppercase bg-white rounded-tr-lg shadow-lg rounded-3xl font-titles'>
+							<p className='text-black'>{actionData.successMessage}</p>
+						</div>
+					</div>
+				)}
+				{/* Overlay for error messages */}
+				{actionData?.errorMessage && (
+					<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
+						<div className='w-56 p-8 text-lg font-extrabold uppercase bg-white rounded-tr-lg shadow-lg rounded-3xl font-titles'>
+							<p className='text-black'>{actionData.errorMessage}</p>
+						</div>
+					</div>
+				)}
+				{/* </div> */}
 			</form>
 		</>
 	);

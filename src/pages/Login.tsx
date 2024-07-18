@@ -51,7 +51,6 @@ const Login = () => {
 	const { enabled } = useTheme();
 	const {
 		register,
-		control,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<FormValues>();
@@ -90,7 +89,7 @@ const Login = () => {
 		// Handle login error
 		if (actionData?.errorMessage) {
 			setTimeout(() => {
-				navigate("/login"); // Redirect back to the login page
+				navigate("/login");
 			}, 2000);
 		}
 	}, [actionData, navigate]);
@@ -205,7 +204,7 @@ const Login = () => {
 				}`}>
 				Not a fan yet?{" "}
 				<p className='font-semibold hover:text-gray-500'>
-					<Link to='/registration'>
+					<Link to='/register'>
 						Register <span className='underline'>here!</span>
 					</Link>
 				</p>

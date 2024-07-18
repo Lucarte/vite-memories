@@ -11,7 +11,7 @@ const PublicNav = () => {
 			<LoadingLayout>
 				<>
 					<Header />
-					<main>
+					<main className=''>
 						<Outlet />
 					</main>
 				</>
@@ -26,7 +26,7 @@ const PrivateNav = () => {
 			<LoadingLayout>
 				<>
 					<Header />
-					<main>
+					<main className=''>
 						<Outlet />
 					</main>
 					<Footer />
@@ -43,7 +43,7 @@ const AdminNav = () => {
 				<>
 					<Header />
 					{/* <p className='mt-4 text-center text-orange-600'>Have fun, Admin!</p> */}
-					<main>
+					<main className=''>
 						<Outlet />
 					</main>
 					<Footer />

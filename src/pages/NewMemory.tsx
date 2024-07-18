@@ -378,7 +378,7 @@ const CreateMemory: React.FC = () => {
 					</div>
 					<button
 						type='submit'
-						className='px-4 py-2 mt-10 text-white bg-black rounded-md'>
+						className='px-4 py-2 mx-auto mt-8 text-white bg-black rounded-md mb-36 w-fit'>
 						Submit
 					</button>
 					{actionData && actionData.message && <p>{actionData.message}</p>}

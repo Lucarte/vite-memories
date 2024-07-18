@@ -20,8 +20,10 @@ const Footer = () => {
 
 	return (
 		<footer
-			className={`fixed bottom-0 flex shadow-inner rounded-t-3xl items-center z-10 justify-center w-[calc(100%-16px)] h-16 font-titles ${
-				enabled ? "text-white bg-black" : " text-black bg-white"
+			className={`fixed border-b-8  bottom-0 flex shadow-inner rounded-t-3xl items-center z-10 justify-center w-[calc(100%-16px)] h-20 font-titles ${
+				enabled
+					? "text-white bg-gray-100 border-b-white"
+					: "border-b-black text-black bg-white"
 			} `}>
 			<div className='flex items-center justify-between'>
 				<Form
@@ -38,7 +40,7 @@ const Footer = () => {
 						type='submit'
 						className={`${
 							enabled
-								? "text-white hover:bg-gray-700"
+								? "text-orange-300 hover:bg-gray-200"
 								: "text-orange-300 hover:shadow-xl"
 						} px-1 rounded-lg py-2 text-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600`}>
 						<LogoutIcon />
@@ -55,7 +57,7 @@ export const action: ActionFunction = async () => {
 	try {
 		await logout();
 		alert("You have been logged out successfully.");
-		return redirect("/login"); // Redirect to login page after logout
+		return redirect("/login");
 	} catch (error) {
 		console.log(error);
 		return json(

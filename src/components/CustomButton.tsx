@@ -2,6 +2,8 @@ type BtnProps = {
 	type: "button" | "reset" | "submit";
 	text: string;
 	classes: string;
+	label?: string;
+	disabled?: boolean;
 	children?: React.ReactElement;
 	onClick?: () => void;
 };
