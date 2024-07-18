@@ -2,6 +2,7 @@
 import {
 	ActionFunction,
 	Form,
+	json,
 	redirect,
 	useLoaderData,
 } from "react-router-dom";
@@ -53,8 +54,15 @@ export default Footer;
 export const action: ActionFunction = async () => {
 	try {
 		await logout();
-		return redirect("/login");
+		alert("You have been logged out successfully.");
+		return redirect("/login"); // Redirect to login page after logout
 	} catch (error) {
 		console.log(error);
+		return json(
+			{
+				errorMessage: "Failed to logout. Please try again later.",
+			},
+			{ status: 400 }
+		);
 	}
 };

@@ -1,14 +1,12 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { useEffect, useState } from "react";
 import CustomButton from "../components/CustomButton";
 import {
 	ActionFunction,
 	Link,
-	useActionData,
 	useLocation,
 	useSubmit,
 	useNavigate,
-	json,
+	useActionData,
 } from "react-router-dom";
 import {
 	FieldValues,
@@ -16,43 +14,34 @@ import {
 	SubmitHandler,
 	useForm,
 } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
 import { useTheme } from "../context/ThemeContext";
 import { login } from "../utils/api";
 import DarkModeBtn from "../partials/DarkModeBtn";
+import { useEffect } from "react";
+import { json } from "react-router-dom";
 
 type FormValues = {
 	email: string;
 	password: string;
 };
 
-type ActionData = {
-	message?: string;
-	error?: string;
-};
-
-// Success/Error Messages with alerts:
-// 	try {
-// 		await login(formData);
-// 		alert("Going back in time, enjoy!");
-// 		return redirect("/memories");
-// 	} catch (error) {
-// 		alert("WRONG CREDENTIALS!");
-// 		return "An error occurred during login.";
-// 	}
-// };
-
 export const action: ActionFunction = async ({ request }) => {
 	const formData = await request.formData();
 
 	try {
 		await login(formData);
-		// Return a success message
-		return json({ message: "You have successfully logged in!" });
-	} catch (error) {
-		// Return an error message
 		return json(
-			{ error: "Login failed. Please check your credentials." },
+			{
+				successMessage: "You can now go down memory lane!",
+				redirectTo: "/memories",
+			},
+			{ status: 200 }
+		);
+	} catch (error) {
+		return json(
+			{
+				errorMessage: `Invalid credentials <br> Only registered users can login`,
+			},
 			{ status: 400 }
 		);
 	}
@@ -68,12 +57,12 @@ const Login = () => {
 	} = useForm<FormValues>();
 	const submit = useSubmit();
 	const location = useLocation();
+	const actionData = useActionData() as {
+		successMessage?: string;
+		errorMessage?: string;
+		redirectTo?: string;
+	};
 	const navigate = useNavigate();
-	const actionData = useActionData() as ActionData; // Get the action data
-
-	// Local state to handle messages and redirection
-	const [message, setMessage] = useState<string | null>(null);
-	const [error, setError] = useState<string | null>(null);
 
 	// Takes place when all fields validate
 	const onValid: SubmitHandler<FormValues> = (data) => {
@@ -89,17 +78,20 @@ const Login = () => {
 	};
 
 	useEffect(() => {
-		if (actionData) {
-			if (actionData.message) {
-				setMessage(actionData.message);
-				// Redirect after a delay. Otherwise message cannot display
-				setTimeout(() => {
-					navigate("/memories");
-				}, 2000);
-			}
-			if (actionData.error) {
-				setError(actionData.error);
-			}
+		// Handle successful login
+		if (actionData?.successMessage && actionData?.redirectTo) {
+			setTimeout(() => {
+				if (actionData.redirectTo) {
+					navigate(actionData.redirectTo);
+				}
+			}, 2000);
+		}
+
+		// Handle login error
+		if (actionData?.errorMessage) {
+			setTimeout(() => {
+				navigate("/login"); // Redirect back to the login page
+			}, 2000);
 		}
 	}, [actionData, navigate]);
 
@@ -107,34 +99,33 @@ const Login = () => {
 		<article className='flex flex-col items-center px-6 py-12 text-center md:mt-28 lg:px-8'>
 			<DarkModeBtn />
 			<h2
-				className={`${
+				className={`mt-8 font-serif text-xl text-center ${
 					enabled ? "text-white" : "text-gray-900"
-				}, 'mt-8 font-serif text-xl text-center'`}>
+				}`}>
 				LOGIN
 			</h2>
 			<form
 				noValidate
 				autoComplete='off'
 				onSubmit={handleSubmit(onValid, onInvalid)}
-				className='mt-12 space-y-8 w-[16rem] md:w-[19rem] flex flex-col
-				items-center'>
+				className='mt-12 space-y-8 w-[16rem] md:w-[19rem] flex flex-col items-center'>
 				<div className='relative'>
 					<label
 						htmlFor='email'
-						className={`${
+						className={`absolute inline-block px-2 text-xs font-light -top-2 left-4 ${
 							enabled ? "bg-black text-white" : "text-gray-800 bg-white"
-						} absolute inline-block px-2 text-xs font-light -top-2 left-4`}>
+						}`}>
 						E-Mail
 					</label>
 					<input
 						autoComplete='false'
 						id='email'
 						type='email'
-						className={`${
+						className={`w-full rounded-[3px] py-4 px-6 shadow-sm ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
 							enabled
 								? "bg-black border-white text-white placeholder:text-gray-500 focus:ring-gray-400"
 								: "bg-white border-black text-black placeholder:text-gray-500 focus:ring-orange-600"
-						} w-full rounded-[3px] py-4 px-6 shadow-sm ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
+						}`}
 						placeholder='me@gmail.com'
 						aria-invalid={errors.email ? "true" : "false"}
 						{...register("email", {
@@ -155,18 +146,18 @@ const Login = () => {
 				<div className='relative'>
 					<label
 						htmlFor='password'
-						className={`${
+						className={`absolute inline-block px-2 text-xs font-light -top-2 left-4 ${
 							enabled ? "bg-black text-white" : "text-gray-800 bg-white"
-						} absolute inline-block px-2 text-xs font-light -top-2 left-4`}>
+						}`}>
 						Password
 					</label>
 					<input
 						id='password'
-						className={`${
+						className={`w-full rounded-[3px] py-4 px-6 shadow-sm ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
 							enabled
 								? "bg-black border-white text-white placeholder:text-gray-500 focus:ring-gray-400"
 								: "bg-white border-black text-black placeholder:text-gray-500 focus:ring-orange-600"
-						} w-full rounded-[3px] py-4 px-6  shadow-sm ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6`}
+						}`}
 						placeholder='password'
 						type='password'
 						aria-invalid={errors.password ? "true" : "false"}
@@ -200,21 +191,18 @@ const Login = () => {
 				</div>
 				<CustomButton
 					type='submit'
-					classes={`${
+					classes={`rounded-bl-2xl rounded-tr-2xl bg-gray-900 px-6 py-1.5 text-sm font-medium leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 ${
 						enabled
 							? "bg-white text-black hover:bg-gray-300"
 							: "bg-black text-white hover:bg-gray-500"
-					} rounded-bl-2xl rounded-tr-2xl bg-gray-900 px-6 py-1.5 text-sm font-medium leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600`}
+					}`}
 					text='Enter Memories Portal'
-				/>{" "}
+				/>
 			</form>
-			{/* Displaying action messages */}
-			{message && <p className='mt-4 text-green-500'>{message}</p>}
-			{error && <p className='mt-4 text-red-500'>{error}</p>}
 			<div
-				className={`${
+				className={`flex justify-center gap-2 text-sm mt-28 ${
 					enabled ? "text-white" : "text-black"
-				} flex justify-center gap-2 text-sm mt-28`}>
+				}`}>
 				Not a fan yet?{" "}
 				<p className='font-semibold hover:text-gray-500'>
 					<Link to='/registration'>
@@ -222,7 +210,27 @@ const Login = () => {
 					</Link>
 				</p>
 			</div>
-			<DevTool control={control} />
+
+			{/* Overlay for messages */}
+			{actionData?.successMessage && (
+				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
+					<div className='w-56 p-8 text-lg font-extrabold uppercase bg-white rounded-tr-lg shadow-lg rounded-3xl font-titles'>
+						<p className='text-black'>{actionData.successMessage}</p>
+					</div>
+				</div>
+			)}
+
+			{actionData?.errorMessage && (
+				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
+					<div className='w-56 p-8 text-lg font-extrabold uppercase bg-white rounded-tr-lg shadow-lg rounded-3xl font-titles'>
+						{actionData.errorMessage.split("<br>").map((line, index) => (
+							<p key={index} className='my-4 text-red-500'>
+								{line}
+							</p>
+						))}
+					</div>
+				</div>
+			)}
 		</article>
 	);
 };
