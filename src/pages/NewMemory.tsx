@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import React, { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
@@ -49,7 +48,10 @@ const CreateMemory: React.FC = () => {
 	} = useFileUpload();
 	const submit = useSubmit();
 	const location = useLocation();
-	const actionData = useActionData() as MemoryValues | Error;
+	const actionData = useActionData() as {
+		message: string;
+		redirectTo?: string;
+	};
 	const [categories, setCategories] = useState<
 		{ id: string; category: string }[]
 	>([]);
@@ -67,6 +69,16 @@ const CreateMemory: React.FC = () => {
 		fetchCategories();
 	}, []);
 
+	useEffect(() => {
+		if (actionData?.redirectTo) {
+			const timer = setTimeout(() => {
+				window.location.href = actionData.redirectTo || "/";
+			}, 3000); // Redirect after 3 seconds
+
+			return () => clearTimeout(timer); // Clear timeout if component unmounts
+		}
+	}, [actionData]);
+
 	const onValid: SubmitHandler<MemoryValues> = (data, event) => {
 		const formData = new FormData(event?.target as HTMLFormElement);
 		const categoryIds = getValues("category_ids");
@@ -78,7 +90,6 @@ const CreateMemory: React.FC = () => {
 			formData.append("category_ids[]", categoryIds);
 		}
 
-		// Ensure data.urls is properly initialized as an array
 		const urlList = Array.isArray(data.urls) ? data.urls : []; // Fallback to empty array if data.urls is not an array
 
 		const formattedUrls = urlList.map((url) => ({
@@ -102,6 +113,13 @@ const CreateMemory: React.FC = () => {
 
 	return (
 		<>
+			{actionData?.message && (
+				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
+					<div className='w-56 p-8 text-lg font-extrabold uppercase bg-white rounded-tr-lg shadow-lg rounded-3xl font-titles'>
+						<p className='text-black'>{actionData.message}</p>
+					</div>
+				</div>
+			)}
 			<div className='flex justify-center'>
 				<form
 					onSubmit={handleSubmit(onValid)}
@@ -255,11 +273,7 @@ const CreateMemory: React.FC = () => {
 							<div className='grid grid-cols-3 gap-4 mt-2'>
 								{imagePreviews.map((preview, index) => (
 									<div key={index} className='relative'>
-										<img
-											src={preview}
-											alt={`Image Preview ${index}`}
-											className='h-32 mb-2 mr-2'
-										/>
+										<img src={preview} alt={`preview-${index}`} />
 										<button
 											type='button'
 											onClick={() => handleRemoveFile("image", index)}
@@ -381,7 +395,6 @@ const CreateMemory: React.FC = () => {
 						className='px-4 py-2 mx-auto mt-8 text-white bg-black rounded-md mb-36 w-fit'>
 						Submit
 					</button>
-					{actionData && actionData.message && <p>{actionData.message}</p>}
 				</form>
 			</div>
 		</>
@@ -399,15 +412,14 @@ export const action: ActionFunction = async ({ request }) => {
 		return redirect("/login");
 	}
 	if (!isAdmin) {
-		return "Admin Zone: Access denied";
+		return { message: "Admin Zone: Access denied", redirectTo: "/login" };
 	}
 
 	try {
 		await postMemory(formData);
-		return { message: "Memory created successfully" };
-		// return redirect("/memories");
+		return { message: "Memory created successfully", redirectTo: "/memories" };
 	} catch (error) {
-		return error;
+		return { message: "Failed to create memory" };
 	}
 };
 
