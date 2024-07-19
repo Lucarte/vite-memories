@@ -1,6 +1,7 @@
 import { FanValues } from "../types/FanValues";
 import { PatchValues, User } from "../types/MemoryValues";
 import http from "./http";
+
 export const loggedInData = async (): Promise<{
 	loggedIn: boolean;
 	isAdmin: boolean;
@@ -20,6 +21,7 @@ export const loggedInData = async (): Promise<{
 					id: data.userId,
 					first_name: data.firstName,
 					last_name: data.lastName,
+					isAdmin: data.isAdmin,
 				},
 			};
 		}

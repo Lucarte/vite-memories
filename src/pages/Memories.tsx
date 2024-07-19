@@ -142,7 +142,7 @@ const Memories = () => {
 				</Suspense>
 			</section>
 			<aside
-				className={classNames("flex items-center cursor-pointer", {
+				className={classNames("flex mb-36 items-center cursor-pointer", {
 					"mt-10": view !== "edit",
 					"mt-16": view === "edit",
 				})}>

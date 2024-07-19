@@ -44,9 +44,11 @@ import Both, { loader as bothMemoriesloader } from "./pages/Both";
 import BothIntro from "./pages/BothIntro";
 import SingleFan, { loader as singleFanLoader } from "./pages/SingleFan";
 import TitleList, { loader as titleListLoader } from "./pages/TitleList";
-import GabriellaLayout from "./layouts/GabriellaLayout";
-import PabloLayout from "./layouts/PabloLayout";
-import BothLayout from "./layouts/BothLayout";
+import GabriellaLayout, {
+	loader as gabriellasLoader,
+} from "./layouts/GabriellaLayout";
+import PabloLayout, { loader as pablosLoader } from "./layouts/PabloLayout";
+import BothLayout, { loader as brunnisLoader } from "./layouts/BothLayout";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -103,7 +105,11 @@ const router = createBrowserRouter(
 			</Route>
 
 			{/* BRUNNIS LAYOUT */}
-			<Route path='/' element={<BothLayout />} errorElement={<RootError />}>
+			<Route
+				path='/'
+				element={<BothLayout />}
+				errorElement={<RootError />}
+				loader={brunnisLoader}>
 				<Route path='/brunnis' element={<BothIntro />} />
 				<Route
 					path='/brunnis/memories'
@@ -113,7 +119,11 @@ const router = createBrowserRouter(
 			</Route>
 
 			{/* PABLOS LAYOUT */}
-			<Route path='/' element={<PabloLayout />} errorElement={<RootError />}>
+			<Route
+				path='/'
+				element={<PabloLayout />}
+				errorElement={<RootError />}
+				loader={pablosLoader}>
 				<Route path='/pablo' element={<PabloIntro />} />
 				<Route
 					path='/pablo/memories'
@@ -126,7 +136,8 @@ const router = createBrowserRouter(
 			<Route
 				path='/'
 				element={<GabriellaLayout />}
-				errorElement={<RootError />}>
+				errorElement={<RootError />}
+				loader={gabriellasLoader}>
 				<Route path='/gabriella' element={<GabIntro />} />
 				<Route
 					path='/gabriella/memories'

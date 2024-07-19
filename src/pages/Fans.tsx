@@ -9,6 +9,7 @@ import { getAllFans, loggedInData } from "../utils/api";
 interface FansData {
 	fans: FanValues[];
 }
+
 // Loader - All Fans
 export const loader: LoaderFunction = async () => {
 	const { loggedIn, isAdmin } = await loggedInData();
@@ -36,7 +37,7 @@ export const loader: LoaderFunction = async () => {
 const Fans: React.FC = () => {
 	const { fans } = useLoaderData() as FansData;
 
-	if (fans === undefined) {
+	if (!fans) {
 		// Handle the case where data is still loading
 		return (
 			<div className='flex justify-center w-screen'>
@@ -62,7 +63,18 @@ const Fans: React.FC = () => {
 						<br />
 						<strong>Relationship to Kid:</strong> {fan.relationship_to_kid}
 						<br />
-						{/* Add more details as needed */}
+						{fan.avatar && fan.avatar.avatar_path ? (
+							<img
+								src={`http://localhost/storage/${fan.avatar.avatar_path}`}
+								alt={`Picture of ${fan.first_name} ${fan.last_name}`}
+								className='w-10 h-10 rounded'
+								onError={(e) => {
+									console.error("Failed to load avatar:", e);
+								}}
+							/>
+						) : (
+							<p>No avatar available</p>
+						)}
 					</li>
 				))}
 			</ul>

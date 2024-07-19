@@ -1,43 +1,30 @@
 import MenuBarsIcon from "../components/MenuBarsIcon";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { Link, Outlet } from "react-router-dom";
-import { loggedInData } from "../utils/api";
 import classNames from "classnames";
-import { navigation } from "../utils/navigation";
 import DarkModeBtn from "../partials/DarkModeBtn";
 import Footer from "../partials/Footer";
+import { loggedInData } from "../utils/api";
+import { navigation } from "../utils/navigation";
+
+export const loader = async () => {
+	const { loggedIn, user } = await loggedInData();
+	return { loggedIn, isAdmin: user?.isAdmin ?? false, user };
+};
 
 const BothLayout: React.FC = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const [loggedIn, setLoggedIn] = useState(false);
 	const { enabled } = useTheme();
-	const [userId, setUserId] = useState<number | null>(null); // Explicitly define userId type
-
-	useEffect(() => {
-		const fetchUserData = async () => {
-			try {
-				const { loggedIn, user } = await loggedInData();
-				setLoggedIn(loggedIn);
-				if (loggedIn && user) {
-					setUserId(user.id); // Set userId only if user is not null
-				}
-			} catch (error) {
-				console.error("Failed to fetch user data:", error);
-			}
-		};
-
-		fetchUserData();
-	}, [loggedIn]); // Dependency on loggedIn state to re-fetch user data when login status changes
 
 	const handleClick = () => {
 		setIsMenuOpen(!isMenuOpen);
 	};
+
 	return (
 		<>
 			<header className='flex items-center justify-between p-8'>
 				<DarkModeBtn />
-				{/* Logo in mobile && Logo and Name description other sizes */}
 				<div className='flex items-center justify-start md:min-w-48'>
 					<Link to='/' className='-mt-[4px]'>
 						{enabled ? (
@@ -48,18 +35,13 @@ const BothLayout: React.FC = () => {
 					</Link>
 					<p className='hidden md:block md:ml-10'>B.R.U.N.N.I.S</p>
 				</div>
-				{/* Search icon in mobile && h1-tag in other sizes */}
 				<div className='flex justify-center pr-4'>
-					<div className='block md:hidden'>
-						{/* <MagnifyingGlassIcon className='w-5 h-5 mr-7' /> */}
-					</div>
+					<div className='block md:hidden'></div>
 					<div className='hidden md:block'>
 						<p>B.R.U.N.N.I.S</p>
 					</div>
 				</div>
-				{/* Menu in mobile && Menu and Search icon in other sizes */}
 				<div className='flex items-center justify-end md:min-w-48'>
-					{/* <MagnifyingGlassIcon className='hidden w-5 h-5 md:block md:mr-10' /> */}
 					<button
 						type='button'
 						onClick={handleClick}
@@ -74,7 +56,7 @@ const BothLayout: React.FC = () => {
 			<main>
 				<Outlet />
 			</main>
-			{/* <Footer /> */}
+			<Footer />
 			{isMenuOpen && (
 				<nav
 					className={`${
@@ -89,17 +71,10 @@ const BothLayout: React.FC = () => {
 						aria-hidden='true'>
 						X
 					</button>
-
 					{navigation.map((item) => (
 						<Link
 							key={item.name}
-							to={
-								item.href === "/fan/{id}"
-									? userId
-										? `/fan/${userId}`
-										: "/login"
-									: item.href
-							}
+							to={item.href}
 							aria-current={item.current ? "page" : undefined}
 							onClick={handleClick}
 							className={classNames(

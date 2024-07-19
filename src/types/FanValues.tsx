@@ -1,3 +1,5 @@
+import { Avatar, User } from "./MemoryValues";
+
 export type FanValues = {
 	id: number;
 	first_name: string;
@@ -5,4 +7,5 @@ export type FanValues = {
 	email: string;
 	relationship_to_kid: string;
 	loggedIn: boolean;
+	avatar: Avatar;
 };

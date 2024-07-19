@@ -39,9 +39,10 @@ export type User = {
 	first_name: string;
 	last_name: string;
 	avatar: Avatar;
+	isAdmin: boolean;
 };
 
-type Avatar = {
+export type Avatar = {
 	avatar_path: string;
 };
 

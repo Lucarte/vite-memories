@@ -45,11 +45,13 @@ export const navigation = [
 		name: "Profile",
 		href: "/fan/{id}",
 		page: "Profile",
+		current: false,
 	},
 	{
 		name: "Fans",
 		href: "/fans",
 		page: "Fans",
+		current: false,
 	},
 	{
 		name: "Login",

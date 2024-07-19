@@ -30,7 +30,7 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 
 	return (
 		<>
-			{memories.length > 0 ? ( // Ensure there are memories before attempting to map
+			{memories.length > 0 ? (
 				memories.map((memory) => (
 					<div
 						key={memory.title}
@@ -94,7 +94,7 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 							{/* URLs */}
 							<div>
 								<h2 className='font-medium'>URLs</h2>
-								<ul>
+								<ul className='mb-20'>
 									{memory.urls && memory.urls.length > 0 ? ( // Check for URLs
 										memory.urls.map((url) => (
 											<li key={url.id}>
