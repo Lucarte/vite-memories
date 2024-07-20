@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { MemoryValues } from "../types/MemoryValues";
 import mime from "mime";
 import displayFile from "../utils/DisplayFile";
+import { useTheme } from "../context/ThemeContext";
 
 // Helper function to format the date
 const formatDate = (dateString: string): string => {
@@ -22,6 +23,7 @@ interface ViewMemoriesProps {
 }
 
 const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
+	const { enabled } = useTheme();
 	const navigate = useNavigate();
 
 	const handleMemoryLoad = (title: string) => {
@@ -51,33 +53,53 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 										}}
 									/>
 								</div>
-								<div className='flex flex-col items-end w-full font-medium text-gray-400'>
+								<div
+									className={`${
+										enabled ? "text-gray-600" : "text-gray-400"
+									} w-full font-medium`}>
 									<p>{formatDate(memory.created_at)}</p>
 									<p>{`By: ${memory.user.first_name} ${memory.user.last_name}`}</p>
 								</div>
 							</section>
 							{/* Entry Body */}
-							<section className='relative'>
-								<h1 className='mb-8 font-sans text-2xl font-normal tracking-widest text-black'>
+							<section>
+								<h1
+									className={`font-sans underline text-2xl font-normal tracking-widest ${
+										enabled ? "text-gray-200 mb-3" : "text-black mb-6"
+									}`}>
 									{memory.title}{" "}
-									<span className='absolute w-[45vw] h-6 bg-gray-200 rounded -z-10 mt-5 left-[7rem]'></span>
 								</h1>
-								<p className='text-black break-words'>{memory.description}</p>
+								<p
+									className={`${
+										enabled ? "text-gray-300" : "text-black"
+									} 'text-black break-words'`}>
+									{memory.description}
+								</p>
 							</section>
 							<div>
-								<h2 className='font-medium'>Date of Memory</h2>
-								<p>
+								<h2
+									className={`${
+										enabled ? "text-gray-400" : "text-gray-500"
+									} font-normal underline`}>
+									Date of Memory
+								</h2>
+								<p className={`${enabled ? "text-white" : "text-black"}`}>
 									{memory.month} <span> {memory.day},</span> {memory.year}
 								</p>
 							</div>
 							{/* Files */}
 							<div className=''>
-								<h2 className='font-medium'>Files</h2>
+								<h2
+									className={`${
+										enabled ? "text-gray-400" : "text-gray-500"
+									} font-normal underline`}>
+									Files
+								</h2>
 								<ul className='flex flex-col items-center justify-center'>
 									{memory.files && memory.files.length > 0 ? ( // Check for files
 										memory.files.map((file) => (
 											<li
-												className={`object-cover mt-10 ${
+												className={`object-cover mt-4 ${
 													mime.getType(file.file_path)?.startsWith("image/") ||
 													mime.getType(file.file_path)?.startsWith("video/")
 														? "h-auto"
@@ -88,18 +110,26 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 											</li>
 										))
 									) : (
-										<p>No files available</p>
+										<p className={`${enabled ? "text-white" : "text-black"}`}>
+											No files available
+										</p>
 									)}
 								</ul>
 							</div>
 							{/* URLs */}
 							<div>
-								<h2 className='font-medium'>URLs</h2>
-								<ul className='mb-20'>
-									{memory.urls && memory.urls.length > 0 ? ( // Check for URLs
+								<h2
+									className={`${
+										enabled ? "text-gray-400" : "text-gray-500"
+									} font-normal underline`}>
+									URLs
+								</h2>
+								<ul className=''>
+									{memory.urls && memory.urls.length > 0 ? (
 										memory.urls.map((url) => (
 											<li key={url.id}>
 												<a
+													className={`${enabled ? "text-white" : "text-black"}`}
 													href={url.url_address}
 													target='_blank'
 													rel='noopener noreferrer'>
@@ -108,11 +138,15 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 											</li>
 										))
 									) : (
-										<p>No URLs available</p>
+										<p className={`${enabled ? "text-white" : "text-black"}`}>
+											No URLs available
+										</p>
 									)}
 								</ul>
 							</div>
 						</article>
+						{/* Custom HR Tag */}
+						<hr className='h-1 mx-auto mt-20  -mb-[6rem] border-none rounded-full w-36 bg-gradient-to-r from-black via-gray-200 to-black' />
 					</div>
 				))
 			) : (

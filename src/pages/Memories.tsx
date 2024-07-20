@@ -119,7 +119,8 @@ const Memories = () => {
 			<ScrollUpBtn />
 			<DarkModeBtn />
 			<h1 className='pt-4 pb-6 text-xl font-bold text-center'>
-				a.l.l <br /> .M.e.m.o.r.i.e.S.
+				.M.e.m.o.r.i.e.S.
+				{/* a.l.l <br /> .M.e.m.o.r.i.e.S. */}
 			</h1>
 			<section className='w-screen'>
 				<Suspense
@@ -144,7 +145,7 @@ const Memories = () => {
 			<aside
 				className={classNames("flex mb-36 items-center cursor-pointer", {
 					"mt-10": view !== "edit",
-					"mt-16": view === "edit",
+					"-mt-[9rem]": view === "edit",
 				})}>
 				<div className='flex justify-center gap-1'>
 					<button

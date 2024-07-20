@@ -102,7 +102,7 @@ const EditSingleMemory = ({ memory }: Props) => {
 		<>
 			<article
 				key={memory.title}
-				className='flex flex-col items-end gap-6 overflow-hidden text-gray-300 screen mx-9 font-extralight'>
+				className='flex flex-col items-end gap-6 mb-20 overflow-hidden text-gray-300 screen mx-9 font-extralight'>
 				{/* Entry Header */}
 				<section className='flex flex-col w-full'>
 					<div className='flex justify-end mb-2'>
@@ -112,36 +112,56 @@ const EditSingleMemory = ({ memory }: Props) => {
 							alt={`Picture of ${memory.user.first_name} ${memory.user.last_name}`}
 						/>
 					</div>
-					<div className='flex flex-col items-end w-full text-gray-700'>
-						<p>{`By: ${memory.user.first_name} ${memory.user.last_name}`}</p>
+					<div
+						className={`${
+							enabled ? "text-gray-600" : "text-gray-400"
+						} w-full font-medium`}>
 						<p>{formatDate(memory.created_at)}</p>
+						<p>{`By: ${memory.user.first_name} ${memory.user.last_name}`}</p>
 					</div>
 				</section>
 				{/* Entry Body */}
-				<section className=''>
-					<h1 className='mb-2 font-sans text-xl text-gray-200'>
-						{memory.title}
+				<section>
+					<h1
+						className={`font-sans underline text-2xl font-normal tracking-widest ${
+							enabled ? "text-gray-200 mb-3" : "text-black mb-6"
+						}`}>
+						{memory.title}{" "}
 					</h1>
-					<p className='break-words'>{memory.description}</p>
+					<p
+						className={`${
+							enabled ? "text-gray-300" : "text-black"
+						} 'text-black break-words'`}>
+						{memory.description}
+					</p>
 				</section>
 				<div>
-					<h2 className='font-medium'>Date of Memory</h2>
-					<p>
+					<h2
+						className={`font-medium ${
+							enabled ? "text-gray-400" : "text-gray-500"
+						} font-normal underline`}>
+						Date of Memory
+					</h2>
+					<p className={`${enabled ? "text-white" : "text-black"}`}>
 						{memory.month} <span> {memory.day},</span> {memory.year}
 					</p>
 				</div>
 				{/* Files */}
 				<div className=''>
-					<h2 className='font-medium'>Files</h2>
+					<h2
+						className={`font-medium ${
+							enabled ? "text-gray-400" : "text-gray-500"
+						} font-normal underline`}>
+						Files
+					</h2>
 					<ul className='flex flex-col items-center justify-center'>
 						{memory.files && memory.files.length > 0 ? (
 							memory.files.map((file) => (
 								<li
-									className={`object-cover mt-10 ${
-										(file.file_path &&
-											mime.getType(file.file_path)?.startsWith("image/")) ||
+									className={`object-cover mt-4 ${
+										mime.getType(file.file_path)?.startsWith("image/") ||
 										mime.getType(file.file_path)?.startsWith("video/")
-											? "h-64"
+											? "h-auto"
 											: "h-auto min-w-[80vw]"
 									}`}
 									key={file.id}>
@@ -149,30 +169,45 @@ const EditSingleMemory = ({ memory }: Props) => {
 								</li>
 							))
 						) : (
-							<p>No files available</p>
+							<p className={`${enabled ? "text-white" : "text-black"}`}>
+								No files available
+							</p>
 						)}
 					</ul>
 				</div>
-				<div className=''>
-					<h2 className='font-medium'>URLs</h2>
-					{memory.urls ? (
-						memory.urls.map((url) => (
-							<div className='' key={url.id}>
-								<a
-									href={url.url_address}
-									target='_blank'
-									rel='noopener noreferrer'>
-									{url.url_address}
-								</a>
-							</div>
-						))
-					) : (
-						<p>No URLs available</p>
-					)}
+				{/* URLs */}
+				<div>
+					<h2
+						className={`font-medium ${
+							enabled ? "text-gray-400" : "text-gray-500"
+						} font-normal underline`}>
+						URLs
+					</h2>
+					<ul>
+						{memory.urls && memory.urls.length > 0 ? (
+							memory.urls.map((url) => (
+								<li key={url.id}>
+									<a
+										className={`${enabled ? "text-white" : "text-black"}`}
+										href={url.url_address}
+										target='_blank'
+										rel='noopener noreferrer'>
+										{url.url_address}
+									</a>
+								</li>
+							))
+						) : (
+							<p className={`${enabled ? "text-white" : "text-black"}`}>
+								No URLs available
+							</p>
+						)}
+					</ul>
 				</div>
 				<div className='flex justify-between gap-4'>
 					<img
-						className='w-8 h-8 cursor-pointer'
+						className={`${
+							enabled ? "text-white" : ""
+						} 'w-8 h-8 cursor-pointer'`}
 						src='/src/assets/EditIcon.svg'
 						alt='link to edit entry'
 						onClick={() => setShowEdit(!showEdit)}
@@ -199,6 +234,8 @@ const EditSingleMemory = ({ memory }: Props) => {
 						</button>
 					</fetcher.Form>
 				</div>
+				{/* Custom HR Tag */}
+				<hr className='h-1 mx-auto mt-16 border-none rounded-full w-36 bg-gradient-to-r from-black via-gray-200 to-black' />
 			</article>
 			{/* ############################################################################################################################# */}
 			{/* ###################################################### // EDIT FORM // ###################################################### */}
