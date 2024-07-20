@@ -83,14 +83,14 @@ const Login = () => {
 				if (actionData.redirectTo) {
 					navigate(actionData.redirectTo);
 				}
-			}, 2000);
+			}, 3000);
 		}
 
 		// Handle login error
 		if (actionData?.errorMessage) {
 			setTimeout(() => {
 				navigate("/login");
-			}, 2000);
+			}, 3000);
 		}
 	}, [actionData, navigate]);
 

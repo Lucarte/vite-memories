@@ -35,28 +35,21 @@ export const loader: LoaderFunction = async () => {
 
 const Pablo = () => {
 	const deferredData = useLoaderData() as DeferredLoaderData;
-	console.log("Deferred Data:", deferredData);
 	return (
-		<>
-			{/* <div className='flex flex-col items-center gap-6 pt-6 text-right'>
-				<h1 className='pt-4 pb-6 text-xl font-bold text-center'>P.A.B.L.O</h1>
-				<p>Welcome to Pablo's MEMORIES!</p>
-			</div> */}
-			<section className='w-screen'>
-				<Suspense
-					fallback={
-						<div className='flex justify-center w-screen'>
-							<HerzSpinner />
-						</div>
-					}>
-					<Await
-						resolve={deferredData.memories}
-						errorElement={<p>Could not load memories.</p>}>
-						{(loadedMemories) => <ViewMemories memories={loadedMemories} />}
-					</Await>
-				</Suspense>
-			</section>
-		</>
+		<article className='flex flex-col items-center pr-20 mt-12 mb-20 text-right'>
+			<Suspense
+				fallback={
+					<div className='flex justify-center w-screen'>
+						<HerzSpinner />
+					</div>
+				}>
+				<Await
+					resolve={deferredData.memories}
+					errorElement={<p>Could not load memories.</p>}>
+					{(loadedMemories) => <ViewMemories memories={loadedMemories} />}
+				</Await>
+			</Suspense>
+		</article>
 	);
 };
 

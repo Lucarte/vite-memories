@@ -73,7 +73,7 @@ const RegisterForm = ({
 		if (actionData?.errorMessage) {
 			setTimeout(() => {
 				navigate("/register");
-			}, 22000);
+			}, 3000);
 		}
 	}, [actionData, navigate]);
 

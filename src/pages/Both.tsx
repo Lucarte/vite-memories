@@ -38,7 +38,7 @@ const Both = () => {
 	const deferredData = useLoaderData() as DeferredLoaderData;
 	console.log("Deferred Data:", deferredData);
 	return (
-		<section className='w-screen'>
+		<article className='flex flex-col items-center pr-20 mt-12 mb-20 text-right'>
 			<Suspense
 				fallback={
 					<div className='flex justify-center w-screen'>
@@ -51,7 +51,7 @@ const Both = () => {
 					{(loadedMemories) => <ViewMemories memories={loadedMemories} />}
 				</Await>
 			</Suspense>
-		</section>
+		</article>
 	);
 };
 

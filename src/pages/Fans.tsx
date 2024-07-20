@@ -4,6 +4,7 @@ import { LoaderFunction, useLoaderData, redirect } from "react-router-dom";
 import HerzSpinner from "../components/HerzSpinner";
 import { FanValues } from "../types/FanValues";
 import { getAllFans, loggedInData } from "../utils/api";
+import ScrollUpBtn from "../partials/ScrollUpBtn";
 
 // Define the type for fans data
 interface FansData {
@@ -53,6 +54,7 @@ const Fans: React.FC = () => {
 
 	return (
 		<article>
+			<ScrollUpBtn />
 			<h1>List of Fans</h1>
 			<ul>
 				{fans.map((fan) => (

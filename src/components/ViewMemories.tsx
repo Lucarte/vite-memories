@@ -51,17 +51,18 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 										}}
 									/>
 								</div>
-								<div className='flex flex-col items-end w-full text-gray-700'>
-									<p>{`By: ${memory.user.first_name} ${memory.user.last_name}`}</p>
+								<div className='flex flex-col items-end w-full font-medium text-gray-400'>
 									<p>{formatDate(memory.created_at)}</p>
+									<p>{`By: ${memory.user.first_name} ${memory.user.last_name}`}</p>
 								</div>
 							</section>
 							{/* Entry Body */}
-							<section className='w-screen'>
-								<h1 className='mb-2 font-sans text-xl text-gray-200'>
-									{memory.title}
+							<section className='relative'>
+								<h1 className='mb-8 font-sans text-2xl font-normal tracking-widest text-black'>
+									{memory.title}{" "}
+									<span className='absolute w-[45vw] h-6 bg-gray-200 rounded -z-10 mt-5 left-[7rem]'></span>
 								</h1>
-								<p className='pl-20 break-words'>{memory.description}</p>
+								<p className='text-black break-words'>{memory.description}</p>
 							</section>
 							<div>
 								<h2 className='font-medium'>Date of Memory</h2>
@@ -79,7 +80,7 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 												className={`object-cover mt-10 ${
 													mime.getType(file.file_path)?.startsWith("image/") ||
 													mime.getType(file.file_path)?.startsWith("video/")
-														? "h-64"
+														? "h-auto"
 														: "h-auto min-w-[80vw]"
 												}`}
 												key={file.id}>

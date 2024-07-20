@@ -7,6 +7,7 @@ import { navigation } from "../utils/navigation";
 import DarkModeBtn from "../partials/DarkModeBtn";
 import { loggedInData } from "../utils/api";
 import Footer from "../partials/Footer";
+import ScrollUpBtn from "../partials/ScrollUpBtn";
 
 export const loader = async () => {
 	const { loggedIn, user } = await loggedInData();
@@ -24,6 +25,7 @@ const GabriellaLayout = () => {
 		<>
 			<header className='flex items-center justify-between p-8'>
 				<DarkModeBtn />
+				<ScrollUpBtn />
 				{/* Logo in mobile && Logo and Name description other sizes */}
 				<div className='flex items-center justify-start md:min-w-48'>
 					<Link to='/' className='-mt-[4px]'>

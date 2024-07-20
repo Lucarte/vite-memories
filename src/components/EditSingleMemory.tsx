@@ -118,11 +118,11 @@ const EditSingleMemory = ({ memory }: Props) => {
 					</div>
 				</section>
 				{/* Entry Body */}
-				<section className='w-screen'>
+				<section className=''>
 					<h1 className='mb-2 font-sans text-xl text-gray-200'>
 						{memory.title}
 					</h1>
-					<p className='pl-20 break-words'>{memory.description}</p>
+					<p className='break-words'>{memory.description}</p>
 				</section>
 				<div>
 					<h2 className='font-medium'>Date of Memory</h2>

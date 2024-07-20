@@ -43,59 +43,40 @@ const SingleMemory = () => {
 	const [view, setView] = useState<"view" | "edit">("view");
 
 	return (
-		<article className='flex flex-col items-center gap-6 pt-16 pb-24 overflow-hidden text-right text-gray-300 mx-9 font-extralight'>
-			<ScrollUpBtn />
-			<DarkModeBtn />
-			<h1 className='pb-6 text-xl font-bold text-center'>
-				S.i.N.G.L.e..M.e.M.o.R.y.
+		<>
+			<h1 className='pb-6 mt-8 -mb-24 text-xl font-bold text-center'>
+				s.i.n.g.l.e <br /> .M.e.m.o.r.Y.
 			</h1>
-			<aside className='flex items-center cursor-pointer'>
-				<div className='flex flex-col items-center gap-1'>
-					<section className='w-[94vw]'>
-						<Suspense
-							fallback={
-								<div className='flex justify-center w-screen'>
-									<HerzSpinner />
-								</div>
-							}>
-							<Await
-								resolve={deferredData.memory}
-								errorElement={<p>Could not load memory.</p>}>
-								{(memory) =>
-									view === "view" ? (
-										<ViewSingleMemory memory={memory} />
-									) : (
-										<EditSingleMemory memory={memory} />
-									)
-								}
-							</Await>
-						</Suspense>
-					</section>
-					{/* <button
-						onClick={() => setView("view")}
-						className={classNames(
-							"py-1 text-sm px-3 rounded-md rounded-bl-none",
-							{
-								"bg-black text-white": view !== "view",
-								"bg-white text-black": view === "view",
-							}
-						)}>
-						View
-					</button>
-					<button
-						onClick={() => setView("edit")}
-						className={classNames(
-							"py-1 text-sm px-3 rounded-md rounded-br-none",
-							{
-								"bg-black border-1 border-white text-white": view !== "edit",
-								"bg-white border-1 border-black text-black": view === "edit",
-							}
-						)}>
-						Update
-					</button> */}
-				</div>
-			</aside>
-		</article>
+			<article className='flex flex-col items-center gap-6 pt-8 pb-48 overflow-hidden text-right text-gray-300 font-extralight'>
+				<ScrollUpBtn />
+				<DarkModeBtn />
+				<aside className='flex items-center cursor-pointer'>
+					<div className='flex flex-col items-center gap-1'>
+						<section className=''>
+							{/* <section className='w-[94vw]'> */}
+							<Suspense
+								fallback={
+									<div className='flex justify-center w-screen -mt-16'>
+										<HerzSpinner />
+									</div>
+								}>
+								<Await
+									resolve={deferredData.memory}
+									errorElement={<p>Could not load memory.</p>}>
+									{(memory) =>
+										view === "view" ? (
+											<ViewSingleMemory memory={memory} />
+										) : (
+											<EditSingleMemory memory={memory} />
+										)
+									}
+								</Await>
+							</Suspense>
+						</section>
+					</div>
+				</aside>
+			</article>
+		</>
 	);
 };
 
