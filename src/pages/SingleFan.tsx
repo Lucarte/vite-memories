@@ -49,13 +49,28 @@ const SingleFan: React.FC = () => {
 	}
 
 	return (
-		<article>
-			<h1>Fan Details</h1>
+		<article className='flex flex-col items-center gap-6'>
+			<h1 className='mt-10 mb-6 text-xl font-bold font-titles'>
+				F.a.n..D.e.t.a.i.l.s
+			</h1>
+
+			<p>
+				{fan.first_name} {fan.last_name}
+			</p>
+			{fan.avatar && fan.avatar.avatar_path ? (
+				<img
+					src={`http://localhost/storage/${fan.avatar.avatar_path}`}
+					alt={`Picture of ${fan.first_name} ${fan.last_name}`}
+					className='w-10 h-10 rounded'
+					onError={(e) => {
+						console.error("Failed to load avatar:", e);
+					}}
+				/>
+			) : (
+				<p>No avatar available</p>
+			)}
 			<p>
 				<strong>ID:</strong> {fan.id}
-			</p>
-			<p>
-				<strong>Name:</strong> {fan.first_name} {fan.last_name}
 			</p>
 			<p>
 				<strong>Email:</strong> {fan.email}
@@ -63,7 +78,7 @@ const SingleFan: React.FC = () => {
 			<p>
 				<strong>Relationship to Kid:</strong> {fan.relationship_to_kid}
 			</p>
-			{/* Add more details as needed */}
+			<br />
 		</article>
 	);
 };
