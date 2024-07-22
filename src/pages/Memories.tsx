@@ -144,8 +144,8 @@ const Memories = () => {
 			</section>
 			<aside
 				className={classNames("flex mb-36 items-center cursor-pointer", {
-					"mt-10": view !== "edit",
-					"-mt-[9rem]": view === "edit",
+					"-mt-10": view !== "edit",
+					"-mt-20": view === "edit",
 				})}>
 				<div className='flex justify-center gap-1'>
 					<button

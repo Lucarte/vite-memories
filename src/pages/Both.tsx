@@ -38,7 +38,7 @@ const Both = () => {
 	const deferredData = useLoaderData() as DeferredLoaderData;
 	console.log("Deferred Data:", deferredData);
 	return (
-		<article className='flex flex-col items-center pr-20 mt-12 mb-20 text-right'>
+		<article className='flex flex-col items-center mb-20 text-right searchmt-12'>
 			<Suspense
 				fallback={
 					<div className='flex justify-center w-screen'>

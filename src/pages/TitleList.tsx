@@ -4,6 +4,7 @@ import { useLoaderData, Link } from "react-router-dom";
 import { MemoryValues } from "../types/MemoryValues";
 import { LoaderFunction } from "react-router-dom";
 import { getAllMemories } from "../utils/api";
+import Search from "../components/Search";
 
 // Define props for TitleList component to accept an array of MemoryValues
 interface TitleListProps {

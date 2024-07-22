@@ -102,7 +102,7 @@ const EditSingleMemory = ({ memory }: Props) => {
 		<>
 			<article
 				key={memory.title}
-				className='flex flex-col items-end gap-6 mb-20 overflow-hidden text-gray-300 screen mx-9 font-extralight'>
+				className='flex flex-col items-end gap-6 mb-6 overflow-hidden text-gray-300 screen mx-9 font-extralight'>
 				{/* Entry Header */}
 				<section className='flex flex-col w-full'>
 					<div className='flex justify-end mb-2'>
@@ -235,15 +235,21 @@ const EditSingleMemory = ({ memory }: Props) => {
 					</fetcher.Form>
 				</div>
 				{/* Custom HR Tag */}
-				<hr className='h-1 mx-auto mt-16 border-none rounded-full w-36 bg-gradient-to-r from-black via-gray-200 to-black' />
+				<div className='inline-flex items-center justify-center w-full mt-8 mb-8 opacity-1'>
+					<hr className='w-64 h-px my-8 bg-gray-200 border-0 dark:bg-gray-700' />
+					<span className='absolute px-3 font-light text-gray-400 -translate-x-1/2 bg-white left-1/2 dark:text-gray-200 dark:bg-black'>
+						•
+					</span>
+				</div>
 			</article>
+
 			{/* ############################################################################################################################# */}
 			{/* ###################################################### // EDIT FORM // ###################################################### */}
 			{/* ############################################################################################################################# */}
 			{showEdit ? (
 				<form
 					onSubmit={handleSubmit(onValid)}
-					className='max-w-[30rem] px-10 flex flex-col'>
+					className='max-w-[30rem] px-10 flex flex-col mb-20'>
 					<input type='hidden' {...register("intent")} value='patch' />
 					<input type='hidden' name='id' value={memory.id} />
 					{/* Form Title */}

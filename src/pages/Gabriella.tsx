@@ -37,7 +37,7 @@ const Gabriella = () => {
 	const deferredData = useLoaderData() as DeferredLoaderData;
 	console.log("Deferred Data:", deferredData);
 	return (
-		<article className='flex flex-col items-center pr-20 mt-12 mb-20 text-right'>
+		<article className='flex flex-col items-center mt-12 mb-20 text-right search'>
 			<Suspense
 				fallback={
 					<div className='flex justify-center w-screen'>

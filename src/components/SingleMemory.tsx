@@ -62,7 +62,13 @@ const SingleMemory = () => {
 								}>
 								<Await
 									resolve={deferredData.memory}
-									errorElement={<p>Could not load memory.</p>}>
+									errorElement={
+										<p className='mt-40 text-center'>
+											Could not load memory. <br /> It may have been erased
+											already. <br /> Or perhaps updated! <br /> <br /> Try
+											another search.
+										</p>
+									}>
 									{(memory) =>
 										view === "view" ? (
 											<ViewSingleMemory memory={memory} />

@@ -146,7 +146,12 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 							</div>
 						</article>
 						{/* Custom HR Tag */}
-						<hr className='h-1 mx-auto mt-20  -mb-[6rem] border-none rounded-full w-36 bg-gradient-to-r from-black via-gray-200 to-black' />
+						<div className='inline-flex items-center justify-center w-full mt-8 mb-8 opacity-0'>
+							<hr className='w-64 h-px my-8 bg-gray-200 border-0 dark:bg-gray-700' />
+							<span className='absolute px-3 font-light text-gray-400 -translate-x-1/2 bg-white left-1/2 dark:text-gray-200 dark:bg-black'>
+								•
+							</span>
+						</div>
 					</div>
 				))
 			) : (
