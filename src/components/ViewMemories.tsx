@@ -30,10 +30,16 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 		navigate(`/memories/title/${title}`);
 	};
 
+	// Sort memories from newest to oldest
+	const sortedMemories = memories.sort(
+		(a, b) =>
+			new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+	);
+
 	return (
 		<>
-			{memories.length > 0 ? (
-				memories.map((memory) => (
+			{sortedMemories.length > 0 ? (
+				sortedMemories.map((memory) => (
 					<div
 						key={memory.title}
 						onClick={() => handleMemoryLoad(memory.title)}

@@ -56,10 +56,12 @@ const Search = ({ onResultClick }: SearchProps) => {
 			{loading && <LineSpinner />}
 			<ul>
 				{results.map((result) => (
-					<li key={result.title}>
+					<li
+						key={result.title}
+						className='gap-3 px-2 py-1 my-5 bg-black translate-deg rounded-2xl w-fit border-tr-none'>
 						<Link
 							to={`/memories/title/${result.title}`}
-							className='text-blue-600 hover:underline'
+							className='text-white dark:text-black'
 							onClick={handleResultClick} // Close search on click
 						>
 							{result.title}

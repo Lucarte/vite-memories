@@ -137,3 +137,10 @@ export const getFanById = async (id: number): Promise<FanValues> => {
 		throw error;
 	}
 };
+
+// DELETE FAN
+export const deleteFanById = async (id: number) => {
+	const res = await http.delete(`/api/auth/fan/${id}`);
+	if (res.status !== 200) throw res;
+	return res.data;
+};

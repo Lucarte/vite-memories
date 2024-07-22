@@ -23,6 +23,21 @@ body {
 	@apply bg-black text-white;
 }
 
+/* Shadows for the fan buttons */
+/* Add this to your CSS file */
+
+.shadow-custom-view {
+	box-shadow: 3px -4px 1px 0px black;
+}
+
+.shadow-custom-view-dark {
+	box-shadow: 3px -4px 1px 0px white;
+}
+
+.shadow-custom-delete {
+	box-shadow: 3px -4px 1px 0px red;
+}
+
 /* ###################################################################### */
 /* ####################### // LOADING SPINNERS // ####################### */
 /* ###################################################################### */

@@ -4,7 +4,6 @@ import { useLoaderData, Link } from "react-router-dom";
 import { MemoryValues } from "../types/MemoryValues";
 import { LoaderFunction } from "react-router-dom";
 import { getAllMemories } from "../utils/api";
-import Search from "../components/Search";
 
 // Define props for TitleList component to accept an array of MemoryValues
 interface TitleListProps {
@@ -16,16 +15,18 @@ const TitleList: React.FC = () => {
 
 	return (
 		<article className='flex flex-col items-center gap-6 pt-6 text-right'>
-			<h1 className='pt-4 pb-6 text-xl font-bold text-center'>
-				.M.e.m.o.r.y. <br /> .T.i.t.l.e.s.
+			<h1 className='pt-4 text-xl font-bold text-center underline'>
+				T.i.t.l.e..L.i.s.t. <br />
 			</h1>
 			<section className='w-screen'>
 				<ul className='list-disc'>
 					{memories.map((memory, index) => (
-						<li key={index} className='my-2'>
+						<li
+							key={index}
+							className='p-2 my-2 text-center text-white bg-black '>
 							<Link
 								to={`/memories/title/${memory.title}`}
-								className='text-blue-500 hover:underline'>
+								className='text-white'>
 								{memory.title}
 							</Link>
 						</li>
