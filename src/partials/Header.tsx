@@ -7,6 +7,8 @@ import { loggedInData } from "../utils/api";
 import classNames from "classnames";
 import { navigation } from "../utils/navigation";
 import Search from "../components/Search"; // Assuming Search is the search component
+import logoBlack from "../assets/LogoWhite.svg";
+import logoWhiteThick from "../assets/LogoBlack.svg";
 
 const Header = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -65,16 +67,12 @@ const Header = () => {
 					<Link to='/' className='-mt-[4px]'>
 						{enabled ? (
 							<img
-								src='../src/assets/LogoBlack.svg'
+								src={logoWhiteThick}
 								className='w-11'
 								alt='Logo White Thick'
 							/>
 						) : (
-							<img
-								src='../src/assets/LogoWhite.svg'
-								className='w-11'
-								alt='Logo Black'
-							/>
+							<img src={logoBlack} className='w-11' alt='Logo Black' />
 						)}
 					</Link>
 					<p className='hidden md:block md:ml-10'>P.A.B.L.O.</p>

@@ -41,7 +41,8 @@ const Search = ({ onResultClick }: SearchProps) => {
 	}, [query]);
 
 	const handleResultClick = () => {
-		onResultClick(); // Close search when result is clicked
+		// Close search when result is clicked
+		onResultClick();
 	};
 
 	return (
@@ -58,12 +59,11 @@ const Search = ({ onResultClick }: SearchProps) => {
 				{results.map((result) => (
 					<li
 						key={result.title}
-						className='gap-3 px-2 py-1 my-5 bg-black translate-deg rounded-2xl w-fit border-tr-none'>
+						className='gap-2 px-2 py-1 my-5 bg-black rounded-md rounded-tr-none rounded-bl-none translate-deg w-fit'>
 						<Link
 							to={`/memories/title/${result.title}`}
 							className='text-white dark:text-black'
-							onClick={handleResultClick} // Close search on click
-						>
+							onClick={handleResultClick}>
 							{result.title}
 						</Link>
 					</li>

@@ -49,6 +49,7 @@ import GabriellaLayout, {
 } from "./layouts/GabriellaLayout";
 import PabloLayout, { loader as pablosLoader } from "./layouts/PabloLayout";
 import BothLayout, { loader as brunnisLoader } from "./layouts/BothLayout";
+import LoginLayout from "./layouts/LoginLayout";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -58,7 +59,6 @@ const router = createBrowserRouter(
 				element={<RootLayout />}
 				errorElement={<RootError />}
 				loader={rootLoader}>
-				<Route path='/login' element={<Login />} action={loginAction} />
 				<Route
 					path='/register'
 					element={<Registration />}
@@ -97,6 +97,15 @@ const router = createBrowserRouter(
 
 				{/* Not Found */}
 				<Route path='*' element={<NotFound />} loader={rootLoader} />
+			</Route>
+
+			{/* LOGIN LAYOUT (OHNE FOOTER) */}
+			<Route
+				path='/'
+				element={<LoginLayout />}
+				action={loginAction}
+				errorElement={<RootError />}>
+				<Route path='/login' element={<Login />} />
 			</Route>
 
 			{/* HOME LAYOUT */}

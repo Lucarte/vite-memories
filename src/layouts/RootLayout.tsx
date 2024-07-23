@@ -5,7 +5,7 @@ import { loggedInData } from "../utils/api";
 import Footer from "../partials/Footer";
 import LoadingLayout from "./LoadingLayout";
 
-const PublicNav = () => {
+export const PublicNav = () => {
 	return (
 		<>
 			<LoadingLayout>
