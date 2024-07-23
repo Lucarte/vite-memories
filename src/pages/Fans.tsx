@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
 	LoaderFunction,
 	useLoaderData,
@@ -16,46 +16,64 @@ import { useTheme } from "../context/ThemeContext";
 // Define the type for fans data
 interface FansData {
 	fans: FanValues[];
+	error?: string;
 }
 
 // Loader - All Fans
 export const loader: LoaderFunction = async () => {
-	const { loggedIn, isAdmin } = await loggedInData();
-
-	if (!loggedIn) {
-		return redirect("/login");
-	}
+	const { isAdmin } = await loggedInData();
 
 	if (!isAdmin) {
 		console.log("Admin Zone: Access denied");
-		return redirect("/login");
+		return { fans: [], error: "Admin Zone" };
 	}
 
 	try {
 		const fans = await getAllFans();
-		console.log("Fetched fans:", fans); // Log fetched data for debugging
-		return { fans } as FansData;
+		return { fans };
 	} catch (error) {
-		console.error("Error fetching all fans:", error);
-		return { fans: [] } as FansData; // Return empty array or handle error
+		return { error: "Error fetching fans" };
 	}
 };
 
 // Fans Component
 const Fans: React.FC = () => {
 	const { enabled } = useTheme();
-	const { fans } = useLoaderData() as FansData;
+	const { fans, error } = useLoaderData() as FansData;
 	const navigate = useNavigate();
 
-	const [isModalOpen, setIsModalOpen] = useState(false); // State for modal visibility
-	const [fanToDelete, setFanToDelete] = useState<number | null>(null); // State for fan to delete
-	const [error, setError] = useState<string | null>(null);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [fanToDelete, setFanToDelete] = useState<number | null>(null);
 	const [successMessage, setSuccessMessage] = useState<string | null>(null);
 	const [deletingFanName, setDeletingFanName] = useState<string | null>(null);
-	const [showOverlay, setShowOverlay] = useState(false); // State for overlay visibility
+	const [showOverlay, setShowOverlay] = useState(false);
 
+	// Navigate AFTER having shown the error message
+	useEffect(() => {
+		if (error) {
+			const timer = setTimeout(() => {
+				navigate("/login");
+			}, 2000);
+
+			return () => clearTimeout(timer); // Clear timeout if component unmounts
+		}
+	}, [error, navigate]);
+
+	// Design an art of simple overlay for the error message
+	if (error) {
+		return (
+			<div className='fixed inset-0 z-50 flex items-center justify-center bg-white'>
+				<div className='text-center'>
+					<h2 className='mb-4 text-2xl font-bold tracking-wider uppercase'>
+						{error}
+					</h2>
+				</div>
+			</div>
+		);
+	}
+
+	// Integrate Spinner
 	if (!fans) {
-		// Handle the case where data is still loading
 		return (
 			<div className='flex justify-center w-screen'>
 				<HerzSpinner />
@@ -64,7 +82,6 @@ const Fans: React.FC = () => {
 	}
 
 	if (fans.length === 0) {
-		// Handle the case where there are no fans to display
 		return <p>No fans found.</p>;
 	}
 
@@ -75,30 +92,24 @@ const Fans: React.FC = () => {
 	const handleDeleteFan = async () => {
 		if (fanToDelete !== null) {
 			try {
-				// TEST Get the name of the fan to delete
 				const fan = fans.find((fan) => fan.id === fanToDelete);
 				if (fan) {
+					// stores the name of the fan being deleted to be displayed in the overlay
 					setDeletingFanName(`${fan.first_name} ${fan.last_name}`);
 				}
 
 				await deleteFanById(fanToDelete);
-				setSuccessMessage("Fan has been successfully deleted!");
+				setSuccessMessage("has been successfully deleted!");
 				setFanToDelete(null);
 				setIsModalOpen(false);
-				// // Delay before refreshing the page or fetching data
-				// setTimeout(() => {
-				// 	window.location.reload(); // Reload the page to reflect the changes
-				// }, 2000);
 
-				// TEST - Show overlay with delay
 				setShowOverlay(true);
 				setTimeout(() => {
 					setShowOverlay(false);
-					window.location.reload(); // Reload the page to reflect the changes
+					window.location.reload();
 				}, 2000);
 			} catch (error) {
-				console.error("Failed to delete fan:", error);
-				setError(
+				setSuccessMessage(
 					"Failed to delete fan. You may not have the necessary permissions or the fan may not exist."
 				);
 			}
@@ -110,17 +121,9 @@ const Fans: React.FC = () => {
 			<ScrollUpBtn />
 			<DarkModeBtn />
 			<h1 className='pt-8 pb-12 text-xl font-medium tracking-widest text-center'>
-				{/* L.i.s.t..o.f..F.a.n.s */}
 				List of Fans
 			</h1>
 
-			{/* Display Success Message
-			{successMessage && (
-				<div className='p-4 mb-4 text-white bg-green-500 rounded'>
-					{successMessage}
-				</div>
-			)} */}
-			{/* Display Success Message */}
 			{successMessage && showOverlay && (
 				<div className='fixed inset-0 z-50 flex items-center justify-center bg-white'>
 					<div className='text-center'>
@@ -128,11 +131,6 @@ const Fans: React.FC = () => {
 						<p className='text-lg font-thin'>{successMessage}</p>
 					</div>
 				</div>
-			)}
-
-			{/* Display Error Message */}
-			{error && (
-				<div className='p-4 mb-4 text-white bg-red-500 rounded'>{error}</div>
 			)}
 
 			<ol className='flex flex-col gap-2 w-72'>
@@ -164,7 +162,6 @@ const Fans: React.FC = () => {
 				))}
 			</ol>
 
-			{/* Modal to delete user */}
 			{isModalOpen && (
 				<div className='fixed inset-0 z-50 flex items-center justify-center'>
 					<div className='absolute inset-0 bg-black opacity-50'></div>

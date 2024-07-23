@@ -1,12 +1,13 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
 	useSubmit,
 	useLocation,
 	useActionData,
-	redirect,
-	ActionFunction,
-	LoaderFunction,
+	useLoaderData,
+	useNavigate,
+	ActionFunctionArgs,
 } from "react-router-dom";
 import http from "../utils/http";
 import { MemoryValues } from "../types/MemoryValues";
@@ -20,6 +21,10 @@ import {
 	useFileUpload,
 	years,
 } from "../utils/memoryUtils";
+
+type CreateMemoryData = {
+	error?: string;
+};
 
 const CreateMemory: React.FC = () => {
 	const {
@@ -48,13 +53,38 @@ const CreateMemory: React.FC = () => {
 	} = useFileUpload();
 	const submit = useSubmit();
 	const location = useLocation();
+	const navigate = useNavigate();
 	const actionData = useActionData() as {
 		message: string;
 		redirectTo?: string;
 	};
+	const loaderData = useLoaderData() as CreateMemoryData;
+	const error = loaderData?.error;
+	const [showOverlay, setShowOverlay] = useState(false);
 	const [categories, setCategories] = useState<
 		{ id: string; category: string }[]
 	>([]);
+
+	useEffect(() => {
+		if (error) {
+			setShowOverlay(true);
+			const timer = setTimeout(() => {
+				navigate("/login");
+			}, 2000);
+
+			return () => clearTimeout(timer);
+		}
+	}, [error, navigate]);
+
+	useEffect(() => {
+		if (actionData?.redirectTo) {
+			const timer = setTimeout(() => {
+				window.location.href = actionData.redirectTo || "/";
+			}, 3000);
+
+			return () => clearTimeout(timer);
+		}
+	}, [actionData]);
 
 	useEffect(() => {
 		const fetchCategories = async () => {
@@ -68,16 +98,6 @@ const CreateMemory: React.FC = () => {
 
 		fetchCategories();
 	}, []);
-
-	useEffect(() => {
-		if (actionData?.redirectTo) {
-			const timer = setTimeout(() => {
-				window.location.href = actionData.redirectTo || "/";
-			}, 3000); // Redirect after 3 seconds
-
-			return () => clearTimeout(timer); // Clear timeout if component unmounts
-		}
-	}, [actionData]);
 
 	const onValid: SubmitHandler<MemoryValues> = (data, event) => {
 		const formData = new FormData(event?.target as HTMLFormElement);
@@ -97,12 +117,12 @@ const CreateMemory: React.FC = () => {
 			url_address: url.url_address,
 		}));
 
-		const payload = {
-			...data,
-			urls: formattedUrls,
-		};
+		// const payload = {
+		// 	...data,
+		// 	urls: formattedUrls,
+		// };
 
-		console.log("Form submitted with payload:", payload);
+		// console.log("Form submitted with payload:", payload);
 
 		submit(formData, {
 			method: "POST",
@@ -113,6 +133,13 @@ const CreateMemory: React.FC = () => {
 
 	return (
 		<>
+			{showOverlay && (
+				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
+					<div className='w-56 p-8 text-lg font-extrabold uppercase bg-white rounded-tr-lg shadow-lg rounded-3xl font-titles'>
+						<p className='text-black'>{error}</p>
+					</div>
+				</div>
+			)}
 			{actionData?.message && (
 				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
 					<div className='w-56 p-8 text-lg font-extrabold uppercase bg-white rounded-tr-lg shadow-lg rounded-3xl font-titles'>
@@ -404,13 +431,10 @@ const CreateMemory: React.FC = () => {
 export default CreateMemory;
 
 // ACTION
-export const action: ActionFunction = async ({ request }) => {
-	const { loggedIn, isAdmin } = await loggedInData();
+export const action = async ({ request }: ActionFunctionArgs) => {
+	const { isAdmin } = await loggedInData();
 	const formData = await request.formData();
 
-	if (!loggedIn) {
-		return redirect("/login");
-	}
 	if (!isAdmin) {
 		return { message: "Admin Zone: Access denied", redirectTo: "/login" };
 	}
@@ -424,14 +448,11 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 // LOADER for the form itself
-export const loader: LoaderFunction = async () => {
-	const { loggedIn, isAdmin } = await loggedInData();
+export const loader = async () => {
+	const { isAdmin } = await loggedInData();
 
-	if (!loggedIn) {
-		return redirect("/login");
-	}
 	if (!isAdmin) {
-		return redirect("/login?message=adminZone");
+		return { error: "Admin Zone: Access denied" };
 	}
 
 	return null;

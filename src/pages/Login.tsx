@@ -56,6 +56,8 @@ const Login = () => {
 	} = useForm<FormValues>();
 	const submit = useSubmit();
 	const location = useLocation();
+	const from = location.state?.from || "/"; // Default to '/' if 'from' is not set
+
 	const actionData = useActionData() as {
 		successMessage?: string;
 		errorMessage?: string;
@@ -77,22 +79,24 @@ const Login = () => {
 	};
 
 	useEffect(() => {
-		// Handle successful login
-		if (actionData?.successMessage && actionData?.redirectTo) {
+		if (actionData?.successMessage) {
+			const redirectUrl = actionData.redirectTo ?? "/";
 			setTimeout(() => {
-				if (actionData.redirectTo) {
-					navigate(actionData.redirectTo);
+				if (typeof redirectUrl === "string") {
+					navigate(redirectUrl);
 				}
 			}, 3000);
 		}
 
-		// Handle login error
 		if (actionData?.errorMessage) {
+			console.log("Login error: Navigating to /login with from:", from);
 			setTimeout(() => {
-				navigate("/login");
+				if (typeof from === "string") {
+					navigate("/login", { state: { from } });
+				}
 			}, 3000);
 		}
-	}, [actionData, navigate]);
+	}, [actionData, navigate, from]);
 
 	return (
 		<article className='flex flex-col items-center px-6 py-12 text-center md:mt-28 lg:px-8'>
@@ -235,3 +239,27 @@ const Login = () => {
 };
 
 export default Login;
+
+// // import React, { useState } from 'react';
+// import { useLocation, useNavigate } from 'react-router-dom';
+
+// const Login = () => {
+//     const location = useLocation();
+//     const navigate = useNavigate();
+//     const redirectUrl = new URLSearchParams(location.search).get('redirect') || '/';
+
+//     const handleLogin = async () => {
+//         // Perform login logic
+//         // If login is successful:
+//         navigate(redirectUrl);
+//     };
+
+//     return (
+//         <div>
+//             {/* Your login form */}
+//             <button onClick={handleLogin}>Login</button>
+//         </div>
+//     );
+// };
+
+// export default Login;
