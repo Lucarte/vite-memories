@@ -1,11 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { useState, useEffect } from "react";
-import {
-	LoaderFunction,
-	useLoaderData,
-	redirect,
-	useNavigate,
-} from "react-router-dom";
+import { LoaderFunction, useLoaderData, useNavigate } from "react-router-dom";
 import HerzSpinner from "../components/HerzSpinner";
 import { FanValues } from "../types/FanValues";
 import { deleteFanById, getAllFans, loggedInData } from "../utils/api";
@@ -37,7 +32,7 @@ export const loader: LoaderFunction = async () => {
 };
 
 // Fans Component
-const Fans: React.FC = () => {
+const Fans = () => {
 	const { enabled } = useTheme();
 	const { fans, error } = useLoaderData() as FansData;
 	const navigate = useNavigate();
@@ -164,22 +159,31 @@ const Fans: React.FC = () => {
 
 			{isModalOpen && (
 				<div className='fixed inset-0 z-50 flex items-center justify-center'>
-					<div className='absolute inset-0 bg-black opacity-50'></div>
-					<div className='z-10 p-6 bg-white rounded-lg shadow-lg dark:bg-gray-800'>
-						<h2 className='mb-4 text-lg'>
+					<div className='absolute inset-0 bg-black opacity-80'></div>
+					<div className='z-10 w-64 p-6 bg-white rounded-[6rem] relative rounded-tr-lg shadow-lg min-h-96 dark:bg-gray-800'>
+						<button
+							className='absolute px-2 font-serif text-lg font-black text-white bg-black rounded top-4 right-4 dark:bg-white dark:text-black'
+							onClick={() => setIsModalOpen(false)}>
+							X
+						</button>
+						<h2 className='pt-16 mb-12 text-2xl font-black text-center'>
 							Are you sure you want to delete this fan?
 						</h2>
-						<div className='flex justify-end'>
-							<button
-								className='px-4 py-2 mr-2 text-white bg-red-500 rounded'
-								onClick={handleDeleteFan}>
-								Please Delete
-							</button>
-							<button
-								className='px-4 py-2 bg-gray-300 rounded'
-								onClick={() => setIsModalOpen(false)}>
-								Cancel
-							</button>
+						<div className='flex flex-col w-full gap-4 text-sm'>
+							<div className='flex justify-end w-full'>
+								<button
+									className='py-1 pl-3 pr-8 text-white bg-red-600 rounded-md rounded-br-3xl w-fit'
+									onClick={handleDeleteFan}>
+									Yes, delete!
+								</button>
+							</div>
+							<div className='flex justify-start w-full'>
+								<button
+									className='py-1 pl-8 pr-3 text-white bg-black rounded-md rounded-bl-3xl w-fit'
+									onClick={() => setIsModalOpen(false)}>
+									Not sure, cancel!
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>

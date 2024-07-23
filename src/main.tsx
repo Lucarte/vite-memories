@@ -100,12 +100,8 @@ const router = createBrowserRouter(
 			</Route>
 
 			{/* LOGIN LAYOUT (OHNE FOOTER) */}
-			<Route
-				path='/'
-				element={<LoginLayout />}
-				action={loginAction}
-				errorElement={<RootError />}>
-				<Route path='/login' element={<Login />} />
+			<Route path='/' element={<LoginLayout />} errorElement={<RootError />}>
+				<Route path='/login' element={<Login />} action={loginAction} />
 			</Route>
 
 			{/* HOME LAYOUT */}
