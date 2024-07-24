@@ -117,7 +117,6 @@ const Memories = () => {
 	return (
 		<article className='flex flex-col items-center gap-6 pt-6 text-right'>
 			<ScrollUpBtn />
-			<DarkModeBtn />
 			<h1 className='pt-4 pb-6 text-xl font-bold text-center'>
 				.M.e.m.o.r.i.e.S.
 				{/* a.l.l <br /> .M.e.m.o.r.i.e.S. */}

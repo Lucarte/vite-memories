@@ -2,6 +2,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "../partials/Header";
 import LoadingLayout from "./LoadingLayout";
+import DarkModeBtn from "../partials/DarkModeBtn";
 
 const LoginLayout = () => {
 	return (
@@ -9,7 +10,8 @@ const LoginLayout = () => {
 			<LoadingLayout>
 				<>
 					<Header />
-					<main className=''>
+					<DarkModeBtn classes='bottom-8' />
+					<main>
 						<Outlet />
 					</main>
 				</>

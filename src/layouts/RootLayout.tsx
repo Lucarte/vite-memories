@@ -4,6 +4,7 @@ import Header from "../partials/Header";
 import { loggedInData } from "../utils/api";
 import Footer from "../partials/Footer";
 import LoadingLayout from "./LoadingLayout";
+import DarkModeBtn from "../partials/DarkModeBtn";
 
 export const PublicNav = () => {
 	return (
@@ -11,6 +12,7 @@ export const PublicNav = () => {
 			<LoadingLayout>
 				<>
 					<Header />
+					<DarkModeBtn classes='bottom-8' />
 					<main className=''>
 						<Outlet />
 					</main>
@@ -26,7 +28,8 @@ const PrivateNav = () => {
 			<LoadingLayout>
 				<>
 					<Header />
-					<main className=''>
+					<DarkModeBtn classes='bottom-24' />
+					<main>
 						<Outlet />
 					</main>
 					<Footer />
@@ -42,6 +45,7 @@ const AdminNav = () => {
 			<LoadingLayout>
 				<>
 					<Header />
+					<DarkModeBtn classes='bottom-24' />
 					{/* <p className='mt-4 text-center text-orange-600'>Have fun, Admin!</p> */}
 					<main className=''>
 						<Outlet />

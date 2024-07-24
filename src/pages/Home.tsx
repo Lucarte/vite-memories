@@ -11,7 +11,6 @@ const Home = () => {
 	return (
 		<article className='flex flex-col items-center pt-16'>
 			{navigation.state === "loading" ? <HourGlassSpinner /> : null}
-			<DarkModeBtn />
 			<img
 				className='mb-6 w-60'
 				// className='w-72 scale-x-[-1]'

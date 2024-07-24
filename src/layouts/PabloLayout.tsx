@@ -25,7 +25,7 @@ const PabloLayout = () => {
 	return (
 		<>
 			<header className='flex items-center justify-between p-8'>
-				<DarkModeBtn />
+				<DarkModeBtn classes='bottom-24' />
 				<ScrollUpBtn />
 				{/* Logo in mobile && Logo and Name description other sizes */}
 				<div className='flex items-center justify-start md:min-w-48'>

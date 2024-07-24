@@ -49,7 +49,6 @@ const SingleMemory = () => {
 			</h1>
 			<article className='flex flex-col items-center gap-6 pt-8 pb-48 overflow-hidden text-right text-gray-300 font-extralight'>
 				<ScrollUpBtn />
-				<DarkModeBtn />
 				<aside className='flex items-center cursor-pointer'>
 					<div className='flex flex-col items-center gap-1'>
 						<section className=''>

@@ -151,7 +151,6 @@ const CreateMemory: React.FC = () => {
 				<form
 					onSubmit={handleSubmit(onValid)}
 					className='max-w-[30rem] px-10 flex flex-col'>
-					<DarkModeBtn />
 					<ScrollUpBtn />
 					<h1 className='mt-4 font-bold text-center font-titles'>
 						Create a New Memory

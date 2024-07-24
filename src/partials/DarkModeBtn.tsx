@@ -2,15 +2,20 @@ import classNames from "classnames";
 import { useTheme } from "../context/ThemeContext";
 import { Switch } from "@headlessui/react";
 
-const DarkModeBtn = () => {
+type Props = {
+	classes?: string;
+};
+
+const DarkModeBtn = ({ classes }: Props) => {
 	const { enabled, setEnabled } = useTheme();
 
 	return (
 		<div
 			className={classNames(
-				enabled ? "bg-black" : "bg-white",
-				"flex items-center justify-center w-10 h-8 rotate-90 md:rotate-0 rounded-xl fixed bottom-24 left-2 z-40 md:pl-8"
+				"fixed z-40 flex items-center justify-center w-10 h-8 rotate-90 bg-white dark:bg-black md:rotate-0 rounded-xl left-2 md:pl-8",
+				classes
 			)}>
+			{/*  */}
 			<Switch
 				checked={enabled}
 				onChange={setEnabled}

@@ -4,6 +4,7 @@ import { useTheme } from "../context/ThemeContext";
 import MenuBarsIcon from "../components/MenuBarsIcon";
 import { navigation } from "../utils/navigation";
 import classNames from "classnames";
+import DarkModeBtn from "../partials/DarkModeBtn";
 
 const HomeLayout = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,6 +25,7 @@ const HomeLayout = () => {
 	return (
 		<>
 			<header className='flex items-center justify-between p-8'>
+				<DarkModeBtn classes='bottom-8' />
 				<div className='flex items-center justify-start md:min-w-48'></div>
 				<div className='flex justify-center'>
 					<div className='hidden md:block'>

@@ -40,7 +40,6 @@ const Registration = () => {
 
 	return (
 		<article className='relative h-full md:mt-16'>
-			<DarkModeBtn />
 			<ScrollUpBtn />
 			<div className='flex flex-col justify-center flex-1 min-h-full px-6 pt-4 lg:px-8'>
 				<h2

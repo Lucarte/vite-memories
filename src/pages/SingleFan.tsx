@@ -76,7 +76,6 @@ const SingleFan = () => {
 
 	return (
 		<article className='px-10'>
-			<DarkModeBtn />
 			<h1 className='mt-4 mb-10 text-xl font-bold text-center font-titles'>
 				f.a.n <br />
 				.d.e.t.a.i.l.s.
