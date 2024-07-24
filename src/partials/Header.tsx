@@ -6,15 +6,15 @@ import { Link } from "react-router-dom";
 import { loggedInData } from "../utils/api";
 import classNames from "classnames";
 import { navigation } from "../utils/navigation";
-import Search from "../components/Search"; // Assuming Search is the search component
+import Search from "../components/Search";
 import logoBlack from "../assets/LogoWhite.svg";
 import logoWhiteThick from "../assets/LogoBlack.svg";
 
 const Header = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [loggedIn, setLoggedIn] = useState(false);
-	const [userId, setUserId] = useState<number | null>(null); // Explicitly define userId type
-	const [isSearchVisible, setIsSearchVisible] = useState(false); // State for search visibility
+	const [userId, setUserId] = useState<number | null>(null);
+	const [isSearchVisible, setIsSearchVisible] = useState(false);
 	const { enabled } = useTheme();
 
 	useEffect(() => {
@@ -46,7 +46,7 @@ const Header = () => {
 			{isSearchVisible && (
 				<div
 					className={`${
-						enabled ? "bg-black" : "bg-gray-100"
+						enabled ? "bg-white" : "bg-black"
 					} fixed top-0 left-0 right-0 z-50 flex flex-col items-center h-full pb-12`}>
 					<Search onResultClick={handleSearchClick} />
 					<button
@@ -54,8 +54,8 @@ const Header = () => {
 						onClick={handleSearchClick}
 						className={`${
 							enabled
-								? "text-white hover:text-gray-300"
-								: "text-black hover:text-gray-700"
+								? "text-black hover:text-gray-100"
+								: "text-white hover:text-gray-700"
 						} font-black absolute text-2xl top-5 right-8`}>
 						X
 					</button>

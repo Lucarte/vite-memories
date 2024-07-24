@@ -5,6 +5,8 @@ import MenuBarsIcon from "../components/MenuBarsIcon";
 import { navigation } from "../utils/navigation";
 import classNames from "classnames";
 import DarkModeBtn from "../partials/DarkModeBtn";
+import logoBlack from "../assets/LogoWhite.svg";
+import logoWhiteThick from "../assets/LogoBlack.svg";
 
 const HomeLayout = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,14 +28,23 @@ const HomeLayout = () => {
 		<>
 			<header className='flex items-center justify-between p-8'>
 				<DarkModeBtn classes='bottom-8' />
-				<div className='flex items-center justify-start md:min-w-48'></div>
-				<div className='flex justify-center'>
-					<div className='hidden md:block'>
-						{/* Make name dynamic */}
-						<p>G.A.B.I.</p>
-					</div>
+				{/* Logo in mobile && Logo and Name description other sizes */}
+				<div className='flex items-center justify-start md:min-w-48'>
+					<Link to='/' className='-mt-[4px]'>
+						{enabled ? (
+							<img
+								src={logoWhiteThick}
+								className='w-11'
+								alt='Logo White Thick'
+							/>
+						) : (
+							<img src={logoBlack} className='w-11' alt='Logo Black' />
+						)}
+					</Link>
 				</div>
-				<div className='flex items-center justify-end md:min-w-48'>
+
+				{/* Menu in mobile && Menu and Search icon in other sizes */}
+				<div className='flex items-center justify-end lg:justify-start lg:pb-2 lg:pl-16 md:min-w-48'>
 					<button
 						type='button'
 						onClick={handleClick}
@@ -45,7 +56,7 @@ const HomeLayout = () => {
 					</button>
 				</div>
 			</header>
-			<main>
+			<main className='lg:flex lg:items-center lg:justify-center lg:h-[calc(100vh-21rem)]'>
 				<Outlet />
 			</main>
 			{isMenuOpen && (
