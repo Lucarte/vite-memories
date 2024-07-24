@@ -5,13 +5,14 @@ import { loggedInData } from "../utils/api";
 import Footer from "../partials/Footer";
 import LoadingLayout from "./LoadingLayout";
 import DarkModeBtn from "../partials/DarkModeBtn";
+import PublicNavHeader from "../components/PublicNavHeader";
 
 export const PublicNav = () => {
 	return (
 		<>
 			<LoadingLayout>
 				<>
-					<Header />
+					<PublicNavHeader />
 					<DarkModeBtn classes='bottom-8' />
 					<main className=''>
 						<Outlet />
@@ -58,7 +59,7 @@ const AdminNav = () => {
 };
 
 const RootLayout = () => {
-	const { loggedIn, isAdmin, user } = useLoaderData() as {
+	const { loggedIn, isAdmin } = useLoaderData() as {
 		loggedIn: boolean;
 		isAdmin: boolean;
 		user: { id: number; firstName: string; lastName: string } | null;

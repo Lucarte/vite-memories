@@ -16,7 +16,6 @@ import {
 } from "react-hook-form";
 import { useTheme } from "../context/ThemeContext";
 import { login } from "../utils/api";
-import DarkModeBtn from "../partials/DarkModeBtn";
 import { useEffect } from "react";
 import { json } from "react-router-dom";
 
@@ -123,9 +122,9 @@ const Login = () => {
 						autoComplete='false'
 						id='email'
 						type='email'
-						className={`w-full rounded-[3px] py-4 px-6 shadow-sm ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
+						className={`w-full rounded-[3px] py-4 px-6 ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
 							enabled
-								? "bg-black border-white text-white placeholder:text-gray-500 focus:ring-gray-400"
+								? "bg-black border-white text-white placeholder:text-gray-500 focus:ring-orange-400"
 								: "bg-white border-black text-black placeholder:text-gray-500 focus:ring-orange-600"
 						}`}
 						placeholder='me@gmail.com'
@@ -155,9 +154,9 @@ const Login = () => {
 					</label>
 					<input
 						id='password'
-						className={`w-full rounded-[3px] py-4 px-6 shadow-sm ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
+						className={`w-full rounded-[3px] py-4 px-6 ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
 							enabled
-								? "bg-black border-white text-white placeholder:text-gray-500 focus:ring-gray-400"
+								? "bg-black border-white text-white placeholder:text-gray-500 focus:ring-orange-400"
 								: "bg-white border-black text-black placeholder:text-gray-500 focus:ring-orange-600"
 						}`}
 						placeholder='password'
@@ -215,21 +214,40 @@ const Login = () => {
 
 			{/* Overlay for messages */}
 			{actionData?.successMessage && (
-				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
-					<div className='w-56 p-8 text-lg font-extrabold uppercase bg-white rounded-tr-lg shadow-lg rounded-3xl font-titles'>
-						<p className='text-black'>{actionData.successMessage}</p>
+				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 dark:bg-white dark:bg-opacity-70'>
+					<div className='z-10 2xl:w-72 w-64 p-6 bg-white rounded-[6rem] relative rounded-tr-lg shadow-lg min-h-96 dark:bg-black'>
+						<h2 className='pt-20 text-2xl font-black leading-10 text-center text-black uppercase dark:text-white'>
+							all set to <br />
+							<br />
+							go down <br />
+							memory lane!
+						</h2>
 					</div>
 				</div>
+				// <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
+				// 	<div className='w-56 p-8 text-lg font-extrabold uppercase bg-white rounded-tr-lg shadow-lg rounded-3xl font-titles'>
+				// 		<p className='text-black'>
+				// 			Now <br />
+				// 			go down
+				// 			<br />
+				// 			memory lane!
+				// 			{/* {actionData.successMessage} */}
+				// 		</p>
+				// 	</div>
+				// </div>
 			)}
 
 			{actionData?.errorMessage && (
-				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
-					<div className='w-56 p-8 text-lg font-extrabold uppercase bg-white rounded-tr-lg shadow-lg rounded-3xl font-titles'>
-						{actionData.errorMessage.split("<br>").map((line, index) => (
-							<p key={index} className='my-4 text-red-500'>
-								{line}
-							</p>
-						))}
+				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 dark:bg-white dark:bg-opacity-70'>
+					<div className='z-10 2xl:w-72 w-64 p-6 bg-white rounded-[6rem] relative rounded-tr-lg shadow-lg min-h-96 dark:bg-black'>
+						<h2 className='pt-20 text-2xl font-black text-center text-black uppercase dark:text-white'>
+							<span className='text-red-600 '>Invalid Credentials</span>
+							<br />
+							<br />
+							<hr />
+							<br />
+							Only registered users can login
+						</h2>
 					</div>
 				</div>
 			)}
@@ -238,27 +256,3 @@ const Login = () => {
 };
 
 export default Login;
-
-// // import React, { useState } from 'react';
-// import { useLocation, useNavigate } from 'react-router-dom';
-
-// const Login = () => {
-//     const location = useLocation();
-//     const navigate = useNavigate();
-//     const redirectUrl = new URLSearchParams(location.search).get('redirect') || '/';
-
-//     const handleLogin = async () => {
-//         // Perform login logic
-//         // If login is successful:
-//         navigate(redirectUrl);
-//     };
-
-//     return (
-//         <div>
-//             {/* Your login form */}
-//             <button onClick={handleLogin}>Login</button>
-//         </div>
-//     );
-// };
-
-// export default Login;

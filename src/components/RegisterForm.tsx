@@ -21,7 +21,6 @@ const RegisterForm = ({
 	const { enabled } = useTheme();
 	const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
 	const navigate = useNavigate();
-
 	const {
 		register,
 		handleSubmit,
@@ -361,17 +360,27 @@ const RegisterForm = ({
 				/>
 				{/* Overlay for success messages */}
 				{actionData?.successMessage && (
-					<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
-						<div className='w-64 p-8 text-lg font-extrabold uppercase bg-white rounded-tr-lg shadow-lg rounded-3xl font-titles'>
-							<p className='text-black'>{actionData.successMessage}</p>
+					<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 dark:bg-white dark:bg-opacity-70'>
+						<div className='z-10 2xl:w-72 w-64 p-6 bg-white rounded-[6rem] relative rounded-tr-lg shadow-lg min-h-96 dark:bg-black'>
+							<h2 className='pt-20 text-2xl font-black leading-10 text-center text-black uppercase dark:text-white'>
+								You have been <br />
+								successfully <br />
+								adopted <br />
+								as a <i>fan</i> <br />
+								of the <i>fam!</i>
+							</h2>
 						</div>
 					</div>
 				)}
 				{/* Overlay for error messages */}
 				{actionData?.errorMessage && (
-					<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
-						<div className='w-56 p-8 text-lg font-extrabold uppercase bg-white rounded-tr-lg shadow-lg rounded-3xl font-titles'>
-							<p className='text-black'>{actionData.errorMessage}</p>
+					<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 dark:bg-white dark:bg-opacity-70'>
+						<div className='z-10 2xl:w-72 w-64 p-6 bg-white rounded-[6rem] relative rounded-tr-lg shadow-lg min-h-96 dark:bg-black'>
+							<h2 className='pt-20 text-2xl font-black text-center text-black uppercase dark:text-white'>
+								Registration failed <br />
+								<br /> Please <br />
+								try again
+							</h2>
 						</div>
 					</div>
 				)}

@@ -1,11 +1,10 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { LoaderFunction, useLoaderData, useNavigate } from "react-router-dom";
 import HerzSpinner from "../components/HerzSpinner";
 import { FanValues } from "../types/FanValues";
 import { deleteFanById, getAllFans, loggedInData } from "../utils/api";
 import ScrollUpBtn from "../partials/ScrollUpBtn";
-import DarkModeBtn from "../partials/DarkModeBtn";
 import { useTheme } from "../context/ThemeContext";
 
 // Define the type for fans data
@@ -36,7 +35,6 @@ const Fans = () => {
 	const { enabled } = useTheme();
 	const { fans, error } = useLoaderData() as FansData;
 	const navigate = useNavigate();
-
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [fanToDelete, setFanToDelete] = useState<number | null>(null);
 	const [successMessage, setSuccessMessage] = useState<string | null>(null);

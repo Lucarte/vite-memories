@@ -49,7 +49,6 @@ import GabriellaLayout, {
 } from "./layouts/GabriellaLayout";
 import PabloLayout, { loader as pablosLoader } from "./layouts/PabloLayout";
 import BothLayout, { loader as brunnisLoader } from "./layouts/BothLayout";
-import LoginLayout from "./layouts/LoginLayout";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -59,11 +58,6 @@ const router = createBrowserRouter(
 				element={<RootLayout />}
 				errorElement={<RootError />}
 				loader={rootLoader}>
-				<Route
-					path='/register'
-					element={<Registration />}
-					action={registerAction}
-				/>
 				<Route path='/logout' element={<Footer />} action={footerAction} />
 				<Route
 					path='/memories'
@@ -99,14 +93,15 @@ const router = createBrowserRouter(
 				<Route path='*' element={<NotFound />} loader={rootLoader} />
 			</Route>
 
-			{/* LOGIN LAYOUT (OHNE FOOTER) */}
-			<Route path='/' element={<LoginLayout />} errorElement={<RootError />}>
-				<Route path='/login' element={<Login />} action={loginAction} />
-			</Route>
-
-			{/* HOME LAYOUT */}
+			{/* HOME &LOGIN &REGISTER LAYOUT */}
 			<Route path='/' element={<HomeLayout />} errorElement={<RootError />}>
 				<Route index element={<Home />} />
+				<Route path='/login' element={<Login />} action={loginAction} />
+				<Route
+					path='/register'
+					element={<Registration />}
+					action={registerAction}
+				/>
 			</Route>
 
 			{/* BRUNNIS LAYOUT */}

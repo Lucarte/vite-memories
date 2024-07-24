@@ -8,7 +8,7 @@ import DarkModeBtn from "../partials/DarkModeBtn";
 import logoBlack from "../assets/LogoWhite.svg";
 import logoWhiteThick from "../assets/LogoBlack.svg";
 
-const HomeLayout = () => {
+const PublicNavHeader = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const { enabled } = useTheme();
 
@@ -99,4 +99,4 @@ const HomeLayout = () => {
 	);
 };
 
-export default HomeLayout;
+export default PublicNavHeader;

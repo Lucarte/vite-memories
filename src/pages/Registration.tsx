@@ -1,6 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
 import { ActionFunction, Link, json, useActionData } from "react-router-dom";
-import DarkModeBtn from "../partials/DarkModeBtn";
 import ScrollUpBtn from "../partials/ScrollUpBtn";
 import RegisterForm from "../components/RegisterForm";
 import { register } from "../utils/api";
@@ -13,8 +12,7 @@ export const action: ActionFunction = async ({ request }) => {
 		await register(formData);
 		return json(
 			{
-				successMessage:
-					"You have been successfully adopted as a fan of the fam!",
+				successMessage: "SUCCESS!!!",
 				redirectTo: "/memories",
 			},
 			{ status: 200 }
@@ -22,8 +20,7 @@ export const action: ActionFunction = async ({ request }) => {
 	} catch (error) {
 		return json(
 			{
-				errorMessage:
-					"Registration failed. Please check your details and try again.",
+				errorMessage: "REGISTRATION FAILED",
 			},
 			{ status: 400 }
 		);
