@@ -24,8 +24,6 @@ body {
 }
 
 /* Shadows for the fan buttons */
-/* Add this to your CSS file */
-
 .shadow-custom-view {
 	box-shadow: 3px -4px 1px 0px black;
 }
@@ -36,6 +34,22 @@ body {
 
 .shadow-custom-delete {
 	box-shadow: 3px -4px 1px 0px red;
+}
+
+/* Bouncing animation for the intro pages */
+@keyframes bounceText {
+	0%,
+	100% {
+		transform: translateY(20%);
+	}
+	50% {
+		transform: translateY(-30%);
+	}
+}
+
+.animate-bounceText {
+	display: inline-block; /* Ensure the element can be animated */
+	animation: bounceText 4s infinite;
 }
 
 /* ###################################################################### */

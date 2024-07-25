@@ -93,7 +93,7 @@ const router = createBrowserRouter(
 				<Route path='*' element={<NotFound />} loader={rootLoader} />
 			</Route>
 
-			{/* HOME &LOGIN &REGISTER LAYOUT */}
+			{/* HOME & all pages needing simpler header */}
 			<Route path='/' element={<HomeLayout />} errorElement={<RootError />}>
 				<Route index element={<Home />} />
 				<Route path='/login' element={<Login />} action={loginAction} />
@@ -102,6 +102,8 @@ const router = createBrowserRouter(
 					element={<Registration />}
 					action={registerAction}
 				/>
+				<Route path='/pablo' element={<PabloIntro />} />
+				<Route path='/gabriella' element={<GabIntro />} />
 			</Route>
 
 			{/* BRUNNIS LAYOUT */}
@@ -124,7 +126,6 @@ const router = createBrowserRouter(
 				element={<PabloLayout />}
 				errorElement={<RootError />}
 				loader={pablosLoader}>
-				<Route path='/pablo' element={<PabloIntro />} />
 				<Route
 					path='/pablo/memories'
 					element={<Pablo />}
@@ -138,7 +139,6 @@ const router = createBrowserRouter(
 				element={<GabriellaLayout />}
 				errorElement={<RootError />}
 				loader={gabriellasLoader}>
-				<Route path='/gabriella' element={<GabIntro />} />
 				<Route
 					path='/gabriella/memories'
 					element={<Gabriella />}
