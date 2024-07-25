@@ -109,7 +109,7 @@ const Login = () => {
 				noValidate
 				autoComplete='off'
 				onSubmit={handleSubmit(onValid, onInvalid)}
-				className='mt-12 space-y-8 w-[16rem] md:w-[19rem] flex flex-col items-center'>
+				className='mt-12 space-y-8 md:w-[19rem] flex flex-col items-center'>
 				<div className='relative'>
 					<label
 						htmlFor='email'
@@ -122,10 +122,10 @@ const Login = () => {
 						autoComplete='false'
 						id='email'
 						type='email'
-						className={`w-full rounded-[3px] py-4 px-6 ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
+						className={`w-[17rem] rounded-[3px] py-4 px-6 ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
 							enabled
-								? "bg-black border-white text-white placeholder:text-gray-500 focus:ring-orange-400"
-								: "bg-white border-black text-black placeholder:text-gray-500 focus:ring-orange-600"
+								? "bg-black border-white text-white placeholder:text-gray-500 "
+								: "bg-white border-black text-black placeholder:text-gray-500 "
 						}`}
 						placeholder='me@gmail.com'
 						aria-invalid={errors.email ? "true" : "false"}
@@ -140,11 +140,13 @@ const Login = () => {
 							},
 						})}
 					/>
-					<p className='mt-2 text-sm text-orange-500'>
-						{errors.email?.message}
-					</p>
+					{errors.email && (
+						<p className='w-full py-2 text-sm text-white bg-black rounded-md dark:text-black dark:bg-white rounded-bl-3xl rounded-br-3xl'>
+							{errors.email?.message}
+						</p>
+					)}
 				</div>
-				<div className='relative'>
+				<div className='relative flex flex-col items-center'>
 					<label
 						htmlFor='password'
 						className={`absolute inline-block px-2 text-xs font-light -top-2 left-4 ${
@@ -154,10 +156,10 @@ const Login = () => {
 					</label>
 					<input
 						id='password'
-						className={`w-full rounded-[3px] py-4 px-6 ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
+						className={`w-[17rem] rounded-[3px] py-4 px-6 ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
 							enabled
-								? "bg-black border-white text-white placeholder:text-gray-500 focus:ring-orange-400"
-								: "bg-white border-black text-black placeholder:text-gray-500 focus:ring-orange-600"
+								? "bg-black border-white text-white placeholder:text-gray-500"
+								: "bg-white border-black text-black placeholder:text-gray-500"
 						}`}
 						placeholder='password'
 						type='password'
@@ -186,13 +188,15 @@ const Login = () => {
 							},
 						})}
 					/>
-					<p className='mt-2 text-sm text-orange-500'>
-						{errors.password?.message}
-					</p>
+					{errors.password && (
+						<p className='max-w-[17rem] w-full px-4 py-2 mb-8 text-sm text-white bg-black rounded-md dark:text-black dark:bg-white rounded-bl-3xl rounded-br-3xl'>
+							{errors.password?.message}
+						</p>
+					)}
 				</div>
 				<CustomButton
 					type='submit'
-					classes={`rounded-bl-2xl rounded-tr-2xl bg-gray-900 px-6 py-1.5 text-sm font-medium leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 ${
+					classes={`text-3xl py-4 shadow-lg rounded-bl-2xl rounded-tr-2xl bg-gray-900 px-6 py-1.5 text-sm font-medium leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 ${
 						enabled
 							? "bg-white text-black hover:bg-gray-300"
 							: "bg-black text-white hover:bg-gray-500"
@@ -224,17 +228,6 @@ const Login = () => {
 						</h2>
 					</div>
 				</div>
-				// <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
-				// 	<div className='w-56 p-8 text-lg font-extrabold uppercase bg-white rounded-tr-lg shadow-lg rounded-3xl font-titles'>
-				// 		<p className='text-black'>
-				// 			Now <br />
-				// 			go down
-				// 			<br />
-				// 			memory lane!
-				// 			{/* {actionData.successMessage} */}
-				// 		</p>
-				// 	</div>
-				// </div>
 			)}
 
 			{actionData?.errorMessage && (
@@ -243,8 +236,6 @@ const Login = () => {
 						<h2 className='pt-20 text-2xl font-black text-center text-black uppercase dark:text-white'>
 							<span className='text-red-600 '>Invalid Credentials</span>
 							<br />
-							<br />
-							<hr />
 							<br />
 							Only registered users can login
 						</h2>

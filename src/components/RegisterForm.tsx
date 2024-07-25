@@ -129,7 +129,7 @@ const RegisterForm = ({
 												"image/gif",
 												"image/svg+xml",
 											].includes(files[0].type)) ||
-										"Invalid file type. Only JPG, JPEG, PNG, GIF, and SVG are allowed.",
+										"Allowed: JPG, JPEG, PNG, GIF, and SVG",
 									fileSize: (files: FileList | null) =>
 										!files ||
 										(files.length > 0 && files[0].size <= 2048 * 1024) || // 2 MB (in bytes)
@@ -138,7 +138,7 @@ const RegisterForm = ({
 							})}
 						/>
 					</div>
-					<p className='mt-2 text-sm text-orange-500'>
+					<p className='mt-2 mb-4 text-sm text-red-500'>
 						{errors.avatar_path?.message}
 					</p>
 				</div>
@@ -152,7 +152,8 @@ const RegisterForm = ({
 						</label>
 						<input
 							type='text'
-							className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
+							className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6'
+							// className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
 							placeholder='Mariana'
 							aria-invalid={errors.firstName ? "true" : "false"}
 							{...register("firstName", {
@@ -170,9 +171,11 @@ const RegisterForm = ({
 								},
 							})}
 						/>
-						<p className='mt-2 text-sm text-orange-500'>
-							{errors.firstName?.message}
-						</p>
+						{errors.firstName && (
+							<p className='w-full py-2 text-sm text-white bg-black rounded-md dark:text-black dark:bg-white rounded-bl-3xl rounded-br-3xl'>
+								{errors.firstName?.message}
+							</p>
+						)}
 					</div>
 					{/* Last Name */}
 					<div className='relative'>
@@ -183,7 +186,8 @@ const RegisterForm = ({
 						</label>
 						<input
 							type='text'
-							className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
+							className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6'
+							// className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
 							placeholder='Lucht'
 							aria-invalid={errors.lastName ? "true" : "false"}
 							{...register("lastName", {
@@ -201,9 +205,11 @@ const RegisterForm = ({
 								},
 							})}
 						/>
-						<p className='mt-2 text-sm text-orange-500'>
-							{errors.lastName?.message}
-						</p>
+						{errors.lastName && (
+							<p className='w-full py-2 text-sm text-white bg-black rounded-md dark:text-black dark:bg-white rounded-bl-3xl rounded-br-3xl'>
+								{errors.lastName?.message}
+							</p>
+						)}
 					</div>
 					{/* E-Mail */}
 					<div className='relative'>
@@ -214,7 +220,8 @@ const RegisterForm = ({
 						</label>
 						<input
 							type='email'
-							className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
+							className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400  sm:text-sm sm:leading-6'
+							// className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
 							placeholder='you@mail.com'
 							aria-invalid={errors.email ? "true" : "false"}
 							{...register("email", {
@@ -228,9 +235,11 @@ const RegisterForm = ({
 								},
 							})}
 						/>
-						<p className='mt-2 text-sm text-orange-500'>
-							{errors.email?.message}
-						</p>
+						{errors.email && (
+							<p className='w-full py-2 text-sm text-white bg-black rounded-md dark:text-black dark:bg-white rounded-bl-3xl rounded-br-3xl'>
+								{errors.email?.message}
+							</p>
+						)}
 					</div>
 					{/* PASSWORD */}
 					<div className='relative'>
@@ -240,7 +249,8 @@ const RegisterForm = ({
 							Password
 						</label>
 						<input
-							className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
+							className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6'
+							// className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
 							placeholder='OneShortJoke!'
 							type='password'
 							aria-invalid={errors.password ? "true" : "false"}
@@ -267,9 +277,11 @@ const RegisterForm = ({
 								},
 							})}
 						/>
-						<p className='mt-2 text-sm text-orange-500'>
-							{errors.password?.message}
-						</p>
+						{errors.password && (
+							<p className='w-full px-3 py-2 text-sm text-white bg-black rounded-md dark:text-black dark:bg-white rounded-bl-3xl rounded-br-3xl'>
+								{errors.password?.message}
+							</p>
+						)}
 					</div>
 					{/* PASSWORD CONFIRMATION */}
 					<div className='relative'>
@@ -279,7 +291,8 @@ const RegisterForm = ({
 							Password Confirmation
 						</label>
 						<input
-							className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
+							className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6'
+							// className='block w-full rounded-[3px] border-0 py-4 px-6 text-gray-900 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
 							placeholder='SameShortJoke!'
 							type='password'
 							aria-invalid={errors.password ? "true" : "false"}
@@ -292,14 +305,17 @@ const RegisterForm = ({
 								},
 							})}
 						/>
-						<p className='mt-2 text-sm text-orange-500'>
-							{errors.passwordConfirmation?.message}
-						</p>
+						{errors.passwordConfirmation && (
+							<p className='w-full py-2 text-sm text-white bg-black rounded-md dark:text-black dark:bg-white rounded-bl-3xl rounded-br-3xl'>
+								{errors.passwordConfirmation?.message}
+							</p>
+						)}
 					</div>
 					{/* RELATIONSHIP */}
 					<div>
 						<select
-							className='block w-full rounded-[3px] font-light border-0 py-2 px-6 bg-gray-100 text-gray-500 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
+							className='block w-full rounded-[3px] font-light border-0 py-2 px-6 bg-gray-100 dark:bg-slate-900 text-gray-500 shadow-sm ring-[2.5px] ring-inset ring-gray-900 dark:ring-white placeholder:text-gray-400 sm:text-sm sm:leading-6'
+							// className='block w-full rounded-[3px] font-light border-0 py-2 px-6 bg-gray-100 text-gray-500 shadow-sm ring-[2.5px] ring-inset ring-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6'
 							aria-invalid={errors.relationshipToKid ? "true" : "false"}
 							{...register("relationshipToKid", {
 								validate: (value) => {
@@ -317,15 +333,18 @@ const RegisterForm = ({
 								</option>
 							))}
 						</select>
-						<p className='mt-2 text-sm text-orange-500'>
-							{errors.relationshipToKid?.message}
-						</p>
+						{errors.relationshipToKid && (
+							<p className='w-full py-2 text-sm text-white bg-black rounded-md dark:text-black dark:bg-white rounded-bl-3xl rounded-br-3xl'>
+								{errors.relationshipToKid?.message}
+							</p>
+						)}
 					</div>
 					{/* TERMS */}
 					<div className='flex text-sm flex-col min-w-[17.5rem] sm:ml-0'>
 						<div className='flex items-center justify-center h-6 gap-x-3'>
 							<input
-								className='w-4 h-4 text-gray-600 border-gray-300 rounded focus:ring-orange-600'
+								className='w-4 h-4 text-gray-600 border-gray-300 rounded'
+								// className='w-4 h-4 text-gray-600 border-gray-300 rounded focus:ring-orange-600'
 								aria-invalid={errors.terms ? "true" : "false"}
 								type='checkbox'
 								{...register("terms", {
@@ -342,9 +361,7 @@ const RegisterForm = ({
 								<span>.</span>
 							</label>
 						</div>
-						<p className='mt-2 text-sm text-orange-500'>
-							{errors.terms?.message}
-						</p>
+						<p className='mt-2 text-xs text-red-500'>{errors.terms?.message}</p>
 					</div>
 				</div>
 				{/* Register Button */}
