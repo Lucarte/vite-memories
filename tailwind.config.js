@@ -14,6 +14,9 @@ export default {
 			letterSpacing: {
 				wide: "0.25em", // Custom letter-spacing value, then use 'tracking-wide'
 			},
+			minHeight: {
+				"screen-with-border": "calc(100vh - 16px)",
+			},
 		},
 	},
 	plugins: [

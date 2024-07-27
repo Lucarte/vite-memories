@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 
 const PabloIntro = () => {
 	return (
-		<div className='flex flex-col items-center h-[84vh] overflow-hidden text-center'>
+		<div className='flex flex-col items-center max-h-screen overflow-hidden text-center'>
+			{/* <div className='flex flex-col items-center h-[84vh] overflow-hidden text-center'> */}
 			<h1 className='pb-6 text-xl font-bold tracking-wider underline uppercase'>
 				.p.a.b.l.o.
 			</h1>

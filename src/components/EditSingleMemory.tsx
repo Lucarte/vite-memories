@@ -1,7 +1,7 @@
 import IconTrash from "./IconTrash";
 import mime from "mime";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useLoaderData, useFetcher } from "react-router-dom";
+import { useFetcher } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 import displayFile from "../utils/DisplayFile";
 import { MemoryValues } from "../types/MemoryValues";
@@ -9,6 +9,7 @@ import Tailspin from "./Tailspin";
 import { useEffect, useState } from "react";
 import http from "../utils/http";
 import { days, kidOptions, months, years } from "../utils/memoryUtils";
+import { deleteMemory } from "../utils/api";
 
 // Helper function to format the date
 const formatDate = (dateString: string): string => {
@@ -30,66 +31,101 @@ const EditSingleMemory = ({ memory }: Props) => {
 	const { enabled } = useTheme();
 	const fetcher = useFetcher();
 	const [showEdit, setShowEdit] = useState(false);
-	// Using useLoaderData to get the data loaded by the loader function
-	const loaderData = useLoaderData();
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 		getValues,
 		setValue,
-	} = useForm<MemoryValues>({});
+	} = useForm<MemoryValues>({
+		defaultValues: {
+			title: memory.title,
+			description: memory.description,
+			month: memory.month,
+			day: memory.day,
+			year: memory.year,
+			kid: memory.kid, // Ensure this matches the form field name
+			category_ids: memory.category_ids || [],
+		},
+	});
 
 	const [categories, setCategories] = useState<
 		{ id: string; category: string }[]
 	>([]);
+	const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
+	// Load categories on component mount
 	useEffect(() => {
 		const fetchCategories = async () => {
 			try {
 				const response = await http.get("/api/auth/categories");
 				setCategories(response.data);
+				// Initialize selected categories
+				if (memory.category_ids) {
+					setSelectedCategories(memory.category_ids.map((id) => id.toString()));
+				}
 			} catch (error) {
 				console.error("Failed to fetch categories", error);
 			}
 		};
 
 		fetchCategories();
-	}, []);
+	}, [memory]);
 
-	useEffect(() => {
-		const categoryIds = getValues("category_ids");
-		if (!Array.isArray(categoryIds)) {
-			setValue("category_ids", []);
-		}
-	}, [getValues, setValue]);
+	const handleCategoryChange = (categoryId: string) => {
+		setSelectedCategories((prev) => {
+			const isSelected = prev.includes(categoryId);
+			const updatedCategories = isSelected
+				? prev.filter((id) => id !== categoryId) // Deselect
+				: [...prev, categoryId]; // Select
+
+			// Update form values (assuming you have a function or a way to update form values)
+			setValue("category_ids", updatedCategories);
+
+			return updatedCategories;
+		});
+	};
 
 	const onValid: SubmitHandler<MemoryValues> = (data, event) => {
 		const formData = new FormData(event?.target as HTMLFormElement);
-		const categoryIds = getValues("category_ids");
 
+		// Log category IDs to verify they are correct
+		const categoryIds = getValues("category_ids");
+		console.log("Category IDs:", categoryIds);
+
+		// Remove existing category_ids from FormData
 		formData.delete("category_ids");
+
+		// Add category_ids to FormData
 		if (Array.isArray(categoryIds)) {
 			categoryIds.forEach((id) => formData.append("category_ids[]", id));
 		} else {
 			formData.append("category_ids[]", categoryIds);
 		}
 
-		// Ensure data.urls is properly initialized as an array
-		const urlList = Array.isArray(data.urls) ? data.urls : []; // Fallback to empty array if data.urls is not an array
-
+		// Prepare URLs if needed
+		const urlList = Array.isArray(data.urls) ? data.urls : [];
 		const formattedUrls = urlList.map((url) => ({
 			id: url.url_address,
 			url_address: url.url_address,
 		}));
 
-		fetcher.submit(
-			{ ...data, id: memory.id, urls: formattedUrls },
-			{
-				method: "PATCH",
-				action: "",
-			}
-		);
+		// Log the prepared data to inspect
+		console.log("Prepared Data:", {
+			...data,
+			id: memory.id,
+			urls: formattedUrls,
+		});
+
+		// Append additional data to FormData
+		formData.append("id", memory.id.toString());
+		formData.append("urls", JSON.stringify(formattedUrls));
+
+		// Submit the data
+		fetcher.submit(formData, {
+			method: "PATCH",
+			action: "",
+		});
 	};
 
 	const submitting = fetcher.state === "submitting";
@@ -102,7 +138,7 @@ const EditSingleMemory = ({ memory }: Props) => {
 		<>
 			<article
 				key={memory.title}
-				className='flex flex-col items-end gap-6 mb-6 overflow-hidden text-gray-300 screen mx-9 font-extralight'>
+				className='flex flex-col items-end gap-6 mb-20 overflow-hidden text-gray-300 screen mx-9 font-extralight'>
 				{/* Entry Header */}
 				<section className='flex flex-col w-full'>
 					<div className='flex justify-end mb-2'>
@@ -234,13 +270,6 @@ const EditSingleMemory = ({ memory }: Props) => {
 						</button>
 					</fetcher.Form>
 				</div>
-				{/* Custom HR Tag */}
-				<div className='inline-flex items-center justify-center w-full mt-8 mb-8 opacity-1'>
-					<hr className='w-64 h-px my-8 bg-gray-200 border-0 dark:bg-gray-700' />
-					<span className='absolute px-3 font-light text-gray-400 -translate-x-1/2 bg-white left-1/2 dark:text-gray-200 dark:bg-black'>
-						•
-					</span>
-				</div>
 			</article>
 
 			{/* ############################################################################################################################# */}
@@ -294,20 +323,26 @@ const EditSingleMemory = ({ memory }: Props) => {
 									key={category.id}
 									htmlFor={`category-${category.id}`}
 									className={`relative flex px-3 mx-2 my-1 border border-black rounded cursor-pointer w-fit ${
-										Array.isArray(getValues("category_ids")) &&
-										getValues("category_ids").includes(category.id.toString())
-											? "bg-white text-black"
-											: "bg-black text-white"
-									} hover:bg-white hover:text-black`}>
+										selectedCategories.includes(category.id)
+											? "bg-white text-black" // Active styles
+											: "bg-black text-white" // Inactive styles
+									} hover:bg-white hover:text-black`}
+									style={{
+										backgroundColor: selectedCategories.includes(category.id)
+											? "white"
+											: "black",
+										color: selectedCategories.includes(category.id)
+											? "black"
+											: "white",
+									}}>
 									{category.category}
 									<input
 										id={`category-${category.id}`}
 										className='absolute top-0 left-0 w-full h-full opacity-0'
 										type='checkbox'
 										value={category.id}
-										{...register("category_ids", {
-											required: "Please select at least one category.",
-										})}
+										onChange={() => handleCategoryChange(category.id)}
+										checked={selectedCategories.includes(category.id)} // Determines if checkbox is checked
 									/>
 								</label>
 							))}

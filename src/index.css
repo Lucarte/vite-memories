@@ -36,6 +36,15 @@ body {
 	box-shadow: 3px -4px 1px 0px red;
 }
 
+/* Shadows for the login/register buttons */
+.shadow-custom-view-lg {
+	box-shadow: 1px 2px 3px 0px black;
+}
+
+.shadow-custom-view-dark-lg {
+	box-shadow: 1px 2px 3px 0px white;
+}
+
 /* Bouncing animation for the intro pages */
 @keyframes bounceText {
 	0%,

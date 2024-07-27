@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
 	useSubmit,
@@ -12,7 +12,6 @@ import {
 import http from "../utils/http";
 import { MemoryValues } from "../types/MemoryValues";
 import { loggedInData, postMemory } from "../utils/api";
-import DarkModeBtn from "../partials/DarkModeBtn";
 import ScrollUpBtn from "../partials/ScrollUpBtn";
 import {
 	days,
@@ -26,12 +25,13 @@ type CreateMemoryData = {
 	error?: string;
 };
 
-const CreateMemory: React.FC = () => {
+const CreateMemory = () => {
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 		getValues,
+		setValue,
 	} = useForm<MemoryValues>({
 		defaultValues: {
 			kid: "",
@@ -64,6 +64,7 @@ const CreateMemory: React.FC = () => {
 	const [categories, setCategories] = useState<
 		{ id: string; category: string }[]
 	>([]);
+	const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
 	useEffect(() => {
 		if (error) {
@@ -99,6 +100,23 @@ const CreateMemory: React.FC = () => {
 		fetchCategories();
 	}, []);
 
+	const handleCategoryChange = (categoryId: string) => {
+		setSelectedCategories((prev) => {
+			// Determine if the category is already selected
+			const isSelected = prev.includes(categoryId);
+
+			// Toggle the category
+			const updatedCategories = isSelected
+				? prev.filter((id) => id !== categoryId) // Deselect
+				: [...prev, categoryId]; // Select
+
+			// Update form values
+			setValue("category_ids", updatedCategories);
+
+			return updatedCategories;
+		});
+	};
+
 	const onValid: SubmitHandler<MemoryValues> = (data, event) => {
 		const formData = new FormData(event?.target as HTMLFormElement);
 		const categoryIds = getValues("category_ids");
@@ -110,19 +128,11 @@ const CreateMemory: React.FC = () => {
 			formData.append("category_ids[]", categoryIds);
 		}
 
-		const urlList = Array.isArray(data.urls) ? data.urls : []; // Fallback to empty array if data.urls is not an array
-
+		const urlList = Array.isArray(data.urls) ? data.urls : [];
 		const formattedUrls = urlList.map((url) => ({
 			id: url.url_address,
 			url_address: url.url_address,
 		}));
-
-		// const payload = {
-		// 	...data,
-		// 	urls: formattedUrls,
-		// };
-
-		// console.log("Form submitted with payload:", payload);
 
 		submit(formData, {
 			method: "POST",
@@ -134,16 +144,24 @@ const CreateMemory: React.FC = () => {
 	return (
 		<>
 			{showOverlay && (
-				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
-					<div className='w-56 p-8 text-lg font-extrabold uppercase bg-white rounded-tr-lg shadow-lg rounded-3xl font-titles'>
-						<p className='text-black'>{error}</p>
+				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 dark:bg-white dark:bg-opacity-70'>
+					<div className='z-10 2xl:w-72 w-64 px-6 py-10 flex flex-col items-center justify-center bg-white rounded-[5rem] rounded-tr-lg shadow-lg h-auto dark:bg-black'>
+						<h2 className='text-2xl font-black leading-10 text-center text-black uppercase dark:text-white'>
+							{error}
+							{/* Creation failed <br />
+							<br />
+							Please <br />
+							try again! */}
+						</h2>
 					</div>
 				</div>
 			)}
 			{actionData?.message && (
-				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
-					<div className='w-56 p-8 text-lg font-extrabold uppercase bg-white rounded-tr-lg shadow-lg rounded-3xl font-titles'>
-						<p className='text-black'>{actionData.message}</p>
+				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 dark:bg-white dark:bg-opacity-70'>
+					<div className='z-10 2xl:w-72 w-64 px-6 py-10 flex flex-col items-center justify-center bg-white rounded-[5rem] rounded-tr-lg shadow-lg h-auto dark:bg-black'>
+						<h2 className='text-2xl font-black leading-10 text-center text-black uppercase dark:text-white'>
+							{actionData.message}
+						</h2>
 					</div>
 				</div>
 			)}
@@ -194,19 +212,26 @@ const CreateMemory: React.FC = () => {
 									key={category.id}
 									htmlFor={`category-${category.id}`}
 									className={`relative flex px-3 mx-2 my-1 border border-black rounded cursor-pointer w-fit ${
-										getValues("category_ids")?.includes(category.id.toString())
-											? "bg-white text-black"
-											: "bg-black text-white"
-									} hover:bg-white hover:text-black`}>
+										selectedCategories.includes(category.id)
+											? "bg-white text-black" // Active styles
+											: "bg-black text-white" // Inactive styles
+									} hover:bg-white hover:text-black`}
+									style={{
+										backgroundColor: selectedCategories.includes(category.id)
+											? "white"
+											: "black",
+										color: selectedCategories.includes(category.id)
+											? "black"
+											: "white",
+									}}>
 									{category.category}
 									<input
 										id={`category-${category.id}`}
 										className='absolute top-0 left-0 w-full h-full opacity-0'
 										type='checkbox'
 										value={category.id}
-										{...register("category_ids", {
-											required: "Please select at least one category.",
-										})}
+										onChange={() => handleCategoryChange(category.id)}
+										checked={selectedCategories.includes(category.id)}
 									/>
 								</label>
 							))}

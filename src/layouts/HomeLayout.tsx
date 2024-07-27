@@ -57,7 +57,8 @@ const HomeLayout = () => {
 				</div>
 			</header>
 			{/* <main className='lg:flex lg:items-center lg:justify-center lg:h-[calc(100vh-21rem)]'> */}
-			<main className='h-[84vh] lg:flex lg:items-center lg:justify-center'>
+			{/* <main className='h-[84vh] lg:flex lg:items-center lg:justify-center'> */}
+			<main className='min-h-screen lg:flex lg:items-center lg:justify-center'>
 				<Outlet />
 			</main>
 			{isMenuOpen && (

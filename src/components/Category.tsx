@@ -1,19 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-
-const categories = [
-	"Musical Theater",
-	"Art",
-	"Various",
-	"Dance",
-	"Music",
-	"Sports",
-	"Viola",
-	"Programming",
-];
+import http from "../utils/http";
 
 type FormData = {
 	categories: string[];
+};
+
+// Define type for the fetched categories
+type CategoryType = {
+	id: string;
+	category: string;
 };
 
 const Category = () => {
@@ -28,9 +24,24 @@ const Category = () => {
 		},
 	});
 
+	const [categories, setCategories] = useState<CategoryType[]>([]);
+
 	useEffect(() => {
 		register("categories");
 	}, [register]);
+
+	useEffect(() => {
+		const fetchCategories = async () => {
+			try {
+				const response = await http.get("/api/auth/categories");
+				setCategories(response.data); // Adjust based on the actual response structure
+			} catch (error) {
+				console.error("Failed to fetch categories", error);
+			}
+		};
+
+		fetchCategories();
+	}, []);
 
 	const handleChange = (category: string) => {
 		const currentCategories = getValues("categories") as string[];
@@ -56,23 +67,23 @@ const Category = () => {
 				</legend>
 				{categories.map((item) => (
 					<label
-						key={item}
-						htmlFor={`category-${item}`}
+						key={item.id} // Use a unique identifier for key
+						htmlFor={`category-${item.id}`} // Ensure id matches the input's id
 						className={`flex px-3 mx-2 my-1 text-white bg-black border border-black rounded cursor-pointer w-fit ${
 							errors.categories ? "bg-red-200" : ""
 						} ${
-							getValues("categories").includes(item)
+							getValues("categories").includes(item.category)
 								? "bg-white text-black"
 								: "bg-black text-white"
 						} hover:bg-white hover:text-black`}>
-						{item}
+						{item.category}
 						<input
-							id={`category-${item}`}
+							id={`category-${item.id}`}
 							className='hidden'
 							type='checkbox'
 							{...register("categories")}
-							onChange={() => handleChange(item)}
-							checked={getValues("categories").includes(item)}
+							onChange={() => handleChange(item.category)}
+							checked={getValues("categories").includes(item.category)}
 						/>
 					</label>
 				))}

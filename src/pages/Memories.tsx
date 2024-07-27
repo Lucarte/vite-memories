@@ -1,4 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
+import { useState, Suspense } from "react";
 import { MemoryValues, PatchValues } from "../types/MemoryValues";
 import {
 	deleteMemory,
@@ -11,14 +12,12 @@ import {
 	Await,
 	LoaderFunction,
 	defer,
+	json,
 	redirect,
 	useLoaderData,
 } from "react-router-dom";
-
-import { Suspense, useState } from "react";
 import ViewMemories from "../components/ViewMemories";
 import ScrollUpBtn from "../partials/ScrollUpBtn";
-import DarkModeBtn from "../partials/DarkModeBtn";
 import EditMemories from "../components/EditMemories";
 import classNames from "classnames";
 import HerzSpinner from "../components/HerzSpinner";
@@ -40,50 +39,54 @@ export const loader: LoaderFunction = async () => {
 		return defer({ memories });
 	} catch (error) {
 		console.error("Error fetching all memories:", error);
-		return defer({ memories: [] }); // Return empty array or handle error
+		return defer({ memories: [] });
 	}
 };
 
 // Action - delete or update
 export const action: ActionFunction = async ({ request }) => {
-	const { loggedIn, isAdmin } = await loggedInData();
-
-	// Check if the user is logged in and is an admin
-	if (!loggedIn) {
-		return redirect("/login");
-	}
+	const { isAdmin } = await loggedInData();
 
 	if (!isAdmin) {
-		// TO DO: show this message as a modal!
-		console.log("Admin Zone: Access denied");
-		return "Admin Zone: Access denied";
+		return json(
+			{
+				messageError: "Admin Zone: Access denied",
+			},
+			{ status: 403 }
+		);
 	}
 
 	const formData = await request.formData();
 	const title = formData.get("title");
 	const intent = formData.get("intent");
 
-	// Check first if there is an existing intent
-	if (intent && intent === "delete") {
-		if (typeof title === "string") {
-			try {
-				const deleteRes = await deleteMemory(title);
-				return deleteRes;
-			} catch (error) {
-				console.error("Error deleting memory:", error);
-				return { message: "Error deleting memory :/" };
-			}
+	if (intent === "delete" && typeof title === "string") {
+		try {
+			await deleteMemory(title);
+			alert("Memory successfully deleted!");
+			return json({
+				successMessage: "Memory successfully deleted!",
+			});
+		} catch (error) {
+			console.error("Error deleting memory:", error);
+			alert("Error deleting memory :/");
+			return json(
+				{
+					messageError: "Error deleting memory :/",
+				},
+				{ status: 500 }
+			);
 		}
 	}
 
 	const id = formData.get("id");
-	const data = Object.fromEntries(formData);
+	Object.fromEntries(formData);
 
-	if (intent && intent === "patch") {
+	if (intent === "patch") {
 		const parsedId = typeof id === "string" ? parseInt(id, 10) : NaN;
 		if (!isNaN(parsedId)) {
 			// Convert form data to the PatchValues type
-			const data: PatchValues = {
+			const patchData: PatchValues = {
 				id: parsedId,
 				kid: formData.get("kid") as string,
 				title: formData.get("title") as string,
@@ -98,16 +101,28 @@ export const action: ActionFunction = async ({ request }) => {
 			};
 
 			try {
-				const patchRes = await patchMemory(parsedId, data);
-				return patchRes;
+				await patchMemory(parsedId, patchData);
+				return json({
+					successMessage: "Memory successfully updated!",
+				});
 			} catch (error) {
 				console.error("Error updating memory:", error);
-				return { message: "Error updating memory :/" };
+				return json(
+					{
+						messageError: "Error updating memory :(",
+					},
+					{ status: 500 }
+				);
 			}
 		}
 	}
 
-	return null;
+	return json(
+		{
+			messageError: "Invalid action or missing data",
+		},
+		{ status: 400 }
+	);
 };
 
 const Memories = () => {
@@ -119,7 +134,6 @@ const Memories = () => {
 			<ScrollUpBtn />
 			<h1 className='pt-4 pb-6 text-xl font-bold text-center'>
 				.M.e.m.o.r.i.e.S.
-				{/* a.l.l <br /> .M.e.m.o.r.i.e.S. */}
 			</h1>
 			<section className='w-screen'>
 				<Suspense
@@ -142,7 +156,7 @@ const Memories = () => {
 				</Suspense>
 			</section>
 			<aside
-				className={classNames("flex mb-36 items-center cursor-pointer", {
+				className={classNames("flex mb-36 mt-16 items-center cursor-pointer", {
 					"-mt-10": view !== "edit",
 					"-mt-20": view === "edit",
 				})}>

@@ -14,6 +14,11 @@ import { ThemeProvider } from "./context/ThemeContext";
 // LAYOUTS
 import RootLayout, { loader as rootLoader } from "./layouts/RootLayout";
 import HomeLayout from "./layouts/HomeLayout";
+import GabriellaLayout, {
+	loader as gabriellasLoader,
+} from "./layouts/GabriellaLayout";
+import PabloLayout, { loader as pablosLoader } from "./layouts/PabloLayout";
+import BothLayout, { loader as brunnisLoader } from "./layouts/BothLayout";
 
 // PAGES
 import Login, { action as loginAction } from "./pages/Login";
@@ -41,14 +46,9 @@ import SingleMemory, {
 import GabIntro from "./pages/GabIntro";
 import PabloIntro from "./pages/PabloIntro";
 import Both, { loader as bothMemoriesloader } from "./pages/Both";
-import BothIntro from "./pages/BothIntro";
 import SingleFan, { loader as singleFanLoader } from "./pages/SingleFan";
 import TitleList, { loader as titleListLoader } from "./pages/TitleList";
-import GabriellaLayout, {
-	loader as gabriellasLoader,
-} from "./layouts/GabriellaLayout";
-import PabloLayout, { loader as pablosLoader } from "./layouts/PabloLayout";
-import BothLayout, { loader as brunnisLoader } from "./layouts/BothLayout";
+import SearchResultsPage from "./pages/SearchResultsPage";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -59,6 +59,7 @@ const router = createBrowserRouter(
 				errorElement={<RootError />}
 				loader={rootLoader}>
 				<Route path='/logout' element={<Footer />} action={footerAction} />
+				<Route path='/search' element={<SearchResultsPage />} />
 				<Route
 					path='/memories'
 					element={<Memories />}
@@ -112,7 +113,6 @@ const router = createBrowserRouter(
 				element={<BothLayout />}
 				errorElement={<RootError />}
 				loader={brunnisLoader}>
-				<Route path='/brunnis' element={<BothIntro />} />
 				<Route
 					path='/brunnis/memories'
 					element={<Both />}

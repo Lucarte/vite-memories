@@ -122,7 +122,7 @@ const Login = () => {
 						autoComplete='false'
 						id='email'
 						type='email'
-						className={`w-[17rem] rounded-[3px] py-4 px-6 ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
+						className={`w-[17rem] rounded-[3px] py-4 px-6 ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-blue-600 sm:leading-6 ${
 							enabled
 								? "bg-black border-white text-white placeholder:text-gray-500 "
 								: "bg-white border-black text-black placeholder:text-gray-500 "
@@ -156,7 +156,7 @@ const Login = () => {
 					</label>
 					<input
 						id='password'
-						className={`w-[17rem] rounded-[3px] py-4 px-6 ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
+						className={`w-[17rem] rounded-[3px] py-4 px-6 ring-[2.5px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-blue-600 ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
 							enabled
 								? "bg-black border-white text-white placeholder:text-gray-500"
 								: "bg-white border-black text-black placeholder:text-gray-500"
@@ -196,21 +196,23 @@ const Login = () => {
 				</div>
 				<CustomButton
 					type='submit'
-					classes={`text-3xl py-4 shadow-lg rounded-bl-2xl rounded-tr-2xl bg-gray-900 px-6 py-1.5 text-sm font-medium leading-6 shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 ${
+					classes={`px-3 uppercase text-md py-3 rounded-tr-none rounded-bl-none rounded-2xl font-medium leading-6 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-blue-600 ${
 						enabled
-							? "bg-white text-black hover:bg-gray-300"
-							: "bg-black text-white hover:bg-gray-500"
+							? "border-3 border-white text-white shadow-custom-view-dark-lg text-black bg-black hover:text-gray-700 hover:bg-gray-50"
+							: "text-black border-3 border-black hover:bg-gray-100 active:bg-gray-100 active:text-black hover:text-gray-700 shadow-custom-view-lg bg-white"
 					}`}
 					text='Enter Memories Portal'
 				/>
 			</form>
 			<div
-				className={`flex justify-center gap-2 text-sm mt-28 ${
+				className={`flex justify-center gap-2 text-sm mt-28  ${
 					enabled ? "text-white" : "text-black"
 				}`}>
 				Not a fan yet?{" "}
 				<p className='font-semibold hover:text-gray-500'>
-					<Link to='/register'>
+					<Link
+						to='/register'
+						className='px-2 rounded-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600'>
 						Register <span className='underline'>here!</span>
 					</Link>
 				</p>
@@ -218,12 +220,12 @@ const Login = () => {
 
 			{/* Overlay for messages */}
 			{actionData?.successMessage && (
-				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 dark:bg-white dark:bg-opacity-70'>
+				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 dark:bg-white dark:bg-opacity-70'>
 					<div className='z-10 2xl:w-72 w-64 p-6 bg-white rounded-[6rem] relative rounded-tr-lg shadow-lg min-h-96 dark:bg-black'>
 						<h2 className='pt-20 text-2xl font-black leading-10 text-center text-black uppercase dark:text-white'>
-							all set to <br />
+							all set <br />
 							<br />
-							go down <br />
+							now go down <br />
 							memory lane!
 						</h2>
 					</div>
@@ -231,7 +233,7 @@ const Login = () => {
 			)}
 
 			{actionData?.errorMessage && (
-				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 dark:bg-white dark:bg-opacity-70'>
+				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 dark:bg-white dark:bg-opacity-70'>
 					<div className='z-10 2xl:w-72 w-64 p-6 bg-white rounded-[6rem] relative rounded-tr-lg shadow-lg min-h-96 dark:bg-black'>
 						<h2 className='pt-20 text-2xl font-black text-center text-black uppercase dark:text-white'>
 							<span className='text-red-600 '>Invalid Credentials</span>

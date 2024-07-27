@@ -9,7 +9,6 @@ import {
 import { MemoryValues } from "../types/MemoryValues";
 import { getMemoryByTitle, loggedInData } from "../utils/api";
 import ScrollUpBtn from "../partials/ScrollUpBtn";
-import DarkModeBtn from "../partials/DarkModeBtn";
 import { Suspense, useState } from "react";
 import HerzSpinner from "./HerzSpinner";
 import ViewSingleMemory from "./ViewSingleMemory";
@@ -51,8 +50,7 @@ const SingleMemory = () => {
 				<ScrollUpBtn />
 				<aside className='flex items-center cursor-pointer'>
 					<div className='flex flex-col items-center gap-1'>
-						<section className=''>
-							{/* <section className='w-[94vw]'> */}
+						<section>
 							<Suspense
 								fallback={
 									<div className='flex justify-center w-screen -mt-16'>

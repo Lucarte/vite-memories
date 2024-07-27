@@ -9,7 +9,7 @@ const EditMemories = () => {
 		<>
 			{memories ? (
 				memories.map((memory) => (
-					<EditSingleMemory key={memory.title} memory={memory} />
+					<EditSingleMemory key={memory.id} memory={memory} />
 				))
 			) : (
 				<p className='text-center text-orange-500'>No memories founD</p>

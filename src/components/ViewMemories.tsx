@@ -46,7 +46,7 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 						className='cursor-pointer'>
 						<article
 							key={memory.title}
-							className='flex flex-col items-end gap-6 overflow-hidden text-gray-300 screen mx-9 font-extralight'>
+							className='flex flex-col items-end gap-6 mb-16 overflow-hidden text-gray-300 screen mx-9 font-extralight'>
 							{/* Entry Header */}
 							<section className='flex flex-col w-full'>
 								<div className='flex justify-end mb-2'>
@@ -151,13 +151,6 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 								</ul>
 							</div>
 						</article>
-						{/* Custom HR Tag */}
-						<div className='inline-flex items-center justify-center w-full mt-8 mb-8 opacity-0'>
-							<hr className='w-64 h-px my-8 bg-gray-200 border-0 dark:bg-gray-700' />
-							<span className='absolute px-3 font-light text-gray-400 -translate-x-1/2 bg-white left-1/2 dark:text-gray-200 dark:bg-black'>
-								•
-							</span>
-						</div>
 					</div>
 				))
 			) : (

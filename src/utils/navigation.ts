@@ -13,7 +13,7 @@ export const navigation = [
 	},
 	{
 		name: "Brunnis",
-		href: "/brunnis",
+		href: "/brunnis/memories",
 		page: "Brunnis",
 		current: false,
 	},
