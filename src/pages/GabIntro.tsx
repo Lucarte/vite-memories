@@ -6,7 +6,8 @@ const GabIntro = () => {
 			<h1 className='pb-6 text-xl font-bold tracking-wider underline uppercase'>
 				.g.a.b.i.
 			</h1>
-			<Link to={"/gabriella/memories"} className='absolute mt-16 w-52 h-52'>
+			{/* Does not need absolute path because it exapands on "gabriella/" */}
+			<Link to={"memories"} className='absolute mt-16 w-52 h-52'>
 				<div className='top-0 left-0 text-xl tracking-tight text-center text-black uppercase dark:text-white'>
 					<p className='h-6 pt-[.1rem] -ml-[1.8rem] underline cursor-pointer'>
 						musical - theater
