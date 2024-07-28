@@ -45,29 +45,36 @@ const Search = ({ onResultClick, initialQuery, category }: SearchProps) => {
 	}, [query]);
 
 	return (
-		<div>
+		<div className=''>
 			<input
-				className='p-2 rounded mt-28'
+				className='w-screen h-12 p-2 mb-3 text-center mt-28 ring-inset ring-gray-900 focus:ring-2 focus:ring-inset focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-1 focus-visible:outline-orange-600'
 				type='text'
 				value={query}
 				onChange={(e) => setQuery(e.target.value)}
 				placeholder='Search...'
 			/>
 			{loading && <LineSpinner />}
-			<ul>
-				{results.map((result) => (
-					<li
-						key={result.title}
-						className='gap-2 px-2 py-1 my-5 rounded-md rounded-tr-none rounded-bl-none translate-deg w-fit'>
-						<Link
-							to={`/memories/title/${result.title}`}
-							className='text-white dark:text-black'
-							onClick={onResultClick}>
-							{result.title}
-						</Link>
-					</li>
-				))}
-			</ul>
+			<div className='flex flex-col items-center'>
+				<ul className='space-y-2 dark:text-white'>
+					<h1 className='mt-10 mb-4 text-xl font-semibold tracking-wider text-white dark:text-black'>
+						Search Results:
+					</h1>
+					{results.map((result, index: number) => (
+						<li
+							key={result.title}
+							className={`${
+								index % 2 === 0 ? "rotate-0" : "rotate-[8deg]"
+							} hover:text-xl w-72 text-center px-4 py-2 text-sm bg-white rounded-lg rounded-tr-none rounded-bl-none bg-opacity-85 dark:bg-black rotate-12 dark:bg-opacity-85 font-semibold`}>
+							<Link
+								to={`/memories/title/${result.title}`}
+								className='text-black dark:text-white'
+								onClick={onResultClick}>
+								{result.title}
+							</Link>
+						</li>
+					))}
+				</ul>
+			</div>
 		</div>
 	);
 };

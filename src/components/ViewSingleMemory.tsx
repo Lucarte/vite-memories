@@ -38,17 +38,17 @@ const ViewSingleMemory: React.FC<Props> = ({ memory }) => {
 					/>
 				</div>
 				<div
-					className={`flex flex-col items-end w-full ${
-						enabled ? "text-gray-600" : "text-gray-400"
+					className={`flex flex-col font-light items-end w-full ${
+						enabled ? "text-gray-600" : "text-black text-opacity-40"
 					}`}>
-					<p>{`By: ${memory.user.first_name} ${memory.user.last_name}`}</p>
 					<p>{formatDate(memory.created_at)}</p>
+					<p>{`By: ${memory.user.first_name} ${memory.user.last_name}`}</p>
 				</div>
 			</section>
 			{/* Entry Body */}
 			<section className=''>
 				<h1
-					className={`mb-2 font-sans text-xl ${
+					className={`mb-2 font-sans font-medium underline text-2xl tracking-widest ${
 						enabled ? "text-gray-200" : "text-black"
 					}`}>
 					{memory.title}
@@ -60,8 +60,8 @@ const ViewSingleMemory: React.FC<Props> = ({ memory }) => {
 			</section>
 			<div>
 				<h2
-					className={`font-medium ${
-						enabled ? "text-gray-400" : "text-gray-500"
+					className={`font-medium tracking-widest ${
+						enabled ? "text-gray-400" : "text-black text-opacity-40"
 					}`}>
 					Date of Memory
 				</h2>
@@ -70,10 +70,10 @@ const ViewSingleMemory: React.FC<Props> = ({ memory }) => {
 				</p>
 			</div>
 			{/* Files */}
-			<div className=''>
+			<div>
 				<h2
-					className={`font-medium ${
-						enabled ? "text-gray-400" : "text-gray-500"
+					className={`font-medium -mb-2 tracking-widest ${
+						enabled ? "text-gray-400" : "text-black text-opacity-40"
 					}`}>
 					Files
 				</h2>
@@ -101,8 +101,8 @@ const ViewSingleMemory: React.FC<Props> = ({ memory }) => {
 			{/* URLs */}
 			<div>
 				<h2
-					className={`font-medium ${
-						enabled ? "text-gray-400" : "text-gray-500"
+					className={`font-medium tracking-widest ${
+						enabled ? "text-gray-400" : "text-black text-opacity-40"
 					}`}>
 					URLs
 				</h2>

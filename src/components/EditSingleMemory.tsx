@@ -150,7 +150,7 @@ const EditSingleMemory = ({ memory }: Props) => {
 					</div>
 					<div
 						className={`${
-							enabled ? "text-gray-600" : "text-gray-400"
+							enabled ? "text-gray-600" : "text-black text-opacity-40"
 						} w-full font-medium`}>
 						<p>{formatDate(memory.created_at)}</p>
 						<p>{`By: ${memory.user.first_name} ${memory.user.last_name}`}</p>
@@ -159,7 +159,7 @@ const EditSingleMemory = ({ memory }: Props) => {
 				{/* Entry Body */}
 				<section>
 					<h1
-						className={`font-sans underline text-2xl font-normal tracking-widest ${
+						className={`font-sans underline text-2xl font-medium tracking-widest ${
 							enabled ? "text-gray-200 mb-3" : "text-black mb-6"
 						}`}>
 						{memory.title}{" "}
@@ -173,9 +173,9 @@ const EditSingleMemory = ({ memory }: Props) => {
 				</section>
 				<div>
 					<h2
-						className={`font-medium ${
-							enabled ? "text-gray-400" : "text-gray-500"
-						} font-normal underline`}>
+						className={`font-medium text-black ${
+							enabled ? "text-gray-400" : "text-opacity-40"
+						} font-normal tracking-widest`}>
 						Date of Memory
 					</h2>
 					<p className={`${enabled ? "text-white" : "text-black"}`}>
@@ -185,9 +185,9 @@ const EditSingleMemory = ({ memory }: Props) => {
 				{/* Files */}
 				<div className=''>
 					<h2
-						className={`font-medium ${
-							enabled ? "text-gray-400" : "text-gray-500"
-						} font-normal underline`}>
+						className={`font-medium text-black ${
+							enabled ? "text-gray-400" : "text-opacity-40"
+						} font-normal tracking-widest`}>
 						Files
 					</h2>
 					<ul className='flex flex-col items-center justify-center'>
@@ -214,9 +214,9 @@ const EditSingleMemory = ({ memory }: Props) => {
 				{/* URLs */}
 				<div>
 					<h2
-						className={`font-medium ${
-							enabled ? "text-gray-400" : "text-gray-500"
-						} font-normal underline`}>
+						className={`font-medium text-black  ${
+							enabled ? "text-gray-400" : "text-opacity-40"
+						} font-normal tracking-widest`}>
 						URLs
 					</h2>
 					<ul>

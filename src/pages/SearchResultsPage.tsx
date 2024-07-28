@@ -1,6 +1,4 @@
 import { useLocation } from "react-router-dom";
-import Search, { SearchProps } from "../components/Search";
-import { categoryMapping } from "../utils/categoryMapping";
 import { useEffect, useState } from "react";
 import http from "../utils/http";
 import { MemoryValues } from "../types/MemoryValues";

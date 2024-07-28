@@ -61,8 +61,8 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 								</div>
 								<div
 									className={`${
-										enabled ? "text-gray-600" : "text-gray-400"
-									} w-full font-medium`}>
+										enabled ? "text-gray-600" : "text-black text-opacity-40"
+									} font-light w-full`}>
 									<p>{formatDate(memory.created_at)}</p>
 									<p>{`By: ${memory.user.first_name} ${memory.user.last_name}`}</p>
 								</div>
@@ -70,7 +70,7 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 							{/* Entry Body */}
 							<section>
 								<h1
-									className={`font-sans underline text-2xl font-normal tracking-widest ${
+									className={`font-sans font-medium underline text-2xl tracking-widest ${
 										enabled ? "text-gray-200 mb-3" : "text-black mb-6"
 									}`}>
 									{memory.title}{" "}
@@ -85,8 +85,8 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 							<div>
 								<h2
 									className={`${
-										enabled ? "text-gray-400" : "text-gray-500"
-									} font-normal underline`}>
+										enabled ? "text-gray-400" : "text-black text-opacity-40"
+									} font-normal tracking-widest`}>
 									Date of Memory
 								</h2>
 								<p className={`${enabled ? "text-white" : "text-black"}`}>
@@ -97,8 +97,8 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 							<div className=''>
 								<h2
 									className={`${
-										enabled ? "text-gray-400" : "text-gray-500"
-									} font-normal underline`}>
+										enabled ? "text-gray-400" : "text-black text-opacity-40"
+									} font-normal -mb-2 tracking-widest`}>
 									Files
 								</h2>
 								<ul className='flex flex-col items-center justify-center'>
@@ -126,8 +126,8 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 							<div>
 								<h2
 									className={`${
-										enabled ? "text-gray-400" : "text-gray-500"
-									} font-normal underline`}>
+										enabled ? "text-gray-400" : "text-black text-opacity-40"
+									} font-normal tracking-widest`}>
 									URLs
 								</h2>
 								<ul className=''>
