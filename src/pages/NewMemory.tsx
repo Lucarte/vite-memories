@@ -20,6 +20,8 @@ import {
 	useFileUpload,
 	years,
 } from "../utils/memoryUtils";
+import CustomButton from "../components/CustomButton";
+import { useTheme } from "../context/ThemeContext";
 
 type CreateMemoryData = {
 	error?: string;
@@ -65,6 +67,7 @@ const CreateMemory = () => {
 		{ id: string; category: string }[]
 	>([]);
 	const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+	const { enabled } = useTheme();
 
 	useEffect(() => {
 		if (error) {
@@ -148,10 +151,6 @@ const CreateMemory = () => {
 					<div className='z-10 2xl:w-72 w-64 px-6 py-10 flex flex-col items-center justify-center bg-white rounded-[5rem] rounded-tr-lg shadow-lg h-auto dark:bg-black'>
 						<h2 className='text-2xl font-black leading-10 text-center text-black uppercase dark:text-white'>
 							{error}
-							{/* Creation failed <br />
-							<br />
-							Please <br />
-							try again! */}
 						</h2>
 					</div>
 				</div>
@@ -174,9 +173,7 @@ const CreateMemory = () => {
 						Create a New Memory
 					</h1>
 					<fieldset className='mt-8'>
-						<legend className='text-sm font-semibold leading-6 text-center text-gray-900'>
-							for...
-						</legend>
+						<legend className='sr-only'>for...</legend>
 						<div className='mt-3 space-y-3'>
 							{kidOptions.map((option) => (
 								<div key={option.id} className='flex items-center'>
@@ -190,7 +187,7 @@ const CreateMemory = () => {
 									/>
 									<label
 										htmlFor={option.id}
-										className='block ml-3 text-sm font-medium leading-6 text-gray-900'>
+										className='ml-3 text-sm font-medium leading-6 text-gray-900 '>
 										{option.name}
 									</label>
 								</div>
@@ -203,31 +200,25 @@ const CreateMemory = () => {
 						)}
 					</fieldset>
 					<article className='mt-10 font-light'>
-						<fieldset className='relative flex flex-wrap justify-center w-full p-4 pt-6 border-[2.5px] rounded-[3px] border-black'>
-							<legend className='absolute flex px-2 text-sm text-black bg-white -top-3 left-4'>
-								Categories
-							</legend>
+						<p className='mb-1 font-normal text-black dark:text-white'>
+							Categories
+						</p>
+						<fieldset className='flex flex-wrap justify-center w-full p-4 pt-6 border-[2.5px] rounded-[3px] dark:border-white border-black'>
+							<legend className='sr-only'>Categories</legend>
+							{/* Visible <p> element for styling */}
 							{categories.map((category) => (
 								<label
 									key={category.id}
 									htmlFor={`category-${category.id}`}
-									className={`relative flex px-3 mx-2 my-1 border border-black rounded cursor-pointer w-fit ${
+									className={`relative flex px-3 mx-2 my-1 border text-black border-black dark:border-white dark:text-black rounded w-fit ${
 										selectedCategories.includes(category.id)
-											? "bg-white text-black" // Active styles
-											: "bg-black text-white" // Inactive styles
-									} hover:bg-white hover:text-black`}
-									style={{
-										backgroundColor: selectedCategories.includes(category.id)
-											? "white"
-											: "black",
-										color: selectedCategories.includes(category.id)
-											? "black"
-											: "white",
-									}}>
+											? "bg-black text-white dark:bg-white dark:text-black" // Active styles
+											: "border-black bg-white text-black dark:border-white dark:text-white dark:bg-black" // Inactive styles
+									} hover:text-gray-500 dark:hover:text-gray-500`}>
 									{category.category}
 									<input
 										id={`category-${category.id}`}
-										className='absolute top-0 left-0 w-full h-full opacity-0'
+										className='absolute inset-0 opacity-0 cursor-pointer'
 										type='checkbox'
 										value={category.id}
 										onChange={() => handleCategoryChange(category.id)}
@@ -243,13 +234,11 @@ const CreateMemory = () => {
 						</fieldset>
 					</article>
 					<div className='mt-10'>
-						<label className='block mb-2 text-sm font-medium text-gray-900'>
-							Title
-						</label>
+						<label className='text-sm font-medium text-gray-900 '>Title</label>
 						<input
 							{...register("title", { required: true })}
 							type='text'
-							className='block w-full px-4 py-2 text-sm border rounded-md'
+							className='w-full px-4 py-2 text-sm border-2 border-black rounded-md '
 						/>
 						{errors.title && (
 							<p className='mt-1 text-sm font-light text-orange-500'>
@@ -258,12 +247,12 @@ const CreateMemory = () => {
 						)}
 					</div>
 					<div className='mt-10'>
-						<label className='block mb-2 text-sm font-medium text-gray-900'>
+						<label className='mb-2 text-sm font-medium text-gray-900 '>
 							Description
 						</label>
 						<textarea
 							{...register("description", { required: true })}
-							className='block w-full px-4 py-2 text-sm border rounded-md'
+							className='w-full px-4 py-2 text-sm border-2 border-black rounded-md dark:border-white dark:bg-black dark:text-white'
 							rows={4}
 						/>
 						{errors.description && (
@@ -275,13 +264,13 @@ const CreateMemory = () => {
 					<div className='mt-10'>
 						<label
 							htmlFor='date'
-							className='block text-sm font-medium text-gray-700'>
+							className='text-sm font-medium text-gray-700 '>
 							Date
 						</label>
 						<div className='flex space-x-4'>
 							<select
 								{...register("month")}
-								className='block w-full px-4 py-2 text-sm border rounded-md'>
+								className='w-full px-4 py-2 text-sm border-2 border-black rounded-md dark:border-white dark:bg-black dark:text-white'>
 								{months.map((month) => (
 									<option key={month} value={month}>
 										{month}
@@ -290,7 +279,7 @@ const CreateMemory = () => {
 							</select>
 							<select
 								{...register("day")}
-								className='block w-full px-4 py-2 text-sm border rounded-md'>
+								className='w-full px-4 py-2 text-sm border-2 border-black rounded-md dark:border-white dark:bg-black dark:text-white'>
 								{days.map((day) => (
 									<option key={day} value={day}>
 										{day}
@@ -299,7 +288,7 @@ const CreateMemory = () => {
 							</select>
 							<select
 								{...register("year")}
-								className='block w-full px-4 py-2 text-sm border rounded-md'>
+								className='w-full px-4 py-2 text-sm border-2 border-black rounded-md dark:border-white dark:bg-black dark:text-white'>
 								{years.map((year) => (
 									<option key={year} value={year}>
 										{year}
@@ -309,7 +298,7 @@ const CreateMemory = () => {
 						</div>
 					</div>
 					<div className='mt-10'>
-						<label className='block mb-2 text-sm font-medium text-gray-900'>
+						<label className='mb-2 text-sm font-medium text-gray-900 '>
 							Upload Images
 						</label>
 						<input
@@ -318,7 +307,7 @@ const CreateMemory = () => {
 							multiple
 							accept='image/*'
 							onChange={handleFileChange}
-							className='block w-full text-sm border rounded-md'
+							className='w-full text-sm border rounded-md '
 						/>
 						{imagePreviews.length > 0 && (
 							<div className='grid grid-cols-3 gap-4 mt-2'>
@@ -346,7 +335,7 @@ const CreateMemory = () => {
 						)}
 					</div>
 					<div className='mt-10'>
-						<label className='block mb-2 text-sm font-medium text-gray-900'>
+						<label className='mb-2 text-sm font-medium text-gray-900 '>
 							Upload Audio
 						</label>
 						<input
@@ -355,7 +344,7 @@ const CreateMemory = () => {
 							multiple
 							accept='audio/*'
 							onChange={handleFileChange}
-							className='block w-full text-sm border rounded-md'
+							className='w-full text-sm border rounded-md '
 						/>
 						{audioPreviews.length > 0 && (
 							<div className='mt-2'>
@@ -386,7 +375,7 @@ const CreateMemory = () => {
 						)}
 					</div>
 					<div className='mt-10'>
-						<label className='block mb-2 text-sm font-medium text-gray-900'>
+						<label className='mb-2 text-sm font-medium text-gray-900 '>
 							Upload Video
 						</label>
 						<input
@@ -395,7 +384,7 @@ const CreateMemory = () => {
 							multiple
 							accept='video/*'
 							onChange={handleFileChange}
-							className='block w-full text-sm border rounded-md'
+							className='w-full text-sm border rounded-md '
 						/>
 						{videoPreviews.length > 0 && (
 							<div className='mt-2'>
@@ -426,14 +415,14 @@ const CreateMemory = () => {
 						)}
 					</div>
 					<div className='mt-10'>
-						<label className='block mb-2 text-sm font-medium text-gray-900'>
+						<label className='mb-2 text-sm font-medium text-gray-900 '>
 							URLs
 						</label>
 						<input
 							{...register("urls")}
 							type='text'
 							placeholder='example.com, another-example.com'
-							className='block w-full px-4 py-2 text-sm border rounded-md'
+							className='w-full px-4 py-2 text-sm border rounded-md '
 						/>
 						{errors.urls && (
 							<p className='text-sm font-light text-red-500'>
@@ -441,11 +430,15 @@ const CreateMemory = () => {
 							</p>
 						)}
 					</div>
-					<button
+					<CustomButton
 						type='submit'
-						className='px-4 py-2 mx-auto mt-8 text-white bg-black rounded-md mb-36 w-fit'>
-						Submit
-					</button>
+						classes={`px-4 uppercase mt-12 text-md py-2 mx-auto rounded-tr-none mb-36 w-fit rounded-bl-none rounded-2xl font-medium leading-6 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-blue-600 ${
+							enabled
+								? "border-3 border-white text-white shadow-custom-view-dark-lg text-black bg-black hover:text-gray-700 hover:bg-gray-50"
+								: "text-black border-3 border-black hover:bg-gray-100 active:bg-gray-100 active:text-black hover:text-gray-700 shadow-custom-view-lg bg-white"
+						}`}
+						text='Create Memory'
+					/>
 				</form>
 			</div>
 		</>

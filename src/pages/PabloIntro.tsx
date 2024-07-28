@@ -7,7 +7,7 @@ const PabloIntro = () => {
 			<h1 className='pb-6 text-xl font-bold tracking-wider underline uppercase'>
 				.p.a.b.l.o.
 			</h1>
-			<div className='absolute mt-16 w-52 h-52'>
+			<Link to={"/pablo/memories"} className='absolute mt-16 w-52 h-52'>
 				<div className='top-0 left-0 text-xl tracking-[.2rem] text-center text-black uppercase dark:text-white'>
 					<p className='h-6 underline w-fit'>PROGRAMMING</p>
 					<p className='absolute right-0 h-6 mt-[3.9rem] -mr-[5.1rem] rotate-90 underline text-black dark:text-white text-opacity-95 dark:text-opacity-95'>
@@ -62,7 +62,7 @@ const PabloIntro = () => {
 						Art
 					</p>
 				</div>
-			</div>
+			</Link>
 			<div className='mt-72'>
 				<Link
 					to='/memory/create'

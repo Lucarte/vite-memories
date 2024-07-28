@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import React from "react";
+
 import { useLoaderData, Link } from "react-router-dom";
 import { MemoryValues } from "../types/MemoryValues";
 import { LoaderFunction } from "react-router-dom";
@@ -10,7 +10,7 @@ interface TitleListProps {
 	memories: Pick<MemoryValues, "title">[];
 }
 
-const TitleList: React.FC = () => {
+const TitleList = () => {
 	const memories = useLoaderData() as TitleListProps["memories"];
 
 	return (
