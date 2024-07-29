@@ -8,7 +8,7 @@ const GabIntro = () => {
 	useEffect(() => {
 		// first check screen size
 		const checkScreenSize = () => {
-			setIsMobile(window.innerWidth <= 1024);
+			setIsMobile(window.innerWidth <= 1023);
 		};
 		// check initial size
 		checkScreenSize();

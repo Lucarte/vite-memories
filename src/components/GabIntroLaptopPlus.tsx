@@ -2,14 +2,13 @@ import { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import SquareCategoriesGabi from "./SquareCategoriesGabi";
 import Tree from "../media/tree.png";
-// Define the type for the context
+
 interface OutletContextType {
 	showFooter: boolean;
 	setShowFooter: (show: boolean) => void;
 }
 
 const GabIntroLaptopPlus = () => {
-	// Access the context values provided by the Outlet
 	const { setShowFooter } = useOutletContext<OutletContextType>();
 	const [displayText, setDisplayText] = useState("ADD MEMORY");
 	const [isFading, setIsFading] = useState(false);
@@ -24,54 +23,186 @@ const GabIntroLaptopPlus = () => {
 				);
 				setShowImage((prev) => !prev);
 				setIsFading(false);
-			}, 1000);
-		}, 3000);
+			}, 1000); // 1 second fade duration
+		}, 3000); // Change every 3 seconds
 
-		return () => clearInterval(intervalId); // Cleanup the interval on component unmount
+		return () => clearInterval(intervalId);
 	}, []);
 
 	useEffect(() => {
-		// Hide the footer for this component
 		setShowFooter(false);
-		// Optionally, show the footer again when this component is unmounted
 		return () => setShowFooter(false);
 	}, [setShowFooter]);
 
 	return (
 		<>
-			<main className='flex flex-col gap-2 h-[calc(100vh-12rem)] mx-20 border-8 border-black dark:border-white '>
-				<div className='grid h-screen grid-cols-3'>
-					<div className='flex items-center justify-center bg-red-900'>1a</div>
-					<div className='flex justify-center mt-[10vh]'>
-						<div className='relative'>
-							<Link to={"memories"} className='block mt-16 rotate-45 w-52 h-52'>
-								{!showImage ? <SquareCategoriesGabi /> : null}
-							</Link>
-							<span
-								className={`absolute mt-16 w-52 h-52 transition-opacity duration-500 ${
-									isFading ? "opacity-0" : "opacity-100"
-								}`}>
-								{showImage ? (
-									<img
-										src={Tree}
-										alt='My Image'
-										className='object-cover w-full h-full'
-									/>
-								) : null}
-							</span>
-							<span className='absolute w-2 mt-10 text-center transform -translate-x-1/2 bg-black dark:bg-white bg-opacity-70 h-28 left-1/2'></span>
-							<span className='absolute w-64 h-32 text-center transform -translate-x-1/2 bg-black rounded-t-none dark:bg-white rounded-3xl mt-36 bg-opacity-70 left-1/2'></span>
-							<span
-								className={`absolute w-64 text-[2rem] text-center text-white uppercase transform -translate-x-1/2 dark:text-black mt-48 left-1/2 transition-opacity duration-1000 ${
-									isFading ? "opacity-0" : "opacity-100"
-								}`}>
-								{displayText}
-							</span>
+			<div className='fixed top-[15%] left-[7%] right-[7%] bottom-[10%] border-8 border-black dark:border-white'>
+				<main className='flex flex-col w-full h-full gap-2'>
+					<div className='grid h-full grid-cols-3'>
+						{/* Element LEFT */}
+						<div className='flex items-center justify-center h-[calc(100vh*2/3)]'>
+							<div className='h-full overflow-hidden rotate-90 w-80'>
+								<div className='inset-0 flex flex-col gap-4 transform translate-y-[50%]'>
+									<div className='flex flex-col items-center gap-1 font-sans uppercase rotate-180'>
+										<h2 className='text-3xl font-bold underline'>DANCE</h2>
+										<p className='font-normal text-[.6rem] text-center'>
+											"The information you consume each day is the soil from
+											<br /> which your future thoughts are grown" <br />
+											<span className='font-medium'>James Clear</span>
+										</p>
+									</div>
+									<div className='text-[10px] text-center -mt-5'>
+										<p>GABRIELLA</p>
+										<div className='-space-y-1'>
+											<p>G</p>
+											<p>A</p>
+											<p>B</p>
+											<p>R</p>
+											<p>I</p>
+											<p>E</p>
+											<p>L</p>
+											<p>L</p>
+											<p>A</p>
+											<p>L</p>
+											<p>L</p>
+											<p>E</p>
+											<p>I</p>
+											<p>R</p>
+											<p>B</p>
+											<p>A</p>
+											<p>G</p>
+											<p>G</p>
+											<p>A</p>
+											<p>B</p>
+											<p>R</p>
+											<p>I</p>
+											<p>E</p>
+											<p>L</p>
+											<p>L</p>
+											<p>A</p>
+											<p>L</p>
+											<p>L</p>
+											<p>E</p>
+											<p>I</p>
+											<p>R</p>
+											<p>B</p>
+											<p>A</p>
+											<p>G</p>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						{/* Middle Element -- TREE/S */}
+						<div className='flex justify-center relative mt-[10vh]'>
+							<div className='relative'>
+								<Link
+									to={"memories"}
+									className={`absolute bottom-60 -translate-x-1/2 rotate-45 w-52 h-52 transition-opacity duration-1000 left-1/2 ${
+										isFading ? "opacity-0" : "opacity-100"
+									}`}
+									style={{ zIndex: 10 }} // Ensure it's on top
+								>
+									{!showImage ? <SquareCategoriesGabi /> : null}
+								</Link>
+								{/* Tree Image */}
+								<span
+									className={`absolute left-1/2 -translate-x-1/2 bottom-20 transition-opacity duration-1000 ${
+										isFading ? "opacity-0" : "opacity-100"
+									}`}
+									style={{ zIndex: 5 }} // Adjust z-index to place behind Link
+								>
+									{showImage ? (
+										<img src={Tree} alt='Tree' className='w-full h-auto' />
+									) : null}
+								</span>
+								{/* Tronco */}
+								<span
+									className={`absolute w-2 bottom-24 text-center transform -translate-x-1/2 bg-black dark:bg-white bg-opacity-70 h-28 left-1/2 transition-opacity duration-1000 ${
+										isFading || showImage ? "opacity-0" : "opacity-100"
+									}`}
+									style={{ zIndex: 1 }} // Ensure it's behind other elements
+								></span>
+								{/* Matera */}
+								<span
+									className={`absolute w-56 text-center transform -translate-x-1/2 transition-opacity duration-1000 ${
+										isFading
+											? "opacity-0"
+											: showImage
+											? "opacity-50"
+											: "opacity-100"
+									} bg-black rounded-t-none h-28 dark:bg-white rounded-3xl bg-opacity-70 left-1/2 -bottom-1`}
+									style={{ zIndex: 3 }} // Adjust z-index as needed
+								></span>
+
+								{/* Title */}
+								<span
+									className={`absolute w-64 text-[1.6rem] text-center text-white uppercase transform -translate-x-1/2 dark:text-black transition-opacity duration-1000 left-1/2 bottom-0 ${
+										isFading ? "opacity-0" : "opacity-100"
+									}`}
+									style={{ zIndex: 4 }} // Ensure title is on top of background elements
+								>
+									{displayText}
+								</span>
+							</div>
+						</div>
+						{/* Element RIGHT */}
+						<div className='flex items-center justify-center h-[calc(100vh*2/3)]'>
+							<div className='overflow-hidden rotate-[270deg] w-80 h-full'>
+								<div className='inset-0 flex flex-col gap-4 transform translate-y-[50%]'>
+									<div className='flex flex-col items-center gap-1 font-sans uppercase rotate-180'>
+										<h2 className='text-3xl font-bold underline'>DANCE</h2>
+										<p className='font-normal text-[.6rem] text-center'>
+											"The information you consume each day is the soil from
+											<br /> which your future thoughts are grown" <br />
+											<span className='font-medium'>James Clear</span>
+										</p>
+									</div>
+									<div className='text-[10px] text-center -mt-5'>
+										<p>GABRIELLA</p>
+										<div className='-space-y-1'>
+											<p>G</p>
+											<p>A</p>
+											<p>B</p>
+											<p>R</p>
+											<p>I</p>
+											<p>E</p>
+											<p>L</p>
+											<p>L</p>
+											<p>A</p>
+											<p>L</p>
+											<p>L</p>
+											<p>E</p>
+											<p>I</p>
+											<p>R</p>
+											<p>B</p>
+											<p>A</p>
+											<p>G</p>
+											<p>G</p>
+											<p>A</p>
+											<p>B</p>
+											<p>R</p>
+											<p>I</p>
+											<p>E</p>
+											<p>L</p>
+											<p>L</p>
+											<p>A</p>
+											<p>L</p>
+											<p>L</p>
+											<p>E</p>
+											<p>I</p>
+											<p>R</p>
+											<p>B</p>
+											<p>A</p>
+											<p>G</p>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div className='flex items-center justify-center bg-red-900'>3a</div>
-				</div>
-			</main>
+				</main>
+			</div>
 		</>
 	);
 };
