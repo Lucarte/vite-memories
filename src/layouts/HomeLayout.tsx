@@ -25,7 +25,7 @@ const HomeLayout = () => {
 	}, [isMenuOpen]);
 
 	return (
-		<>
+		<div className='min-h-screen border-8 border-black'>
 			<header className='flex items-center justify-between p-8'>
 				<DarkModeBtn classes='bottom-8 left-4' />
 				{/* Logo in mobile && Logo and Name description other sizes */}
@@ -56,9 +56,7 @@ const HomeLayout = () => {
 					</button>
 				</div>
 			</header>
-			{/* <main className='lg:flex lg:items-center lg:justify-center lg:h-[calc(100vh-21rem)]'> */}
-			{/* <main className='h-[84vh] lg:flex lg:items-center lg:justify-center'> */}
-			<main className='min-h-screen lg:flex lg:items-center lg:justify-center'>
+			<main className='lg:flex lg:items-center lg:justify-center'>
 				<Outlet />
 			</main>
 			{isMenuOpen && (
@@ -97,7 +95,7 @@ const HomeLayout = () => {
 					))}
 				</nav>
 			)}
-		</>
+		</div>
 	);
 };
 

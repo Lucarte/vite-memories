@@ -42,7 +42,7 @@ const PrivateNav = () => {
 
 const AdminNav = () => {
 	return (
-		<>
+		<div className='min-h-screen border-8 border-black'>
 			<LoadingLayout>
 				<>
 					<Header />
@@ -54,7 +54,7 @@ const AdminNav = () => {
 					<Footer />
 				</>
 			</LoadingLayout>
-		</>
+		</div>
 	);
 };
 

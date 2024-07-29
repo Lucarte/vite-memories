@@ -98,7 +98,7 @@ const Login = () => {
 	}, [actionData, navigate, from]);
 
 	return (
-		<article className='flex flex-col items-center px-6 py-12 text-center md:mt-28 lg:px-8'>
+		<article className='flex flex-col items-center px-6 py-12 text-center'>
 			<h1
 				className={`mt-8 font-serif text-xl text-center ${
 					enabled ? "text-white" : "text-gray-900"

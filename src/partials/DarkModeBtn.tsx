@@ -12,7 +12,7 @@ const DarkModeBtn = ({ classes }: Props) => {
 	return (
 		<div
 			className={classNames(
-				"fixed z-40 flex items-center justify-center w-10 h-8 rotate-90 bg-white dark:bg-black md:rotate-0 rounded-xl left-2 md:pl-8",
+				"fixed z-40 flex items-center justify-center w-10 h-8 rotate-90 bg-white dark:bg-black rounded-xl left-8",
 				classes
 			)}>
 			{/*  */}

@@ -8,6 +8,8 @@ import DarkModeBtn from "../partials/DarkModeBtn";
 import { loggedInData } from "../utils/api";
 import Footer from "../partials/Footer";
 import ScrollUpBtn from "../partials/ScrollUpBtn";
+import logoBlack from "../assets/LogoWhite.svg";
+import logoWhiteThick from "../assets/LogoBlack.svg";
 
 export const loader = async () => {
 	const { loggedIn, user } = await loggedInData();
@@ -17,10 +19,13 @@ export const loader = async () => {
 const GabriellaLayout = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const { enabled } = useTheme();
+	// Use Outlet context to get footer visibility state from child routes
+	const [showFooter, setShowFooter] = useState(false);
 
 	const handleClick = () => {
 		setIsMenuOpen(!isMenuOpen);
 	};
+
 	return (
 		<>
 			<header className='flex items-center justify-between p-8'>
@@ -29,20 +34,30 @@ const GabriellaLayout = () => {
 				{/* Logo in mobile && Logo and Name description other sizes */}
 				<div className='flex items-center justify-start md:min-w-48'>
 					<Link to='/' className='-mt-[4px]'>
-						{enabled ? (
+						{/* {enabled ? (
+							
 							<h1 className='font-black'>G.A.B.I</h1>
 						) : (
 							<h1 className='font-bold underline'>G.A.B.I</h1>
+						)} */}
+						{enabled ? (
+							<img
+								src={logoWhiteThick}
+								className='w-11'
+								alt='Logo White Thick'
+							/>
+						) : (
+							<img src={logoBlack} className='w-11' alt='Logo Black' />
 						)}
 					</Link>
-					<p className='hidden md:block md:ml-10'>G.A.B.R.I.E.L.L.A</p>
+					{/* <p className='hidden lg:block lg:ml-10'>G.A.B.R.I.E.L.L.A</p> */}
 				</div>
 				{/* Search icon in mobile && h1-tag in other sizes */}
 				<div className='flex justify-center pr-4'>
 					<div className='block md:hidden'>
 						{/* <MagnifyingGlassIcon className='w-5 h-5 mr-7' /> */}
 					</div>
-					<div className='hidden md:block'>
+					<div className='hidden lg:block lg:text-xl lg:font-bold lg:tracking-wider lg:underline lg:uppercase'>
 						<p>G.A.B.I.</p>
 					</div>
 				</div>
@@ -61,9 +76,9 @@ const GabriellaLayout = () => {
 				</div>
 			</header>
 			<main>
-				<Outlet />
+				<Outlet context={{ showFooter, setShowFooter }} />
 			</main>
-			<Footer />
+			{showFooter && <Footer />}
 			{isMenuOpen && (
 				<nav
 					className={`${

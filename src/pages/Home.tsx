@@ -8,9 +8,9 @@ const Home = () => {
 	const { enabled } = useTheme();
 
 	return (
-		<article className='flex flex-col items-center pt-16 lg:my-auto'>
+		<article className='flex flex-col items-center pt-16 lg:pt-20 2xl:pt-[13rem]'>
 			<div className='hidden lg:pt-0 lg:flex lg:justify-center'>
-				<h1 className='pb-20 -mt-20 font-serif text-2xl font-semibold uppercase 2xl:text-3xl 2xl:pb-36'>
+				<h1 className='pb-20 -mt-20 font-serif text-3xl font-semibold uppercase 2xl:pb-20'>
 					my pearls of great price
 				</h1>
 			</div>

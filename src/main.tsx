@@ -104,7 +104,7 @@ const router = createBrowserRouter(
 					action={registerAction}
 				/>
 				<Route path='/pablo' element={<PabloIntro />} />
-				<Route path='/gabriella' element={<GabIntro />} />
+				{/* <Route path='/gabriella' element={<GabIntro />} /> */}
 			</Route>
 
 			{/* BRUNNIS LAYOUT */}
@@ -144,6 +144,7 @@ const router = createBrowserRouter(
 					element={<Gabriella />}
 					loader={gabriellaMemoriesLoader}
 				/>
+				<Route path='/gabriella' element={<GabIntro />} />
 			</Route>
 		</>
 	)
