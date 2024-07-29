@@ -76,10 +76,18 @@ const SingleFan = () => {
 
 	return (
 		<article className='px-10'>
-			<h1 className='mt-4 mb-10 text-xl font-bold text-center font-titles'>
-				f.a.n <br />
-				.d.e.t.a.i.l.s.
+			<h1 className='mt-4 mb-16 text-xl font-bold text-center lg:mt-16 font-titles'>
+				{/* This will be shown on mobile (default) */}
+				<span className='block lg:hidden'>
+					f.a.n <br /> .d.e.t.a.i.l.s.
+				</span>
+
+				{/* This will be shown on larger screens */}
+				<span className='hidden lg:inline lg:uppercase'>
+					.f.a.n..d.e.t.a.i.l.s.
+				</span>
 			</h1>
+
 			<div className='flex flex-col gap-2'>
 				{fan.avatar && fan.avatar.avatar_path ? (
 					<img

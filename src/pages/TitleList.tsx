@@ -1,5 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
-
 import { useLoaderData, Link } from "react-router-dom";
 import { MemoryValues } from "../types/MemoryValues";
 import { LoaderFunction } from "react-router-dom";
@@ -18,15 +16,19 @@ const TitleList = () => {
 			<h1 className='pt-4 text-xl font-bold text-center underline'>
 				T.i.t.l.e..L.i.s.t. <br />
 			</h1>
-			<section className='w-screen'>
+			<section className='relative w-screen'>
+				{/* Pseudo-elements for vertical lines */}
+				<div className='absolute top-0 bottom-0 hidden w-2 bg-orange-600 lg:block left-1/4'></div>
+				<div className='absolute top-0 bottom-0 hidden w-2 bg-orange-600 lg:block right-1/4'></div>
+
 				<ul className='list-disc'>
 					{memories.map((memory, index) => (
 						<li
 							key={index}
-							className='p-2 my-2 text-center text-white bg-black '>
+							className='p-2 my-2 text-center bg-black dark:bg-white hover:bg-orange-600'>
 							<Link
 								to={`/memories/title/${memory.title}`}
-								className='text-white'>
+								className='text-white dark:text-black hover:uppercase'>
 								{memory.title}
 							</Link>
 						</li>

@@ -42,7 +42,7 @@ const PrivateNav = () => {
 
 const AdminNav = () => {
 	return (
-		<div className='min-h-screen border-8 border-black'>
+		<div className='min-h-screen border-8 border-black dark:border-white'>
 			<LoadingLayout>
 				<>
 					<Header />

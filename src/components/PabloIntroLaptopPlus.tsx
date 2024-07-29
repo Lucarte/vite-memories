@@ -8,7 +8,7 @@ interface OutletContextType {
 	setShowFooter: (show: boolean) => void;
 }
 
-const GabIntroLaptopPlus = () => {
+const PabloIntroLaptopPlus = () => {
 	const { setShowFooter } = useOutletContext<OutletContextType>();
 	const [displayText, setDisplayText] = useState("ADD MEMORY");
 	const [isFading, setIsFading] = useState(false);
@@ -43,49 +43,55 @@ const GabIntroLaptopPlus = () => {
 						<div className='h-full overflow-hidden rotate-90 w-80'>
 							<div className='inset-0 flex flex-col gap-4 transform translate-y-[50%]'>
 								<div className='flex flex-col items-center gap-1 font-sans uppercase rotate-180'>
-									<h2 className='text-3xl font-bold underline'>DANCE</h2>
+									<h2 className='text-3xl font-bold underline'>VIOLA</h2>
 									<p className='font-normal text-[.6rem] text-center'>
-										"The information you consume each day is the soil from
-										<br /> which your future thoughts are grown" <br />
-										<span className='font-medium'>James Clear</span>
+										"For each headache you face, ask youself: <br />
+										"Is this mostly real or mostly imagined?" -Solve the real
+										<br />
+										problems, release the imaginary ones"
+										<br /> <span className='font-medium'>James Clear</span>
 									</p>
 								</div>
 								<div className='text-[10px] text-center -mt-5'>
-									<p>GABRIELLA</p>
+									<p>PABLO</p>
 									<div className='-space-y-1'>
-										<p>G</p>
+										<p>P</p>
 										<p>A</p>
 										<p>B</p>
-										<p>R</p>
-										<p>I</p>
-										<p>E</p>
 										<p>L</p>
+										<p>O</p>
 										<p>L</p>
-										<p>A</p>
-										<p>L</p>
-										<p>L</p>
-										<p>E</p>
-										<p>I</p>
-										<p>R</p>
 										<p>B</p>
 										<p>A</p>
-										<p>G</p>
+										<p>P</p>
 										<p>A</p>
 										<p>B</p>
-										<p>R</p>
-										<p>I</p>
-										<p>E</p>
 										<p>L</p>
+										<p>O</p>
 										<p>L</p>
-										<p>A</p>
-										<p>L</p>
-										<p>L</p>
-										<p>E</p>
-										<p>I</p>
-										<p>R</p>
 										<p>B</p>
 										<p>A</p>
-										<p>G</p>
+										<p>P</p>
+										<p>A</p>
+										<p>B</p>
+										<p>L</p>
+										<p>O</p>
+										<p>L</p>
+										<p>B</p>
+										<p>A</p>
+										<p>P</p>
+										<p>A</p>
+										<p>B</p>
+										<p>L</p>
+										<p>O</p>
+										<p>L</p>
+										<p>B</p>
+										<p>A</p>
+										<p>P</p>
+										<p>A</p>
+										<p>B</p>
+										<p>L</p>
+										<p>O</p>
 									</div>
 								</div>
 							</div>
@@ -139,7 +145,7 @@ const GabIntroLaptopPlus = () => {
 						<div className='overflow-hidden rotate-[270deg] w-80 h-full'>
 							<div className='inset-0 flex flex-col gap-4 transform translate-y-[50%]'>
 								<div className='flex flex-col items-center gap-1 font-sans uppercase rotate-180'>
-									<h2 className='text-3xl font-bold underline'>DANCE</h2>
+									<h2 className='text-3xl font-bold underline'>VIOLA</h2>
 									<p className='font-normal text-[.6rem] text-center'>
 										"The information you consume each day is the soil from
 										<br /> which your future thoughts are grown" <br />
@@ -149,39 +155,43 @@ const GabIntroLaptopPlus = () => {
 								<div className='text-[10px] text-center -mt-5'>
 									<p>GABRIELLA</p>
 									<div className='-space-y-1'>
-										<p>G</p>
+										<p>P</p>
 										<p>A</p>
 										<p>B</p>
-										<p>R</p>
-										<p>I</p>
-										<p>E</p>
 										<p>L</p>
+										<p>O</p>
 										<p>L</p>
-										<p>A</p>
-										<p>L</p>
-										<p>L</p>
-										<p>E</p>
-										<p>I</p>
-										<p>R</p>
 										<p>B</p>
 										<p>A</p>
-										<p>G</p>
+										<p>P</p>
 										<p>A</p>
 										<p>B</p>
-										<p>R</p>
-										<p>I</p>
-										<p>E</p>
 										<p>L</p>
+										<p>O</p>
 										<p>L</p>
-										<p>A</p>
-										<p>L</p>
-										<p>L</p>
-										<p>E</p>
-										<p>I</p>
-										<p>R</p>
 										<p>B</p>
 										<p>A</p>
-										<p>G</p>
+										<p>P</p>
+										<p>A</p>
+										<p>B</p>
+										<p>L</p>
+										<p>O</p>
+										<p>L</p>
+										<p>B</p>
+										<p>A</p>
+										<p>P</p>
+										<p>A</p>
+										<p>B</p>
+										<p>L</p>
+										<p>O</p>
+										<p>L</p>
+										<p>B</p>
+										<p>A</p>
+										<p>P</p>
+										<p>A</p>
+										<p>B</p>
+										<p>L</p>
+										<p>O</p>
 									</div>
 								</div>
 							</div>
@@ -193,4 +203,4 @@ const GabIntroLaptopPlus = () => {
 	);
 };
 
-export default GabIntroLaptopPlus;
+export default PabloIntroLaptopPlus;

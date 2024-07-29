@@ -5,6 +5,7 @@ import { Index } from "meilisearch";
 import LineSpinner from "./LineSpinner";
 import { Link } from "react-router-dom";
 
+// Initialize Meilisearch client
 const client = new Client({
 	host: import.meta.env.VITE_MEILISEARCH_HOST,
 	apiKey: import.meta.env.VITE_MEILISEARCH_API_KEY,
@@ -18,10 +19,11 @@ export type SearchProps = {
 };
 
 const Search = ({ onResultClick, initialQuery, category }: SearchProps) => {
-	const [query, setQuery] = useState("");
+	const [query, setQuery] = useState(initialQuery || "");
 	const [results, setResults] = useState<SearchResult[]>([]);
 	const [loading, setLoading] = useState(false);
 
+	// Function to handle the search operation
 	const handleSearch = async () => {
 		setLoading(true);
 		try {
@@ -36,6 +38,7 @@ const Search = ({ onResultClick, initialQuery, category }: SearchProps) => {
 		setLoading(false);
 	};
 
+	// Effect to perform search when query changes
 	useEffect(() => {
 		if (query.length > 0) {
 			handleSearch();
@@ -47,7 +50,7 @@ const Search = ({ onResultClick, initialQuery, category }: SearchProps) => {
 	return (
 		<div className=''>
 			<input
-				className='w-screen h-12 p-2 mb-3 text-center mt-28 ring-inset ring-gray-900 focus:ring-2 focus:ring-inset focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-1 focus-visible:outline-orange-600'
+				className='w-screen md:max-w-[25rem] h-12 p-2 mb-3 text-center mt-28 ring-inset ring-gray-900 focus:ring-2 focus:ring-inset focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-1 focus-visible:outline-orange-600'
 				type='text'
 				value={query}
 				onChange={(e) => setQuery(e.target.value)}
@@ -55,19 +58,19 @@ const Search = ({ onResultClick, initialQuery, category }: SearchProps) => {
 			/>
 			{loading && <LineSpinner />}
 			<div className='flex flex-col items-center'>
+				<h1 className='mt-10 mb-4 text-xl font-semibold tracking-wider text-white dark:text-black'>
+					Search Results:
+				</h1>
 				<ul className='space-y-2 dark:text-white'>
-					<h1 className='mt-10 mb-4 text-xl font-semibold tracking-wider text-white dark:text-black'>
-						Search Results:
-					</h1>
 					{results.map((result, index: number) => (
 						<li
 							key={result.title}
 							className={`${
-								index % 2 === 0 ? "rotate-0" : "rotate-[8deg]"
-							} hover:text-xl w-72 text-center px-4 py-2 text-sm bg-white rounded-lg rounded-tr-none rounded-bl-none bg-opacity-85 dark:bg-black rotate-12 dark:bg-opacity-85 font-semibold`}>
+								index % 2 !== 0 ? "rotate-[8deg]" : ""
+							} w-72 lg:max-w-96 text-center px-4 py-2 text-sm bg-white rounded-lg rounded-tr-none rounded-bl-none bg-opacity-85 dark:bg-black dark:bg-opacity-85 font-semibold`}>
 							<Link
 								to={`/memories/title/${result.title}`}
-								className='text-black dark:text-white'
+								className='text-black dark:text-white focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-orange-600'
 								onClick={onResultClick}>
 								{result.title}
 							</Link>

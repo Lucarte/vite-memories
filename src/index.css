@@ -12,7 +12,7 @@ body {
 }
 
 .dark body {
-	@apply bg-black text-white border-8 border-white;
+	@apply bg-black text-white;
 }
 
 .dark input {

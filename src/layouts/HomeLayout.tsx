@@ -25,7 +25,7 @@ const HomeLayout = () => {
 	}, [isMenuOpen]);
 
 	return (
-		<div className='min-h-screen border-8 border-black'>
+		<div className='min-h-screen border-8 border-black dark:border-white'>
 			<header className='flex items-center justify-between p-8'>
 				<DarkModeBtn classes='bottom-8 left-4' />
 				{/* Logo in mobile && Logo and Name description other sizes */}

@@ -110,7 +110,7 @@ const Fans = () => {
 	};
 
 	return (
-		<article className='flex flex-col items-center justify-center'>
+		<article className='flex flex-col items-center justify-center lg:mt-20'>
 			<ScrollUpBtn />
 			<h1 className='pt-8 pb-12 text-xl font-medium tracking-widest text-center'>
 				List of Fans

@@ -1,5 +1,5 @@
 import MenuBarsIcon from "../components/MenuBarsIcon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { Link, Outlet } from "react-router-dom";
 import classNames from "classnames";
@@ -21,6 +21,23 @@ const GabriellaLayout = () => {
 	const { enabled } = useTheme();
 	// Use Outlet context to get footer visibility state from child routes
 	const [showFooter, setShowFooter] = useState(false);
+	const [isMobile, setIsMobile] = useState<boolean>(false);
+
+	useEffect(() => {
+		// first check screen size
+		const checkScreenSize = () => {
+			setIsMobile(window.innerWidth <= 1023);
+		};
+		// check initial size
+		checkScreenSize();
+
+		window.addEventListener("resize", checkScreenSize);
+
+		// cleanup function
+		return () => {
+			window.removeEventListener("resize", checkScreenSize);
+		};
+	}, []);
 
 	const handleClick = () => {
 		setIsMenuOpen(!isMenuOpen);
@@ -29,17 +46,16 @@ const GabriellaLayout = () => {
 	return (
 		<>
 			<header className='flex items-center justify-between p-8'>
-				<DarkModeBtn classes='bottom-24' />
+				{isMobile ? (
+					<DarkModeBtn classes='bottom-4 left-2' />
+				) : (
+					<DarkModeBtn classes='bottom-20' />
+				)}
+
 				<ScrollUpBtn />
 				{/* Logo in mobile && Logo and Name description other sizes */}
 				<div className='flex items-center justify-start md:min-w-48'>
 					<Link to='/' className='-mt-[4px]'>
-						{/* {enabled ? (
-							
-							<h1 className='font-black'>G.A.B.I</h1>
-						) : (
-							<h1 className='font-bold underline'>G.A.B.I</h1>
-						)} */}
 						{enabled ? (
 							<img
 								src={logoWhiteThick}
@@ -50,20 +66,16 @@ const GabriellaLayout = () => {
 							<img src={logoBlack} className='w-11' alt='Logo Black' />
 						)}
 					</Link>
-					{/* <p className='hidden lg:block lg:ml-10'>G.A.B.R.I.E.L.L.A</p> */}
 				</div>
 				{/* Search icon in mobile && h1-tag in other sizes */}
 				<div className='flex justify-center pr-4'>
-					<div className='block md:hidden'>
-						{/* <MagnifyingGlassIcon className='w-5 h-5 mr-7' /> */}
-					</div>
+					<div className='block md:hidden'></div>
 					<div className='hidden lg:block lg:text-xl lg:font-bold lg:tracking-wider lg:underline lg:uppercase'>
 						<p>G.A.B.I.</p>
 					</div>
 				</div>
 				{/* Menu in mobile && Menu and Search icon in other sizes */}
 				<div className='flex items-center justify-end md:min-w-48'>
-					{/* <MagnifyingGlassIcon className='hidden w-5 h-5 md:block md:mr-10' /> */}
 					<button
 						type='button'
 						onClick={handleClick}
@@ -75,7 +87,7 @@ const GabriellaLayout = () => {
 					</button>
 				</div>
 			</header>
-			<main>
+			<main className=''>
 				<Outlet context={{ showFooter, setShowFooter }} />
 			</main>
 			{showFooter && <Footer />}

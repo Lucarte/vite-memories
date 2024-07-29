@@ -71,23 +71,12 @@ const router = createBrowserRouter(
 					element={<SingleMemory />}
 					loader={singleMemoryLoader}
 				/>
-				<Route
-					path='/title-list'
-					element={<TitleList />}
-					loader={titleListLoader}
-				/>
 				{/* Admin Routes */}
 				<Route
 					path='/memory/create'
 					element={<NewMemory />}
 					loader={newMemoryFormLoader}
 					action={createMemoryAction}
-				/>
-				<Route path='/fans' element={<Fans />} loader={fansLoader} />
-				<Route
-					path='/fan/:id'
-					element={<SingleFan />}
-					loader={singleFanLoader}
 				/>
 
 				{/* Not Found */}
@@ -103,8 +92,17 @@ const router = createBrowserRouter(
 					element={<Registration />}
 					action={registerAction}
 				/>
-				<Route path='/pablo' element={<PabloIntro />} />
-				{/* <Route path='/gabriella' element={<GabIntro />} /> */}
+				<Route
+					path='/title-list'
+					element={<TitleList />}
+					loader={titleListLoader}
+				/>
+				<Route path='/fans' element={<Fans />} loader={fansLoader} />
+				<Route
+					path='/fan/:id'
+					element={<SingleFan />}
+					loader={singleFanLoader}
+				/>
 			</Route>
 
 			{/* BRUNNIS LAYOUT */}
@@ -131,6 +129,7 @@ const router = createBrowserRouter(
 					element={<Pablo />}
 					loader={pabloMemoriesLoader}
 				/>
+				<Route path='/pablo' element={<PabloIntro />} />
 			</Route>
 
 			{/* GABIS LAYOUT */}
