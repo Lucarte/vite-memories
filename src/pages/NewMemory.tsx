@@ -200,9 +200,9 @@ const CreateMemory = () => {
 						)}
 					</fieldset>
 					<article className='mt-10 font-light'>
-						<p className='mb-1 font-normal text-black dark:text-white'>
+						<h2 className='mb-1 font-semibold text-black dark:text-white'>
 							Categories
-						</p>
+						</h2>
 						<fieldset className='flex flex-wrap justify-center w-full p-4 pt-6 border-[2.5px] rounded-[3px] dark:border-white border-black'>
 							<legend className='sr-only'>Categories</legend>
 							{/* Visible <p> element for styling */}
@@ -234,7 +234,9 @@ const CreateMemory = () => {
 						</fieldset>
 					</article>
 					<div className='mt-10'>
-						<label className='text-sm font-medium text-gray-900 '>Title</label>
+						<label className='text-sm font-semibold text-gray-900 '>
+							Title
+						</label>
 						<input
 							{...register("title", { required: true })}
 							type='text'
@@ -247,7 +249,7 @@ const CreateMemory = () => {
 						)}
 					</div>
 					<div className='mt-10'>
-						<label className='mb-2 text-sm font-medium text-gray-900 '>
+						<label className='mb-2 text-sm font-semibold text-gray-900 '>
 							Description
 						</label>
 						<textarea
@@ -264,7 +266,7 @@ const CreateMemory = () => {
 					<div className='mt-10'>
 						<label
 							htmlFor='date'
-							className='text-sm font-medium text-gray-700 '>
+							className='text-sm font-semibold text-gray-700 '>
 							Date
 						</label>
 						<div className='flex space-x-4'>

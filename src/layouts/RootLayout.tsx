@@ -9,7 +9,7 @@ import PublicNavHeader from "../components/PublicNavHeader";
 
 export const PublicNav = () => {
 	return (
-		<>
+		<div className='min-h-screen border-8 border-black dark:border-white'>
 			<LoadingLayout>
 				<>
 					<PublicNavHeader />
@@ -19,13 +19,13 @@ export const PublicNav = () => {
 					</main>
 				</>
 			</LoadingLayout>
-		</>
+		</div>
 	);
 };
 
 const PrivateNav = () => {
 	return (
-		<>
+		<div className='min-h-screen border-8 border-black dark:border-white'>
 			<LoadingLayout>
 				<>
 					<Header />
@@ -36,7 +36,7 @@ const PrivateNav = () => {
 					<Footer />
 				</>
 			</LoadingLayout>
-		</>
+		</div>
 	);
 };
 

@@ -8,8 +8,8 @@ const Home = () => {
 	const { enabled } = useTheme();
 
 	return (
-		<article className='flex flex-col items-center pt-16 lg:pt-32 2xl:pt-[13rem]'>
-			<div className='hidden lg:pt-0 lg:flex lg:justify-center'>
+		<article className='flex flex-col items-center pt-[8vh] lg:pt-[15vh] 2xl:pt-[20vh]'>
+			<div className='hidden lg:mt-8 lg:flex lg:justify-center'>
 				<h1 className='pb-20 -mt-20 font-serif text-3xl font-semibold uppercase 2xl:pb-20'>
 					my pearls of great price
 				</h1>

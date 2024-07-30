@@ -67,16 +67,24 @@ const router = createBrowserRouter(
 					action={memoriesAction}
 				/>
 				<Route
+					path='/brunnis/memories'
+					element={<Both />}
+					loader={bothMemoriesloader}
+				/>
+				<Route
+					path='/gabriella/memories'
+					element={<Gabriella />}
+					loader={gabriellaMemoriesLoader}
+				/>
+				<Route
+					path='/pablo/memories'
+					element={<Pablo />}
+					loader={pabloMemoriesLoader}
+				/>
+				<Route
 					path='/memories/title/:title'
 					element={<SingleMemory />}
 					loader={singleMemoryLoader}
-				/>
-				{/* Admin Routes */}
-				<Route
-					path='/memory/create'
-					element={<NewMemory />}
-					loader={newMemoryFormLoader}
-					action={createMemoryAction}
 				/>
 
 				{/* Not Found */}
@@ -103,6 +111,13 @@ const router = createBrowserRouter(
 					element={<SingleFan />}
 					loader={singleFanLoader}
 				/>
+				{/* Admin Routes */}
+				<Route
+					path='/memory/create'
+					element={<NewMemory />}
+					loader={newMemoryFormLoader}
+					action={createMemoryAction}
+				/>
 			</Route>
 
 			{/* BRUNNIS LAYOUT */}
@@ -110,13 +125,7 @@ const router = createBrowserRouter(
 				path='/'
 				element={<BothLayout />}
 				errorElement={<RootError />}
-				loader={brunnisLoader}>
-				<Route
-					path='/brunnis/memories'
-					element={<Both />}
-					loader={bothMemoriesloader}
-				/>
-			</Route>
+				loader={brunnisLoader}></Route>
 
 			{/* PABLOS LAYOUT */}
 			<Route
@@ -124,11 +133,6 @@ const router = createBrowserRouter(
 				element={<PabloLayout />}
 				errorElement={<RootError />}
 				loader={pablosLoader}>
-				<Route
-					path='/pablo/memories'
-					element={<Pablo />}
-					loader={pabloMemoriesLoader}
-				/>
 				<Route path='/pablo' element={<PabloIntro />} />
 			</Route>
 
@@ -138,11 +142,6 @@ const router = createBrowserRouter(
 				element={<GabriellaLayout />}
 				errorElement={<RootError />}
 				loader={gabriellasLoader}>
-				<Route
-					path='/gabriella/memories'
-					element={<Gabriella />}
-					loader={gabriellaMemoriesLoader}
-				/>
 				<Route path='/gabriella' element={<GabIntro />} />
 			</Route>
 		</>
