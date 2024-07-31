@@ -54,7 +54,7 @@ const HomeLayout = () => {
 								className={`${
 									enabled ? "text-black" : "text-white"
 								} absolute top-0 right-0 w-16 h-16 font-bold text-2xl pt-10 pr-10 rounded-sm cursor-pointer`}
-								aria-hidden='true'>
+								tabIndex={-1}>
 								{isMenuOpen ? <span>X</span> : <MenuBarsIcon />}
 							</button>
 						</div>
@@ -73,7 +73,7 @@ const HomeLayout = () => {
 								className={`${
 									enabled ? "text-black" : "text-white"
 								} absolute top-0 right-0 w-16 h-16 font-bold text-2xl pt-10 pr-10 rounded-sm cursor-pointer`}
-								aria-hidden='true'>
+								tabIndex={-1}>
 								X
 							</button>
 

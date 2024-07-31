@@ -20,7 +20,7 @@ const Footer = () => {
 
 	return (
 		<footer
-			className={`fixed border-b-8 bottom-0 flex shadow-inner rounded-t-3xl items-center z-10 justify-center w-[calc(100%-16px)] h-20 font-titles ${
+			className={`fixed bottom-0 flex shadow-inner rounded-t-3xl items-center z-10 justify-center w-full h-20 font-titles ${
 				enabled
 					? "text-white bg-black bg-opacity-85 border-b-white"
 					: "border-b-black text-black bg-white"

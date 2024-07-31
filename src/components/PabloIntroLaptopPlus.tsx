@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
-import SquareCategoriesGabi from "./SquareCategoriesGabi";
 import Tree from "../media/tree.png";
+import SquareCategoriesPablo from "./SquareCategoriesPablo";
 
 interface OutletContextType {
 	showFooter: boolean;
@@ -41,7 +41,7 @@ const PabloIntroLaptopPlus = () => {
 					{/* Element LEFT */}
 					<div className='flex items-center justify-center h-[calc(100vh*2/3)]'>
 						<div className='h-full overflow-hidden rotate-90 w-80'>
-							<div className='inset-0 flex flex-col gap-4 transform translate-y-[50%]'>
+							<div className='inset-0 flex flex-col gap-4 transform translate-y-[55%]'>
 								<div className='flex flex-col items-center gap-1 font-sans uppercase rotate-180'>
 									<h2 className='text-3xl font-bold underline'>VIOLA</h2>
 									<p className='font-normal text-[.6rem] text-center'>
@@ -105,7 +105,7 @@ const PabloIntroLaptopPlus = () => {
 								className={`absolute bottom-60 -translate-x-1/2 rotate-45 w-52 h-52 transition-opacity duration-1000 left-1/2 ${
 									isFading ? "opacity-0" : "opacity-100"
 								}`}>
-								{!showImage ? <SquareCategoriesGabi /> : null}
+								{!showImage ? <SquareCategoriesPablo /> : null}
 							</Link>
 							{/* Tree Image */}
 							<span
@@ -143,7 +143,7 @@ const PabloIntroLaptopPlus = () => {
 					{/* Element RIGHT */}
 					<div className='flex items-center justify-center h-[calc(100vh*2/3)]'>
 						<div className='overflow-hidden rotate-[270deg] w-80 h-full'>
-							<div className='inset-0 flex flex-col gap-4 transform translate-y-[50%]'>
+							<div className='inset-0 flex flex-col gap-4 transform translate-y-[55%]'>
 								<div className='flex flex-col items-center gap-1 font-sans uppercase rotate-180'>
 									<h2 className='text-3xl font-bold underline'>VIOLA</h2>
 									<p className='font-normal text-[.6rem] text-center'>

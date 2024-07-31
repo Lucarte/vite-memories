@@ -97,7 +97,7 @@ const RegisterForm = ({
 							className={`${
 								enabled ? "text-gray-100" : "text-gray-300"
 							} w-12 h-12 `}
-							aria-hidden='true'
+							tabIndex={-1}
 						/>
 					)}
 					{/* Avatar */}

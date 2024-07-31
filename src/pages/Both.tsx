@@ -1,6 +1,6 @@
 // Both.tsx
 /* eslint-disable react-refresh/only-export-components */
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
 	useLoaderData,
 	Await,
@@ -12,6 +12,7 @@ import HerzSpinner from "../components/HerzSpinner";
 import ViewMemories from "../components/ViewMemories";
 import { MemoryValues } from "../types/MemoryValues";
 import { getBrunnisMemories, loggedInData } from "../utils/api";
+import ViewMemoriesXL from "../components/ViewMemoriesXL";
 
 interface DeferredLoaderData {
 	memories: MemoryValues[];
@@ -36,7 +37,24 @@ export const loader: LoaderFunction = async () => {
 
 const Both = () => {
 	const deferredData = useLoaderData() as DeferredLoaderData;
-	console.log("Deferred Data:", deferredData);
+	const [isMobile, setIsMobile] = useState<boolean>(false);
+
+	useEffect(() => {
+		// first check screen size
+		const checkScreenSize = () => {
+			setIsMobile(window.innerWidth <= 768);
+		};
+		// check initial size
+		checkScreenSize();
+
+		window.addEventListener("resize", checkScreenSize);
+
+		// cleanup function
+		return () => {
+			window.removeEventListener("resize", checkScreenSize);
+		};
+	}, []);
+
 	return (
 		<article className='flex flex-col items-center mb-20 text-right searchmt-12'>
 			<Suspense
@@ -48,7 +66,13 @@ const Both = () => {
 				<Await
 					resolve={deferredData.memories}
 					errorElement={<p>Could not load memories.</p>}>
-					{(loadedMemories) => <ViewMemories memories={loadedMemories} />}
+					{(loadedMemories) =>
+						isMobile ? (
+							<ViewMemories memories={loadedMemories} />
+						) : (
+							<ViewMemoriesXL memories={loadedMemories} />
+						)
+					}
 				</Await>
 			</Suspense>
 		</article>

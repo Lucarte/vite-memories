@@ -41,7 +41,7 @@ const GabIntroLaptopPlus = () => {
 					{/* Element LEFT */}
 					<div className='flex items-center justify-center h-[calc(100vh*2/3)]'>
 						<div className='h-full overflow-hidden rotate-90 w-80'>
-							<div className='inset-0 flex flex-col gap-4 transform translate-y-[50%]'>
+							<div className='inset-0 flex flex-col gap-4 transform translate-y-[55%]'>
 								<div className='flex flex-col items-center gap-1 font-sans uppercase rotate-180'>
 									<h2 className='text-3xl font-bold underline'>DANCE</h2>
 									<p className='font-normal text-[.6rem] text-center'>
@@ -137,7 +137,7 @@ const GabIntroLaptopPlus = () => {
 					{/* Element RIGHT */}
 					<div className='flex items-center justify-center h-[calc(100vh*2/3)]'>
 						<div className='overflow-hidden rotate-[270deg] w-80 h-full'>
-							<div className='inset-0 flex flex-col gap-4 transform translate-y-[50%]'>
+							<div className='inset-0 flex flex-col gap-4 transform translate-y-[55%]'>
 								<div className='flex flex-col items-center gap-1 font-sans uppercase rotate-180'>
 									<h2 className='text-3xl font-bold underline'>DANCE</h2>
 									<p className='font-normal text-[.6rem] text-center'>

@@ -25,7 +25,7 @@ const DarkModeBtn = ({ classes }: Props) => {
 				)}>
 				<span className='sr-only'>Use setting</span>
 				<span
-					aria-hidden='true'
+					tabIndex={-1}
 					className={classNames(
 						enabled ? "translate-x-2.5 bg-black" : "translate-x-0  bg-white",
 						"pointer-events-none inline-block h-2.5 w-2.5 transform rounded-full bg-black shadow ring-0 transition duration-200 ease-in-out"

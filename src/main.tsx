@@ -67,11 +67,6 @@ const router = createBrowserRouter(
 					action={memoriesAction}
 				/>
 				<Route
-					path='/brunnis/memories'
-					element={<Both />}
-					loader={bothMemoriesloader}
-				/>
-				<Route
 					path='/gabriella/memories'
 					element={<Gabriella />}
 					loader={gabriellaMemoriesLoader}
@@ -125,7 +120,13 @@ const router = createBrowserRouter(
 				path='/'
 				element={<BothLayout />}
 				errorElement={<RootError />}
-				loader={brunnisLoader}></Route>
+				loader={brunnisLoader}>
+				<Route
+					path='/brunnis/memories'
+					element={<Both />}
+					loader={bothMemoriesloader}
+				/>
+			</Route>
 
 			{/* PABLOS LAYOUT */}
 			<Route
