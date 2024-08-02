@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useOutletContext } from "react-router-dom";
 import Tree from "../media/tree.png";
 import SquareCategoriesPablo from "./SquareCategoriesPablo";
+import DarkModeBtn from "../partials/DarkModeBtn";
 
 interface OutletContextType {
 	showFooter: boolean;
@@ -36,6 +37,7 @@ const PabloIntroLaptopPlus = () => {
 
 	return (
 		<div className='fixed top-[15%] left-[7%] right-[7%] bottom-[10%] border-8 border-black dark:border-white'>
+			<DarkModeBtn classes='bottom-20' />
 			<main className='flex flex-col w-full h-full gap-2'>
 				<div className='grid h-full grid-cols-3'>
 					{/* Element LEFT */}

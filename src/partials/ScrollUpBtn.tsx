@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTheme } from "../context/ThemeContext";
+import classNames from "classnames";
 
 const ScrollUpBtn = () => {
 	const { enabled } = useTheme();
@@ -8,7 +9,9 @@ const ScrollUpBtn = () => {
 	useEffect(() => {
 		// Function to handle scroll event
 		const toggleVisibility = () => {
-			if (window.pageYOffset > 300) {
+			const scrollTop =
+				document.documentElement.scrollTop || document.body.scrollTop;
+			if (scrollTop > 300) {
 				setIsVisible(true);
 			} else {
 				setIsVisible(false);
@@ -32,7 +35,14 @@ const ScrollUpBtn = () => {
 	return (
 		isVisible && (
 			<div
-				className='fixed z-40 flex cursor-pointer right-3 md:pr-8 bottom-24'
+				className={classNames(
+					"fixed z-40 flex cursor-pointer right-3 md:pr-[28px] md:bottom-20 bottom-24",
+					{
+						"no-dark-mode": !enabled,
+						"dark-mode": enabled,
+					}
+				)}
+				// className='fixed z-40 flex cursor-pointer right-3 md:pr-[28px] md:bottom-20 bottom-24'
 				onClick={scrollToTop}>
 				{enabled ? (
 					<svg

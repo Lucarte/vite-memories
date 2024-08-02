@@ -6,12 +6,11 @@ import {
 	redirect,
 	useLoaderData,
 } from "react-router-dom";
-import { useTheme } from "../context/ThemeContext";
 import { logout } from "../utils/api";
 import LogoutIcon from "../components/LogoutIcon";
+import { FooterProps } from "../types/FooterProps";
 
-const Footer = () => {
-	const { enabled } = useTheme();
+const Footer = ({ enabled, customStyle }: FooterProps) => {
 	const { loggedIn, user } = useLoaderData() as {
 		loggedIn: boolean;
 		user: { id: number; first_name: string } | null;
@@ -20,17 +19,17 @@ const Footer = () => {
 
 	return (
 		<footer
-			className={`fixed bottom-0 flex shadow-inner rounded-t-3xl items-center z-10 justify-center w-full h-20 font-titles ${
+			className={`${customStyle} fixed bottom-0 flex shadow-inner rounded-t-3xl md:rounded-none items-center z-10 justify-center w-full h-20 font-titles ${
 				enabled
 					? "text-white bg-black bg-opacity-85 border-b-white"
-					: "border-b-black text-black bg-white"
+					: "border-b-black bg-white"
 			} `}>
 			<div className='flex items-center justify-between'>
 				<Form
 					action='/logout'
 					method='POST'
 					className='flex items-center gap-4'>
-					<p className='text-sm text-gray-400'>
+					<p className='text-sm text-black lg:font-bold lg:text-lg'>
 						{loggedIn
 							? `Welcome to the past, ${userName}!`
 							: "Welcome to the past!"}
@@ -38,11 +37,7 @@ const Footer = () => {
 
 					<button
 						type='submit'
-						className={`${
-							enabled
-								? "text-orange-300 hover:bg-gray-200"
-								: "text-orange-300 hover:shadow-xl"
-						} px-1 rounded-lg py-2 text-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600`}>
+						className='px-1 py-2 text-sm text-orange-500 rounded-lg hover:shadow-xl hover:text-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600'>
 						<LogoutIcon />
 					</button>
 				</Form>

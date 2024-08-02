@@ -11,6 +11,9 @@ import {
 // CONTEXT
 import { ThemeProvider } from "./context/ThemeContext";
 
+// HOC
+import FooterWithTheme from "./HOC/FooterWithTheme";
+
 // LAYOUTS
 import RootLayout, { loader as rootLoader } from "./layouts/RootLayout";
 import HomeLayout from "./layouts/HomeLayout";
@@ -39,7 +42,7 @@ import NewMemory, {
 } from "./pages/NewMemory";
 import Fans, { loader as fansLoader } from "./pages/Fans";
 import NotFound from "./pages/NotFound";
-import Footer, { action as footerAction } from "./partials/Footer";
+import { action as footerAction } from "./partials/Footer";
 import SingleMemory, {
 	loader as singleMemoryLoader,
 } from "./components/SingleMemory";
@@ -58,24 +61,12 @@ const router = createBrowserRouter(
 				element={<RootLayout />}
 				errorElement={<RootError />}
 				loader={rootLoader}>
-				<Route path='/logout' element={<Footer />} action={footerAction} />
+				<Route
+					path='/logout'
+					element={<FooterWithTheme />}
+					action={footerAction}
+				/>
 				<Route path='/search' element={<SearchResultsPage />} />
-				<Route
-					path='/memories'
-					element={<Memories />}
-					loader={memoriesLoader}
-					action={memoriesAction}
-				/>
-				<Route
-					path='/gabriella/memories'
-					element={<Gabriella />}
-					loader={gabriellaMemoriesLoader}
-				/>
-				<Route
-					path='/pablo/memories'
-					element={<Pablo />}
-					loader={pabloMemoriesLoader}
-				/>
 				<Route
 					path='/memories/title/:title'
 					element={<SingleMemory />}
@@ -125,6 +116,22 @@ const router = createBrowserRouter(
 					path='/brunnis/memories'
 					element={<Both />}
 					loader={bothMemoriesloader}
+				/>
+				<Route
+					path='/gabriella/memories'
+					element={<Gabriella />}
+					loader={gabriellaMemoriesLoader}
+				/>
+				<Route
+					path='/pablo/memories'
+					element={<Pablo />}
+					loader={pabloMemoriesLoader}
+				/>
+				<Route
+					path='/memories'
+					element={<Memories />}
+					loader={memoriesLoader}
+					action={memoriesAction}
 				/>
 			</Route>
 

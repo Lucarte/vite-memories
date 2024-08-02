@@ -2,10 +2,10 @@
 import { LoaderFunction, Outlet, useLoaderData } from "react-router-dom";
 import Header from "../partials/Header";
 import { loggedInData } from "../utils/api";
-import Footer from "../partials/Footer";
 import LoadingLayout from "./LoadingLayout";
 import DarkModeBtn from "../partials/DarkModeBtn";
 import PublicNavHeader from "../components/PublicNavHeader";
+import FooterWithTheme from "../HOC/FooterWithTheme";
 
 export const PublicNav = () => {
 	return (
@@ -33,7 +33,7 @@ const PrivateNav = () => {
 					<main>
 						<Outlet />
 					</main>
-					<Footer />
+					<FooterWithTheme />
 				</>
 			</LoadingLayout>
 		</div>
@@ -51,7 +51,7 @@ const AdminNav = () => {
 					<main className=''>
 						<Outlet />
 					</main>
-					<Footer />
+					<FooterWithTheme />
 				</>
 			</LoadingLayout>
 		</div>

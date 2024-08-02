@@ -4,13 +4,12 @@ import { useTheme } from "../context/ThemeContext";
 import { Link, Outlet } from "react-router-dom";
 import classNames from "classnames";
 import { navigation } from "../utils/navigation";
-import DarkModeBtn from "../partials/DarkModeBtn";
 import { loggedInData } from "../utils/api";
-import Footer from "../partials/Footer";
 import ScrollUpBtn from "../partials/ScrollUpBtn";
 import logoBlack from "../assets/LogoWhite.svg";
 import logoWhiteThick from "../assets/LogoBlack.svg";
 import LoadingLayout from "./LoadingLayout";
+import FooterWithTheme from "../HOC/FooterWithTheme";
 
 export const loader = async () => {
 	const { loggedIn, user } = await loggedInData();
@@ -22,21 +21,17 @@ const GabriellaLayout = () => {
 	const { enabled } = useTheme();
 	// Use Outlet context to get footer visibility state from child routes
 	const [showFooter, setShowFooter] = useState(false);
-	const [isMobile, setIsMobile] = useState<boolean>(false);
+
+	const [isMdViewport, setIsMdViewport] = useState(window.innerWidth > 768);
+
+	const handleResize = () => {
+		setIsMdViewport(window.innerWidth > 768);
+	};
 
 	useEffect(() => {
-		// first check screen size
-		const checkScreenSize = () => {
-			setIsMobile(window.innerWidth <= 1023);
-		};
-		// check initial size
-		checkScreenSize();
-
-		window.addEventListener("resize", checkScreenSize);
-
-		// cleanup function
+		window.addEventListener("resize", handleResize);
 		return () => {
-			window.removeEventListener("resize", checkScreenSize);
+			window.removeEventListener("resize", handleResize);
 		};
 	}, []);
 
@@ -44,30 +39,22 @@ const GabriellaLayout = () => {
 		setIsMenuOpen(!isMenuOpen);
 	};
 
+	const logoSrc = enabled
+		? isMdViewport
+			? logoBlack
+			: logoWhiteThick
+		: logoBlack;
+	const logoAlt = enabled && !isMdViewport ? "Logo White Thick" : "Logo Black";
+
 	return (
 		<div className='h-screen overflow-hidden'>
 			<LoadingLayout>
 				<>
 					<header className='flex items-center justify-between p-8'>
-						{isMobile ? (
-							<DarkModeBtn classes='bottom-4 left-2' />
-						) : (
-							<DarkModeBtn classes='bottom-20' />
-						)}
-
-						<ScrollUpBtn />
 						{/* Logo in mobile && Logo and Name description other sizes */}
 						<div className='flex items-center justify-start md:min-w-48'>
 							<Link to='/' className='-mt-[4px]'>
-								{enabled ? (
-									<img
-										src={logoWhiteThick}
-										className='w-11'
-										alt='Logo White Thick'
-									/>
-								) : (
-									<img src={logoBlack} className='w-11' alt='Logo Black' />
-								)}
+								<img src={logoSrc} className='w-11' alt={logoAlt} />
 							</Link>
 						</div>
 						{/* Search icon in mobile && h1-tag in other sizes */}
@@ -91,9 +78,12 @@ const GabriellaLayout = () => {
 						</div>
 					</header>
 					<main className=''>
+						<ScrollUpBtn />
 						<Outlet context={{ showFooter, setShowFooter }} />
 					</main>
-					{showFooter && <Footer />}
+					{showFooter && (
+						<FooterWithTheme customStyle='uppercase bg-white bg-opacity-100' />
+					)}
 					{isMenuOpen && (
 						<nav
 							className={`${

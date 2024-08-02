@@ -1,10 +1,7 @@
-import MenuBarsIcon from "../components/MenuBarsIcon";
 import { useEffect, useState } from "react";
 import { useTheme } from "../context/ThemeContext";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import classNames from "classnames";
-import DarkModeBtn from "../partials/DarkModeBtn";
-import Footer from "../partials/Footer";
 import { loggedInData } from "../utils/api";
 import { navigation } from "../utils/navigation";
 import ScrollUpBtn from "../partials/ScrollUpBtn";
@@ -13,6 +10,9 @@ import logoWhiteThick from "../assets/LogoBlack.svg";
 import logoBlack from "../assets/LogoWhite.svg";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import Search from "../components/Search";
+import FooterWithTheme from "../HOC/FooterWithTheme";
+import MenuBarsIcon from "../components/MenuBarsIcon";
+import DarkModeBtn from "../partials/DarkModeBtn";
 
 export const loader = async () => {
 	const { loggedIn, user } = await loggedInData();
@@ -23,7 +23,18 @@ const BothLayout: React.FC = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const { enabled } = useTheme();
 	const [isSearchVisible, setIsSearchVisible] = useState(false);
-	// const [showFooter, setShowFooter] = useState(false);
+	const [isMdViewport, setIsMdViewport] = useState(window.innerWidth > 768);
+
+	const handleResize = () => {
+		setIsMdViewport(window.innerWidth > 768);
+	};
+
+	useEffect(() => {
+		window.addEventListener("resize", handleResize);
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []);
 
 	const handleClick = () => {
 		setIsMenuOpen(!isMenuOpen);
@@ -33,15 +44,37 @@ const BothLayout: React.FC = () => {
 		setIsSearchVisible(!isSearchVisible);
 	};
 
+	const location = useLocation();
+
+	const getTitle = () => {
+		if (location.pathname.includes("/pablo/memories")) {
+			return ".P.A.B.L.O.S..P.O.S.T.S.";
+		} else if (location.pathname.includes("/gabriella/memories")) {
+			return ".G.A.B.R.I.E.L.L.A.S..P.O.S.T.S.";
+		} else if (location.pathname.includes("/brunnis/memories")) {
+			return ".B.R.U.N.N.I.S..P.O.S.T.S.";
+		} else if (location.pathname.includes("/memories")) {
+			return ".A.L.L..M.E.M.O.R.I.E.S.";
+		}
+		return "POSTS"; // Default title
+	};
+
+	const logoSrc = enabled
+		? isMdViewport
+			? logoBlack
+			: logoWhiteThick
+		: logoBlack;
+	const logoAlt = enabled && !isMdViewport ? "Logo White Thick" : "Logo Black";
+
 	return (
-		<div className='border-8 border-black dark:border-white md:border-none'>
+		<div className='border-8 border-black dark:border-white dark:md:bg-white md:border-none'>
 			<LoadingLayout>
 				<>
 					{isSearchVisible && (
 						<div
 							className={`${
 								enabled ? "bg-white" : "bg-black"
-							} fixed top-0 left-0 right-0 z-50 flex flex-col items-center h-full pb-12`}>
+							} fixed top-0 left-0 right-0 z-40 flex flex-col items-center h-full pb-12`}>
 							<Search onResultClick={handleSearchClick} />
 							<button
 								type='button'
@@ -55,26 +88,15 @@ const BothLayout: React.FC = () => {
 							</button>
 						</div>
 					)}
-					<header className='flex items-center justify-between p-8'>
-						<DarkModeBtn classes='bottom-24' />
-						<ScrollUpBtn />
+
+					<header className='flex items-center justify-between p-8 dark:md:text-black'>
 						<div className='flex items-center justify-start md:min-w-48'>
 							<Link to='/' className='-mt-[4px]'>
-								{enabled ? (
-									<img
-										src={logoWhiteThick}
-										className='w-11'
-										alt='Logo White Thick'
-									/>
-								) : (
-									<img src={logoBlack} className='w-11' alt='Logo Black' />
-								)}
+								<img src={logoSrc} className='w-11' alt={logoAlt} />
 							</Link>
-							{/* <p className='hidden md:block md:ml-10'>B.R.U.N.N.I.S</p> */}
 						</div>
 						<div className='flex justify-center pr-4'>
 							<div className='block md:hidden'>
-								{" "}
 								<MagnifyingGlassIcon
 									className='w-5 h-5 cursor-pointer mr-7'
 									onClick={handleSearchClick}
@@ -82,7 +104,7 @@ const BothLayout: React.FC = () => {
 							</div>
 							<div className='hidden md:block'>
 								<p className='text-2xl font-semibold tracking-widest'>
-									.B.R.U.N.N.I.S..P.O.S.T.S.
+									{getTitle()}
 								</p>
 							</div>
 						</div>
@@ -105,11 +127,11 @@ const BothLayout: React.FC = () => {
 						</div>
 					</header>
 					<main>
-						{/* <Outlet context={{ showFooter, setShowFooter }} /> */}
+						<ScrollUpBtn />
+						<DarkModeBtn classes='bottom-24 md:opacity-0' />
 						<Outlet />
 					</main>
-					{/* {showFooter && <Footer />} */}
-					<Footer />
+					<FooterWithTheme customStyle='uppercase bg-white bg-opacity-100' />
 					{isMenuOpen && (
 						<nav
 							className={`${

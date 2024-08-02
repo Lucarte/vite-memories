@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import SquareCategoriesGabi from "../components/SquareCategoriesGabi";
 import { useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
+import DarkModeBtn from "../partials/DarkModeBtn";
 
 // Define the type for the context
 interface OutletContextType {
@@ -22,6 +23,7 @@ const GabIntroMobile = () => {
 
 	return (
 		<div className='flex flex-col items-center h-screen mt-10 overflow-hidden text-center'>
+			<DarkModeBtn classes='bottom-4 left-2' />
 			<h1 className='pb-6 text-xl font-bold tracking-wider underline uppercase'>
 				.g.a.b.i.
 			</h1>

@@ -66,8 +66,10 @@ const Search = ({ onResultClick, initialQuery, category }: SearchProps) => {
 						<li
 							key={result.title}
 							className={`${
-								index % 2 !== 0 ? "rotate-[8deg]" : ""
-							} w-72 lg:max-w-96 text-center px-4 py-2 text-sm bg-white rounded-lg rounded-tr-none rounded-bl-none bg-opacity-85 dark:bg-black dark:bg-opacity-85 font-semibold`}>
+								index % 2 !== 0
+									? "rotate-[8deg] hover:-rotate-12"
+									: "hover:-rotate-12"
+							} w-72 lg:max-w-96 text-center px-4 py-2 text-sm bg-white rounded-lg rounded-tr-none rounded-bl-none bg-opacity-85 dark:bg-black dark:bg-opacity-85 font-semibold hover:uppercase`}>
 							<Link
 								to={`/memories/title/${result.title}`}
 								className='text-black dark:text-white focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-orange-600'

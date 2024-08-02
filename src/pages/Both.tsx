@@ -42,7 +42,7 @@ const Both = () => {
 	useEffect(() => {
 		// first check screen size
 		const checkScreenSize = () => {
-			setIsMobile(window.innerWidth <= 768);
+			setIsMobile(window.innerWidth < 768);
 		};
 		// check initial size
 		checkScreenSize();
@@ -56,7 +56,7 @@ const Both = () => {
 	}, []);
 
 	return (
-		<article className='flex flex-col items-center mb-20 text-right searchmt-12'>
+		<article className='flex flex-col items-center mb-20 text-right'>
 			<Suspense
 				fallback={
 					<div className='flex justify-center w-screen'>

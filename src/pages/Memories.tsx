@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
 import { MemoryValues, PatchValues } from "../types/MemoryValues";
 import {
 	deleteMemory,
@@ -21,6 +21,7 @@ import ScrollUpBtn from "../partials/ScrollUpBtn";
 import EditMemories from "../components/EditMemories";
 import classNames from "classnames";
 import HerzSpinner from "../components/HerzSpinner";
+import ViewMemoriesXL from "../components/ViewMemoriesXL";
 
 type DeferredLoaderData = {
 	memories: Promise<MemoryValues[]>;
@@ -128,13 +129,26 @@ export const action: ActionFunction = async ({ request }) => {
 const Memories = () => {
 	const [view, setView] = useState<"view" | "edit">("view");
 	const deferredData = useLoaderData() as DeferredLoaderData;
+	const [isMobile, setIsMobile] = useState<boolean>(false);
+
+	useEffect(() => {
+		// first check screen size
+		const checkScreenSize = () => {
+			setIsMobile(window.innerWidth < 768);
+		};
+		// check initial size
+		checkScreenSize();
+
+		window.addEventListener("resize", checkScreenSize);
+
+		// cleanup function
+		return () => {
+			window.removeEventListener("resize", checkScreenSize);
+		};
+	}, []);
 
 	return (
 		<article className='flex flex-col items-center gap-6 pt-6 text-right'>
-			<ScrollUpBtn />
-			<h1 className='pt-4 pb-6 text-xl font-bold text-center'>
-				.M.e.m.o.r.i.e.S.
-			</h1>
 			<section className='w-screen'>
 				<Suspense
 					fallback={
@@ -147,44 +161,20 @@ const Memories = () => {
 						errorElement={<p>Could not load memories.</p>}>
 						{(loadedMemories) =>
 							view === "view" ? (
-								<ViewMemories memories={loadedMemories} />
-							) : (
+								isMobile ? (
+									<ViewMemories memories={loadedMemories} />
+								) : (
+									<ViewMemoriesXL memories={loadedMemories} />
+								)
+							) : isMobile ? (
 								<EditMemories />
+							) : (
+								<ViewMemoriesXL memories={loadedMemories} />
 							)
 						}
 					</Await>
 				</Suspense>
 			</section>
-			<aside
-				className={classNames("flex mb-36 mt-16 items-center cursor-pointer", {
-					"-mt-10": view !== "edit",
-					"-mt-20": view === "edit",
-				})}>
-				<div className='flex justify-center gap-1'>
-					<button
-						onClick={() => setView("view")}
-						className={classNames(
-							"py-1 text-sm px-3 rounded-md rounded-bl-none border-2 ",
-							{
-								"border-black bg-black text-white": view !== "view",
-								"border-black bg-white text-black": view === "view",
-							}
-						)}>
-						View <br /> Memories
-					</button>
-					<button
-						onClick={() => setView("edit")}
-						className={classNames(
-							"py-1 text-sm px-3 rounded-md rounded-br-none border-2",
-							{
-								"border-black bg-black text-white": view !== "edit",
-								"border-black bg-white text-black": view === "edit",
-							}
-						)}>
-						Update <br /> Memories
-					</button>
-				</div>
-			</aside>
 		</article>
 	);
 };

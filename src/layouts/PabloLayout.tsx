@@ -1,16 +1,15 @@
 import MenuBarsIcon from "../components/MenuBarsIcon";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { Link, Outlet } from "react-router-dom";
 import classNames from "classnames";
 import { navigation } from "../utils/navigation";
-import DarkModeBtn from "../partials/DarkModeBtn";
 import { loggedInData } from "../utils/api";
-import Footer from "../partials/Footer";
 import ScrollUpBtn from "../partials/ScrollUpBtn";
 import logoBlack from "../assets/LogoWhite.svg";
 import logoWhiteThick from "../assets/LogoBlack.svg";
 import LoadingLayout from "./LoadingLayout";
+import FooterWithTheme from "../HOC/FooterWithTheme";
 
 export const loader = async () => {
 	const { loggedIn, user } = await loggedInData();
@@ -22,23 +21,6 @@ const PabloLayout = () => {
 	const { enabled } = useTheme();
 	// Use Outlet context to get footer visibility state from child routes
 	const [showFooter, setShowFooter] = useState(false);
-	const [isMobile, setIsMobile] = useState<boolean>(false);
-
-	useEffect(() => {
-		// first check screen size
-		const checkScreenSize = () => {
-			setIsMobile(window.innerWidth <= 1023);
-		};
-		// check initial size
-		checkScreenSize();
-
-		window.addEventListener("resize", checkScreenSize);
-
-		// cleanup function
-		return () => {
-			window.removeEventListener("resize", checkScreenSize);
-		};
-	}, []);
 
 	const handleClick = () => {
 		setIsMenuOpen(!isMenuOpen);
@@ -49,12 +31,6 @@ const PabloLayout = () => {
 			<LoadingLayout>
 				<>
 					<header className='flex items-center justify-between p-8'>
-						{isMobile ? (
-							<DarkModeBtn classes='bottom-4 left-2' />
-						) : (
-							<DarkModeBtn classes='bottom-20' />
-						)}
-
 						<ScrollUpBtn />
 						{/* Logo in mobile && Logo and Name description other sizes */}
 						<div className='flex items-center justify-start md:min-w-48'>
@@ -93,7 +69,7 @@ const PabloLayout = () => {
 					<main>
 						<Outlet context={{ showFooter, setShowFooter }} />
 					</main>
-					{showFooter && <Footer />}
+					{showFooter && <FooterWithTheme />}
 					{isMenuOpen && (
 						<nav
 							className={`${

@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MemoryValues } from "../types/MemoryValues";
 import mime from "mime";
 import displayFile from "../utils/DisplayFile";
 import { useTheme } from "../context/ThemeContext";
+import ScrollUpBtn from "../partials/ScrollUpBtn";
+import classNames from "classnames";
 
 // Helper function to format the date
 const formatDate = (dateString: string): string => {
@@ -23,6 +25,7 @@ interface ViewMemoriesProps {
 }
 
 const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
+	const [view, setView] = useState<"view" | "edit">("view");
 	const { enabled } = useTheme();
 	const navigate = useNavigate();
 
@@ -38,6 +41,10 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 
 	return (
 		<>
+			<ScrollUpBtn />
+			<h1 className='pt-4 pb-6 text-xl font-bold text-center'>
+				.M.e.m.o.r.i.e.S.
+			</h1>
 			{sortedMemories.length > 0 ? (
 				sortedMemories.map((memory) => (
 					<div
@@ -156,6 +163,36 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 			) : (
 				<p className='text-center text-orange-500'>No memories founD</p>
 			)}
+			<aside
+				className={classNames("flex mb-36 mt-16 items-center cursor-pointer", {
+					"-mt-10": view !== "edit",
+					"-mt-20": view === "edit",
+				})}>
+				<div className='flex justify-center gap-1'>
+					<button
+						onClick={() => setView("view")}
+						className={classNames(
+							"py-1 text-sm px-3 rounded-md rounded-bl-none border-2 ",
+							{
+								"border-black bg-black text-white": view !== "view",
+								"border-black bg-white text-black": view === "view",
+							}
+						)}>
+						View <br /> Memories
+					</button>
+					<button
+						onClick={() => setView("edit")}
+						className={classNames(
+							"py-1 text-sm px-3 rounded-md rounded-br-none border-2",
+							{
+								"border-black bg-black text-white": view !== "edit",
+								"border-black bg-white text-black": view === "edit",
+							}
+						)}>
+						Update <br /> Memories
+					</button>
+				</div>
+			</aside>
 		</>
 	);
 };

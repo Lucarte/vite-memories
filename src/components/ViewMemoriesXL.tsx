@@ -4,15 +4,16 @@ import { MemoryValues } from "../types/MemoryValues";
 import mime from "mime";
 import displayFile from "../utils/DisplayFile";
 import { useTheme } from "../context/ThemeContext";
+import ScrollUpBtn from "../partials/ScrollUpBtn";
 
-// Define props for ViewMemories component to accept an array of MemoryValues
-interface ViewMemoriesProps {
+type ViewMemoriesProps = {
 	memories: MemoryValues[];
-}
+};
 
-const ViewMemoriesXL: React.FC<ViewMemoriesProps> = ({ memories }) => {
+const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 	const { enabled } = useTheme();
 	const navigate = useNavigate();
+	const containerRef = React.useRef<HTMLDivElement | null>(null);
 
 	const handleMemoryLoad = (title: string) => {
 		navigate(`/memories/title/${title}`);
@@ -25,12 +26,12 @@ const ViewMemoriesXL: React.FC<ViewMemoriesProps> = ({ memories }) => {
 	);
 
 	return (
-		<div className='fixed overflow-hidden text-white bg-black top-28 bottom-20 inset-x-10 dark:bg-white dark:text-black'>
+		<div className='mx-10 text-white bg-black'>
 			{/* Main Container with padding for margins */}
-			<div className='grid h-full pr-10 pt-16 grid-cols-[auto,1fr]'>
+			<div className='grid h-full pr-10 pt-16 grid-cols-[auto,1fr] pb-20'>
 				{/* Left Column - List of Titles */}
-				<div className='sticky top-0 pl-12 pr-24 overflow-y-auto'>
-					<ul className='space-y-4 text-xl lowercase list-none'>
+				<div className='sticky max-h-screen pl-12 pr-24 overflow-y-auto top-16'>
+					<ul className='space-y-4 text-xl text-left lowercase list-none'>
 						{sortedMemories.map((memory) => (
 							<li
 								key={memory.id}
@@ -43,7 +44,10 @@ const ViewMemoriesXL: React.FC<ViewMemoriesProps> = ({ memories }) => {
 				</div>
 
 				{/* Right Column - Memory Files */}
-				<div className='grid grid-cols-1 overflow-auto text-justify gap-y-16 gap-x-10 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5'>
+				<div
+					ref={containerRef}
+					className='grid grid-cols-1 overflow-auto text-justify gap-y-16 gap-x-10 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5'>
+					<ScrollUpBtn />
 					{sortedMemories.length > 0 ? (
 						sortedMemories.map((memory) => (
 							<div
