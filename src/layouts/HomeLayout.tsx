@@ -12,7 +12,18 @@ import LoadingLayout from "./LoadingLayout";
 const HomeLayout = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const { enabled } = useTheme();
+	const [isMdViewport, setIsMdViewport] = useState(window.innerWidth > 768);
 
+	const handleResize = () => {
+		setIsMdViewport(window.innerWidth > 768);
+	};
+
+	useEffect(() => {
+		window.addEventListener("resize", handleResize);
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []);
 	const handleClick = () => {
 		setIsMenuOpen(!isMenuOpen);
 	};
@@ -25,6 +36,15 @@ const HomeLayout = () => {
 		}
 	}, [isMenuOpen]);
 
+	const logoSrc = enabled
+		? isMdViewport
+			? logoBlack
+			: logoWhiteThick
+		: logoBlack;
+
+	const logoAlt = enabled && !isMdViewport ? "Logo White Thick" : "Logo Black";
+	const barColor = enabled ? "bg-white" : "bg-black";
+
 	return (
 		<>
 			<LoadingLayout>
@@ -34,15 +54,7 @@ const HomeLayout = () => {
 						{/* Logo in mobile && Logo and Name description other sizes */}
 						<div className='flex items-center justify-start md:min-w-48'>
 							<Link to='/' className='-mt-[4px]'>
-								{enabled ? (
-									<img
-										src={logoWhiteThick}
-										className='w-11'
-										alt='Logo White Thick'
-									/>
-								) : (
-									<img src={logoBlack} className='w-11' alt='Logo Black' />
-								)}
+								<img src={logoSrc} className='w-11' alt={logoAlt} />
 							</Link>
 						</div>
 
@@ -55,7 +67,11 @@ const HomeLayout = () => {
 									enabled ? "text-black" : "text-white"
 								} absolute top-0 right-0 w-16 h-16 font-bold text-2xl pt-10 pr-10 rounded-sm cursor-pointer`}
 								tabIndex={-1}>
-								{isMenuOpen ? <span>X</span> : <MenuBarsIcon />}
+								{isMenuOpen ? (
+									<span>X</span>
+								) : (
+									<MenuBarsIcon barColor={barColor} />
+								)}
 							</button>
 						</div>
 					</header>

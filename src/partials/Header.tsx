@@ -2,8 +2,8 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import MenuBarsIcon from "../components/MenuBarsIcon";
 import { useEffect, useState } from "react";
 import { useTheme } from "../context/ThemeContext";
-import { Link } from "react-router-dom";
-import { loggedInData } from "../utils/api";
+import { Link, useLocation, useParams } from "react-router-dom";
+import { loggedInData, getMemoryByTitle } from "../utils/api";
 import classNames from "classnames";
 import { navigation } from "../utils/navigation";
 import Search from "../components/Search";
@@ -16,6 +16,22 @@ const Header = () => {
 	const [userId, setUserId] = useState<number | null>(null);
 	const [isSearchVisible, setIsSearchVisible] = useState(false);
 	const { enabled } = useTheme();
+	const [isMdViewport, setIsMdViewport] = useState(window.innerWidth > 768);
+	const [kidName, setKidName] = useState("");
+	const [memoryTitle, setMemoryTitle] = useState("");
+
+	const { title } = useParams();
+
+	const handleResize = () => {
+		setIsMdViewport(window.innerWidth > 768);
+	};
+
+	useEffect(() => {
+		window.addEventListener("resize", handleResize);
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []);
 
 	useEffect(() => {
 		const fetchUserData = async () => {
@@ -33,6 +49,22 @@ const Header = () => {
 		fetchUserData();
 	}, [loggedIn]); // Dependency on loggedIn state to re-fetch user data when login status changes
 
+	useEffect(() => {
+		const fetchMemoryData = async () => {
+			if (title) {
+				try {
+					const memoryData = await getMemoryByTitle(title);
+					setMemoryTitle(memoryData.title);
+					setKidName(memoryData.kid);
+				} catch (error) {
+					console.error("Failed to fetch memory data:", error);
+				}
+			}
+		};
+
+		fetchMemoryData();
+	}, [title]);
+
 	const handleClick = () => {
 		setIsMenuOpen(!isMenuOpen);
 	};
@@ -40,6 +72,24 @@ const Header = () => {
 	const handleSearchClick = () => {
 		setIsSearchVisible(!isSearchVisible);
 	};
+
+	const location = useLocation();
+
+	const barColor = enabled
+		? isMdViewport
+			? "bg-black"
+			: "bg-white"
+		: !isMdViewport
+		? "bg-black"
+		: "bg-black";
+
+	const logoSrc = enabled
+		? isMdViewport
+			? logoBlack
+			: logoWhiteThick
+		: logoBlack;
+
+	const logoAlt = enabled && !isMdViewport ? "Logo White Thick" : "Logo Black";
 
 	return (
 		<>
@@ -65,34 +115,26 @@ const Header = () => {
 				{/* Logo in mobile && Logo and Name description other sizes */}
 				<div className='flex items-center justify-start md:min-w-48'>
 					<Link to='/' className='-mt-[4px]'>
-						{enabled ? (
-							<img
-								src={logoWhiteThick}
-								className='w-11'
-								alt='Logo White Thick'
-							/>
-						) : (
-							<img src={logoBlack} className='w-11' alt='Logo Black' />
-						)}
+						<img src={logoSrc} className='w-11' alt={logoAlt} />
 					</Link>
-					<p className='hidden md:block md:ml-10'>P.A.B.L.O.</p>
+					<p className='hidden md:block md:ml-10'>{kidName || "P.A.B.L.O."}</p>
 				</div>
 				{/* Search icon in mobile && h1-tag in other sizes */}
 				<div className='flex justify-center pr-4'>
 					<div className='block md:hidden'>
 						<MagnifyingGlassIcon
-							className='w-5 h-5 cursor-pointer mr-7'
+							className='w-5 h-5 cursor-pointer'
 							onClick={handleSearchClick}
 						/>
 					</div>
 					<div className='hidden md:block'>
-						<p>G.A.B.I.</p>
+						<p>{memoryTitle || "G.A.B.I."}</p>
 					</div>
 				</div>
 				{/* Menu in mobile && Menu and Search icon in other sizes */}
 				<div className='flex items-center justify-end md:min-w-48'>
 					<MagnifyingGlassIcon
-						className={`hidden w-5 h-5 md:block md:mr-10 ${
+						className={`hidden w-5 h-5 md:block md:mr-20 md:stroke-1 md:stroke-black ${
 							isSearchVisible ? "hidden" : ""
 						}`}
 						onClick={handleSearchClick}
@@ -104,7 +146,7 @@ const Header = () => {
 							enabled ? "text-black" : "text-white"
 						} absolute top-0 right-0 w-16 h-16 font-bold text-2xl pt-10 pr-10 rounded-sm cursor-pointer`}
 						tabIndex={-1}>
-						{isMenuOpen ? <span>X</span> : <MenuBarsIcon />}
+						{isMenuOpen ? <span>X</span> : <MenuBarsIcon barColor={barColor} />}
 					</button>
 				</div>
 			</header>

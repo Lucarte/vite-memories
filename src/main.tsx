@@ -52,6 +52,7 @@ import Both, { loader as bothMemoriesloader } from "./pages/Both";
 import SingleFan, { loader as singleFanLoader } from "./pages/SingleFan";
 import TitleList, { loader as titleListLoader } from "./pages/TitleList";
 import SearchResultsPage from "./pages/SearchResultsPage";
+import SingleMemoryXL from "./components/SingleMemoryXL";
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
@@ -70,6 +71,11 @@ const router = createBrowserRouter(
 				<Route
 					path='/memories/title/:title'
 					element={<SingleMemory />}
+					loader={singleMemoryLoader}
+				/>
+				<Route
+					path='/memories/title/:title'
+					element={<SingleMemoryXL />}
 					loader={singleMemoryLoader}
 				/>
 
@@ -106,7 +112,7 @@ const router = createBrowserRouter(
 				/>
 			</Route>
 
-			{/* BRUNNIS LAYOUT */}
+			{/* BRUNNIS LAYOUT  aka "md + sizes" */}
 			<Route
 				path='/'
 				element={<BothLayout />}

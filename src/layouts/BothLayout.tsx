@@ -50,7 +50,7 @@ const BothLayout: React.FC = () => {
 		if (location.pathname.includes("/pablo/memories")) {
 			return ".P.A.B.L.O.S..P.O.S.T.S.";
 		} else if (location.pathname.includes("/gabriella/memories")) {
-			return ".G.A.B.R.I.E.L.L.A.S..P.O.S.T.S.";
+			return ".G.A.B.I.S..P.O.S.T.S.";
 		} else if (location.pathname.includes("/brunnis/memories")) {
 			return ".B.R.U.N.N.I.S..P.O.S.T.S.";
 		} else if (location.pathname.includes("/memories")) {
@@ -64,7 +64,16 @@ const BothLayout: React.FC = () => {
 			? logoBlack
 			: logoWhiteThick
 		: logoBlack;
+
 	const logoAlt = enabled && !isMdViewport ? "Logo White Thick" : "Logo Black";
+
+	const barColor = enabled
+		? isMdViewport
+			? "bg-black"
+			: "bg-white"
+		: !isMdViewport
+		? "bg-black"
+		: "bg-black";
 
 	return (
 		<div className='border-8 border-black dark:border-white dark:md:bg-white md:border-none'>
@@ -122,7 +131,11 @@ const BothLayout: React.FC = () => {
 									enabled ? "text-black" : "text-white"
 								} absolute top-0 right-0 w-16 h-16 font-bold text-2xl pt-10 pr-10 rounded-sm cursor-pointer`}
 								tabIndex={-1}>
-								{isMenuOpen ? <span>X</span> : <MenuBarsIcon />}
+								{isMenuOpen ? (
+									<span>X</span>
+								) : (
+									<MenuBarsIcon barColor={barColor} />
+								)}
 							</button>
 						</div>
 					</header>

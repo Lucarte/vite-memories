@@ -9,7 +9,7 @@ import FooterWithTheme from "../HOC/FooterWithTheme";
 
 export const PublicNav = () => {
 	return (
-		<div className='min-h-screen border-8 border-black dark:border-white'>
+		<div className='min-h-screen'>
 			<LoadingLayout>
 				<>
 					<PublicNavHeader />
@@ -25,7 +25,7 @@ export const PublicNav = () => {
 
 const PrivateNav = () => {
 	return (
-		<div className='min-h-screen border-8 border-black dark:border-white'>
+		<div className='min-h-screen'>
 			<LoadingLayout>
 				<>
 					<Header />
@@ -42,11 +42,12 @@ const PrivateNav = () => {
 
 const AdminNav = () => {
 	return (
-		<div className='min-h-screen border-8 border-black dark:border-white'>
+		<div className='min-h-screen border-8 border-black dark:md:bg-white dark:md:text-black md:border-white dark:border-white dark:md:border-white'>
 			<LoadingLayout>
 				<>
 					<Header />
 					<DarkModeBtn classes='bottom-24' />
+					{/* <DarkModeBtn classes='bottom-24 md:opacity-0' /> */}
 					{/* <p className='mt-4 text-center text-orange-600'>Have fun, Admin!</p> */}
 					<main className=''>
 						<Outlet />

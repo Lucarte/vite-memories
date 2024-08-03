@@ -1,31 +1,11 @@
 import classNames from "classnames";
-import { useTheme } from "../context/ThemeContext";
-import { useEffect, useState } from "react";
 
 type Props = {
 	classes?: string;
+	barColor: string;
 };
 
-const MenuBarsIcon = ({ classes }: Props) => {
-	const { enabled } = useTheme();
-	const [isMdViewport, setIsMdViewport] = useState(false);
-
-	useEffect(() => {
-		const handleResize = () => {
-			setIsMdViewport(window.innerWidth > 768);
-		};
-
-		handleResize(); // Check initial size
-		window.addEventListener("resize", handleResize);
-
-		return () => {
-			window.removeEventListener("resize", handleResize);
-		};
-	}, []);
-
-	const barColor =
-		enabled || (enabled && !isMdViewport) ? "bg-white" : "bg-black";
-
+const MenuBarsIcon = ({ classes, barColor }: Props) => {
 	return (
 		<div
 			className={`relative flex flex-col items-end w-6 h-6 gap-1 justify-normal ${classes}`}>

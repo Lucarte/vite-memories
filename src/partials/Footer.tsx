@@ -19,11 +19,7 @@ const Footer = ({ enabled, customStyle }: FooterProps) => {
 
 	return (
 		<footer
-			className={`${customStyle} fixed bottom-0 flex shadow-inner rounded-t-3xl md:rounded-none items-center z-10 justify-center w-full h-20 font-titles ${
-				enabled
-					? "text-white bg-black bg-opacity-85 border-b-white"
-					: "border-b-black bg-white"
-			} `}>
+			className={`${customStyle} fixed bottom-0 bg-white flex shadow-inner items-center z-10 justify-center w-[calc(100vw-16px)] h-20 font-titles `}>
 			<div className='flex items-center justify-between'>
 				<Form
 					action='/logout'

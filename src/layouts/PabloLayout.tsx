@@ -21,6 +21,7 @@ const PabloLayout = () => {
 	const { enabled } = useTheme();
 	// Use Outlet context to get footer visibility state from child routes
 	const [showFooter, setShowFooter] = useState(false);
+	const barColor = enabled ? "bg-white" : "bg-black";
 
 	const handleClick = () => {
 		setIsMenuOpen(!isMenuOpen);
@@ -62,7 +63,11 @@ const PabloLayout = () => {
 									enabled ? "text-black" : "text-white"
 								} absolute top-0 right-0 w-16 h-16 font-bold text-2xl pt-10 pr-10 rounded-sm cursor-pointer`}
 								tabIndex={-1}>
-								{isMenuOpen ? <span>X</span> : <MenuBarsIcon />}
+								{isMenuOpen ? (
+									<span>X</span>
+								) : (
+									<MenuBarsIcon barColor={barColor} />
+								)}
 							</button>
 						</div>
 					</header>

@@ -9,10 +9,11 @@ import {
 import { MemoryValues } from "../types/MemoryValues";
 import { getMemoryByTitle, loggedInData } from "../utils/api";
 import ScrollUpBtn from "../partials/ScrollUpBtn";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import HerzSpinner from "./HerzSpinner";
 import ViewSingleMemory from "./ViewSingleMemory";
 import EditSingleMemory from "./EditSingleMemory";
+import SingleMemoryXL from "./SingleMemoryXL";
 
 export const loader: LoaderFunction = async ({ params }) => {
 	const { loggedIn } = await loggedInData();
@@ -40,8 +41,27 @@ type DeferredLoaderData = {
 const SingleMemory = () => {
 	const deferredData = useLoaderData() as DeferredLoaderData;
 	const [view, setView] = useState<"view" | "edit">("view");
+	const [isMobile, setIsMobile] = useState<boolean>(false);
 
-	return (
+	useEffect(() => {
+		// first check screen size
+		const checkScreenSize = () => {
+			setIsMobile(window.innerWidth < 768);
+		};
+		// check initial size
+		checkScreenSize();
+
+		window.addEventListener("resize", checkScreenSize);
+
+		// cleanup function
+		return () => {
+			window.removeEventListener("resize", checkScreenSize);
+		};
+	}, []);
+
+	return !isMobile ? (
+		<SingleMemoryXL />
+	) : (
 		<>
 			<h1 className='pb-6 mt-8 -mb-24 text-xl font-bold text-center'>
 				s.i.n.g.l.e <br /> .M.e.m.o.r.Y.

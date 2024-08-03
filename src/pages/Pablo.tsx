@@ -55,7 +55,7 @@ const Pablo = () => {
 	}, []);
 
 	return (
-		<article className='flex flex-col items-center mt-12 mb-20 text-right search'>
+		<article className='flex flex-col items-center mb-20 text-right search'>
 			<Suspense
 				fallback={
 					<div className='flex justify-center w-screen'>
