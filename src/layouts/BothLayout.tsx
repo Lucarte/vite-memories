@@ -19,12 +19,13 @@ export const loader = async () => {
 	return { loggedIn, isAdmin: user?.isAdmin ?? false, user };
 };
 
-const BothLayout: React.FC = () => {
+const BothLayout = () => {
+	const [loggedIn, setLoggedIn] = useState(false);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const { enabled } = useTheme();
 	const [isSearchVisible, setIsSearchVisible] = useState(false);
 	const [isMdViewport, setIsMdViewport] = useState(window.innerWidth > 768);
-
+	const [userId, setUserId] = useState<number | null>(null);
 	const handleResize = () => {
 		setIsMdViewport(window.innerWidth > 768);
 	};
@@ -48,11 +49,11 @@ const BothLayout: React.FC = () => {
 
 	const getTitle = () => {
 		if (location.pathname.includes("/pablo/memories")) {
-			return ".P.A.B.L.O.S..P.O.S.T.S.";
+			return ".P.A.B.L.O'.S..M.E.M.O.R.I.E.S.";
 		} else if (location.pathname.includes("/gabriella/memories")) {
-			return ".G.A.B.I.S..P.O.S.T.S.";
+			return ".G.A.B.I'.S..M.E.M.O.R.I.E.S.";
 		} else if (location.pathname.includes("/brunnis/memories")) {
-			return ".B.R.U.N.N.I.S..P.O.S.T.S.";
+			return ".B.R.U.N.N.I'.S..M.E.M.O.R.I.E.S.";
 		} else if (location.pathname.includes("/memories")) {
 			return ".A.L.L..M.E.M.O.R.I.E.S.";
 		}
@@ -74,6 +75,24 @@ const BothLayout: React.FC = () => {
 		: !isMdViewport
 		? "bg-black"
 		: "bg-black";
+
+	useEffect(() => {
+		const fetchUserData = async () => {
+			try {
+				const { loggedIn, user } = await loggedInData();
+				setLoggedIn(loggedIn);
+				if (loggedIn && user) {
+					setUserId(user.id);
+				} else {
+					setUserId(null);
+				}
+			} catch (error) {
+				console.error("Failed to fetch user data:", error);
+			}
+		};
+
+		fetchUserData();
+	}, []);
 
 	return (
 		<div className='border-8 border-black dark:border-white dark:md:bg-white md:border-none'>
@@ -105,9 +124,9 @@ const BothLayout: React.FC = () => {
 							</Link>
 						</div>
 						<div className='flex justify-center pr-4'>
-							<div className='block md:hidden'>
+							<div className='block md:hidden pr-7'>
 								<MagnifyingGlassIcon
-									className='w-5 h-5 cursor-pointer mr-7'
+									className='w-5 h-5 cursor-pointer stroke-2 animate-icon'
 									onClick={handleSearchClick}
 								/>
 							</div>
@@ -119,7 +138,7 @@ const BothLayout: React.FC = () => {
 						</div>
 						<div className='flex items-center justify-end md:min-w-48'>
 							<MagnifyingGlassIcon
-								className={`hidden w-5 h-5 md:block md:mr-[40%] stroke-1 stroke-black ${
+								className={`hidden animate-icon w-5 h-5 md:block md:mr-[40%] stroke-1 stroke-black ${
 									isSearchVisible ? "hidden" : ""
 								}`}
 								onClick={handleSearchClick}
@@ -159,10 +178,17 @@ const BothLayout: React.FC = () => {
 								tabIndex={-1}>
 								X
 							</button>
+
 							{navigation.map((item) => (
 								<Link
 									key={item.name}
-									to={item.href}
+									to={
+										item.href === "/fan"
+											? userId
+												? `/fan/${userId}`
+												: "/login" // Redirect to login if userId is not available
+											: item.href
+									}
 									aria-current={item.current ? "page" : undefined}
 									onClick={handleClick}
 									className={classNames(

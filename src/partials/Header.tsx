@@ -2,7 +2,7 @@ import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import MenuBarsIcon from "../components/MenuBarsIcon";
 import { useEffect, useState } from "react";
 import { useTheme } from "../context/ThemeContext";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { loggedInData, getMemoryByTitle } from "../utils/api";
 import classNames from "classnames";
 import { navigation } from "../utils/navigation";
@@ -19,6 +19,7 @@ const Header = () => {
 	const [isMdViewport, setIsMdViewport] = useState(window.innerWidth > 768);
 	const [kidName, setKidName] = useState("");
 	const [memoryTitle, setMemoryTitle] = useState("");
+	const [memoryId, setMemoryId] = useState<number | null>(null);
 
 	const { title } = useParams();
 
@@ -39,7 +40,9 @@ const Header = () => {
 				const { loggedIn, user } = await loggedInData();
 				setLoggedIn(loggedIn);
 				if (loggedIn && user) {
-					setUserId(user.id); // Set userId only if user is not null
+					setUserId(user.id);
+				} else {
+					setUserId(null);
 				}
 			} catch (error) {
 				console.error("Failed to fetch user data:", error);
@@ -47,7 +50,7 @@ const Header = () => {
 		};
 
 		fetchUserData();
-	}, [loggedIn]); // Dependency on loggedIn state to re-fetch user data when login status changes
+	}, []);
 
 	useEffect(() => {
 		const fetchMemoryData = async () => {
@@ -55,7 +58,8 @@ const Header = () => {
 				try {
 					const memoryData = await getMemoryByTitle(title);
 					setMemoryTitle(memoryData.title);
-					setKidName(memoryData.kid);
+					setMemoryId(memoryData.id);
+					setKidName(formatKidName(memoryData.kid));
 				} catch (error) {
 					console.error("Failed to fetch memory data:", error);
 				}
@@ -65,6 +69,19 @@ const Header = () => {
 		fetchMemoryData();
 	}, [title]);
 
+	const formatKidName = (kid: string) => {
+		switch (kid) {
+			case "Pablo":
+				return "P.A.B.L.O";
+			case "Gabriella":
+				return "G.A.B.I";
+			case "Both":
+				return "B.R.U.N.N.I.S";
+			default:
+				return kid;
+		}
+	};
+
 	const handleClick = () => {
 		setIsMenuOpen(!isMenuOpen);
 	};
@@ -72,8 +89,6 @@ const Header = () => {
 	const handleSearchClick = () => {
 		setIsSearchVisible(!isSearchVisible);
 	};
-
-	const location = useLocation();
 
 	const barColor = enabled
 		? isMdViewport
@@ -112,29 +127,33 @@ const Header = () => {
 				</div>
 			)}
 			<header className='relative z-40 flex items-center justify-between p-8'>
-				{/* Logo in mobile && Logo and Name description other sizes */}
 				<div className='flex items-center justify-start md:min-w-48'>
 					<Link to='/' className='-mt-[4px]'>
 						<img src={logoSrc} className='w-11' alt={logoAlt} />
 					</Link>
-					<p className='hidden md:block md:ml-10'>{kidName || "P.A.B.L.O."}</p>
+					<p className='hidden md:block md:ml-10 md:text-lg md:font-semibold'>
+						{kidName}
+					</p>
 				</div>
-				{/* Search icon in mobile && h1-tag in other sizes */}
-				<div className='flex justify-center pr-4'>
-					<div className='block md:hidden'>
+				<div className='flex justify-center pr-4 md:pb-3'>
+					<div className='block md:hidden pr-7'>
 						<MagnifyingGlassIcon
-							className='w-5 h-5 cursor-pointer'
+							className='w-5 h-5 cursor-pointer animate-icon'
 							onClick={handleSearchClick}
 						/>
 					</div>
-					<div className='hidden md:block'>
-						<p>{memoryTitle || "G.A.B.I."}</p>
+					<div className='hidden md:block md:text-xl md:font-semibold md:tracking-widest'>
+						<p>
+							<span className='font-serif text-3xl font-bold'>
+								{memoryId ? `${memoryId}. ` : ""}
+							</span>
+							<span className='text-lg'>{memoryTitle}</span>
+						</p>
 					</div>
 				</div>
-				{/* Menu in mobile && Menu and Search icon in other sizes */}
-				<div className='flex items-center justify-end md:min-w-48'>
+				<div className='flex items-center justify-end md:pb-2 md:min-w-48'>
 					<MagnifyingGlassIcon
-						className={`hidden w-5 h-5 md:block md:mr-20 md:stroke-1 md:stroke-black ${
+						className={`hidden animate-icon w-5 h-5 md:block md:mr-20 md:stroke-1 md:stroke-black ${
 							isSearchVisible ? "hidden" : ""
 						}`}
 						onClick={handleSearchClick}
@@ -144,7 +163,7 @@ const Header = () => {
 						onClick={handleClick}
 						className={`${
 							enabled ? "text-black" : "text-white"
-						} absolute top-0 right-0 w-16 h-16 font-bold text-2xl pt-10 pr-10 rounded-sm cursor-pointer`}
+						} absolute top-0 right-0 w-16 h-16 font-bold text-2xl pt-10 md:pt-8 pr-10 rounded-sm cursor-pointer`}
 						tabIndex={-1}>
 						{isMenuOpen ? <span>X</span> : <MenuBarsIcon barColor={barColor} />}
 					</button>
@@ -170,10 +189,10 @@ const Header = () => {
 						<Link
 							key={item.name}
 							to={
-								item.href === "/fan/{id}"
+								item.href === "/fan"
 									? userId
 										? `/fan/${userId}`
-										: "/login"
+										: "/login" // Redirect to login if userId is not available
 									: item.href
 							}
 							aria-current={item.current ? "page" : undefined}

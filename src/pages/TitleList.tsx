@@ -16,12 +16,32 @@ const TitleList = () => {
 			<h1 className='pt-4 text-xl font-bold text-center underline'>
 				T.i.t.l.e..L.i.s.t. <br />
 			</h1>
-			<section className='relative w-screen'>
+			<section className='flex flex-col items-center'>
+				{/* <section className='relative w-screen'> */}
 				{/* Pseudo-elements for vertical lines */}
-				<div className='absolute top-0 bottom-0 hidden w-2 bg-orange-600 lg:block left-1/4'></div>
-				<div className='absolute top-0 bottom-0 hidden w-2 bg-orange-600 lg:block right-1/4'></div>
+				{/* <div className='absolute top-0 bottom-0 hidden w-2 bg-orange-600 lg:block left-1/4'></div>
+				<div className='absolute top-0 bottom-0 hidden w-2 bg-orange-600 lg:block right-1/4'></div> */}
 
-				<ul className='list-disc'>
+				<ul className='space-y-2 dark:text-white'>
+					{memories.map((memory, index) => (
+						<li
+							key={memory.title}
+							className={`${
+								index % 2 !== 0
+									? "rotate-[8deg] hover:-rotate-12"
+									: "hover:-rotate-12"
+							} w-72 lg:max-w-96 text-center px-4 py-2 text-sm bg-black rounded-lg rounded-tr-none rounded-bl-none bg-opacity-85 dark:bg-white dark:bg-opacity-85 font-semibold hover:uppercase`}>
+							<Link
+								to={`/memories/title/${memory.title}`}
+								className='text-white dark:text-black focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-orange-600'>
+								{memory.title}
+							</Link>
+						</li>
+					))}
+				</ul>
+
+				{/* OLD STYLE */}
+				{/* <ul className='list-disc'>
 					{memories.map((memory, index) => (
 						<li
 							key={index}
@@ -33,7 +53,7 @@ const TitleList = () => {
 							</Link>
 						</li>
 					))}
-				</ul>
+				</ul> */}
 			</section>
 		</article>
 	);

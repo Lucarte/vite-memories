@@ -455,7 +455,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	const formData = await request.formData();
 
 	if (!isAdmin) {
-		return { message: "Admin Zone: Access denied", redirectTo: "/login" };
+		return { message: "Admin Zone: Access denied" };
 	}
 
 	try {

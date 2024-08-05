@@ -17,11 +17,10 @@ import {
 	useLoaderData,
 } from "react-router-dom";
 import ViewMemories from "../components/ViewMemories";
-import ScrollUpBtn from "../partials/ScrollUpBtn";
 import EditMemories from "../components/EditMemories";
-import classNames from "classnames";
 import HerzSpinner from "../components/HerzSpinner";
 import ViewMemoriesXL from "../components/ViewMemoriesXL";
+import classNames from "classnames";
 
 type DeferredLoaderData = {
 	memories: Promise<MemoryValues[]>;
@@ -175,6 +174,39 @@ const Memories = () => {
 					</Await>
 				</Suspense>
 			</section>
+			<aside
+				className={classNames(
+					"flex mb-36 mt-16 items-center cursor-pointer md:hidden",
+					{
+						"-mt-10": view !== "edit",
+						"-mt-20": view === "edit",
+					}
+				)}>
+				<div className='flex justify-center gap-1'>
+					<button
+						onClick={() => setView("view")}
+						className={classNames(
+							"py-1 text-sm px-3 rounded-md rounded-bl-none border-2 ",
+							{
+								"border-black bg-black text-white": view !== "view",
+								"border-black bg-white text-black": view === "view",
+							}
+						)}>
+						View <br /> Memories
+					</button>
+					<button
+						onClick={() => setView("edit")}
+						className={classNames(
+							"py-1 text-sm px-3 rounded-md rounded-br-none border-2",
+							{
+								"border-black bg-black text-white": view !== "edit",
+								"border-black bg-white text-black": view === "edit",
+							}
+						)}>
+						Update <br /> Memories
+					</button>
+				</div>
+			</aside>
 		</article>
 	);
 };

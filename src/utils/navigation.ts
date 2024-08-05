@@ -1,29 +1,5 @@
 export const navigation = [
 	{
-		name: "Home",
-		href: "/",
-		page: "Home",
-		current: false,
-	},
-	{
-		name: "Create",
-		href: "/memory/create",
-		page: "Memory Creation",
-		current: false,
-	},
-	{
-		name: "Brunnis",
-		href: "/brunnis/memories",
-		page: "Brunnis",
-		current: false,
-	},
-	{
-		name: "Pablo",
-		href: "/pablo",
-		page: "Pablo",
-		current: false,
-	},
-	{
 		name: "Gabriella",
 		href: "/gabriella",
 		page: "Gabriella",
@@ -42,9 +18,21 @@ export const navigation = [
 		current: false,
 	},
 	{
-		name: "Profile",
-		href: "/fan/{id}",
-		page: "Profile",
+		name: "Brunnis",
+		href: "/brunnis/memories",
+		page: "Brunnis",
+		current: false,
+	},
+	{
+		name: "Pablo",
+		href: "/pablo",
+		page: "Pablo",
+		current: false,
+	},
+	{
+		name: "Home",
+		href: "/",
+		page: "Home",
 		current: false,
 	},
 	{
@@ -60,9 +48,21 @@ export const navigation = [
 		current: false,
 	},
 	{
+		name: "Profile",
+		href: "/fan",
+		page: "Profile",
+		current: false,
+	},
+	{
 		name: "Register",
 		href: "/register",
 		page: "Register",
+		current: false,
+	},
+	{
+		name: "Add Memory",
+		href: "/memory/create",
+		page: "Memory Creation",
 		current: false,
 	},
 ];

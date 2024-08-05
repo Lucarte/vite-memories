@@ -2,8 +2,8 @@ import { Suspense } from "react";
 import { Await, useLoaderData } from "react-router-dom";
 import HerzSpinner from "./HerzSpinner";
 import ScrollUpBtn from "../partials/ScrollUpBtn";
-import ViewSingleMemory from "./ViewSingleMemory";
 import { MemoryValues } from "../types/MemoryValues";
+import ViewSingleMemoryXL from "./ViewSingleMemoryXL";
 
 type DeferredLoaderData = {
 	memory: Promise<MemoryValues>;
@@ -11,11 +11,9 @@ type DeferredLoaderData = {
 
 const SingleMemoryXL = () => {
 	const deferredData = useLoaderData() as DeferredLoaderData;
+
 	return (
-		<>
-			<h1 className='pb-6 mt-8 -mb-24 text-xl font-bold text-center'>
-				s.i.n.g.l.e <br /> .M.e.m.o.r.Y. XL
-			</h1>
+		<div className='min-h-screen mx-10 text-white bg-black'>
 			<article className='flex flex-col items-center gap-6 pt-8 pb-48 overflow-hidden text-right text-gray-300 font-extralight'>
 				<ScrollUpBtn />
 				<aside className='flex items-center cursor-pointer'>
@@ -36,14 +34,14 @@ const SingleMemoryXL = () => {
 											another search.
 										</p>
 									}>
-									{(memory) => <ViewSingleMemory memory={memory} />}
+									{(memory) => <ViewSingleMemoryXL memory={memory} />}
 								</Await>
 							</Suspense>
 						</section>
 					</div>
 				</aside>
 			</article>
-		</>
+		</div>
 	);
 };
 

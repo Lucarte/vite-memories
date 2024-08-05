@@ -17,7 +17,7 @@ const displayFile = (file: MemoryFile, customClass?: string) => {
 				src={fileUrl}
 				alt={`Memory ${file.id}`}
 				className={`aspect-square object-cover w-full h-full ${
-					customClass || "rounded-2xl rounded-tl-[4rem]"
+					customClass || "rounded-2xl rounded-tl-[7rem]"
 				}`}
 			/>
 		);
@@ -26,7 +26,7 @@ const displayFile = (file: MemoryFile, customClass?: string) => {
 			<video
 				controls
 				className={`w-full h-full aspect-video object-cover ${
-					customClass || "rounded-2xl rounded-tl-[4rem]"
+					customClass || "rounded-2xl rounded-tl-[7rem]"
 				}`}>
 				<source src={fileUrl} type={mimeType} />
 				Your browser does not support the video tag.

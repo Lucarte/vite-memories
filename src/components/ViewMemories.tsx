@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { MemoryValues } from "../types/MemoryValues";
 import mime from "mime";
 import displayFile from "../utils/DisplayFile";
 import { useTheme } from "../context/ThemeContext";
 import ScrollUpBtn from "../partials/ScrollUpBtn";
-import classNames from "classnames";
 
 // Helper function to format the date
 const formatDate = (dateString: string): string => {
@@ -25,7 +24,6 @@ interface ViewMemoriesProps {
 }
 
 const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
-	const [view, setView] = useState<"view" | "edit">("view");
 	const { enabled } = useTheme();
 	const navigate = useNavigate();
 
@@ -39,11 +37,41 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 			new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
 	);
 
+	const getTitle = () => {
+		if (location.pathname.includes("/pablo/memories")) {
+			return (
+				<div>
+					P.A.B.L.O'.S <br /> .M.E.M.O.R.I.E.S.
+				</div>
+			);
+		} else if (location.pathname.includes("/gabriella/memories")) {
+			return (
+				<div>
+					G.A.B.I'.S <br /> .M.E.M.O.R.I.E.S.
+				</div>
+			);
+		} else if (location.pathname.includes("/brunnis/memories")) {
+			return (
+				<div>
+					B.R.U.N.N.I'.S <br /> .M.E.M.O.R.I.E.S.
+				</div>
+			);
+		} else if (location.pathname.includes("/memories")) {
+			return (
+				<div>
+					A.L.L <br /> .M.E.M.O.R.I.E.S.
+				</div>
+			);
+		}
+		return "M.E.M.O.R.I.E.S"; // Default title
+	};
+
 	return (
 		<>
 			<ScrollUpBtn />
 			<h1 className='pt-4 pb-6 text-xl font-bold text-center'>
-				.M.e.m.o.r.i.e.S.
+				{/* .M.e.m.o.r.i.e.S. */}
+				{getTitle()}
 			</h1>
 			{sortedMemories.length > 0 ? (
 				sortedMemories.map((memory) => (
@@ -163,11 +191,14 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 			) : (
 				<p className='text-center text-orange-500'>No memories founD</p>
 			)}
-			<aside
-				className={classNames("flex mb-36 mt-16 items-center cursor-pointer", {
-					"-mt-10": view !== "edit",
-					"-mt-20": view === "edit",
-				})}>
+			{/* <aside
+				className={classNames(
+					"flex mb-36 mt-16 items-center justify-center cursor-pointer",
+					{
+						"-mt-10": view !== "edit",
+						"-mt-20": view === "edit",
+					}
+				)}>
 				<div className='flex justify-center gap-1'>
 					<button
 						onClick={() => setView("view")}
@@ -192,7 +223,7 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 						Update <br /> Memories
 					</button>
 				</div>
-			</aside>
+			</aside> */}
 		</>
 	);
 };

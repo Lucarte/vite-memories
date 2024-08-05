@@ -223,10 +223,9 @@ const Login = () => {
 				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 dark:bg-white dark:bg-opacity-70'>
 					<div className='z-10 2xl:w-72 w-64 p-6 bg-white rounded-[6rem] relative rounded-tr-lg shadow-lg min-h-96 dark:bg-black'>
 						<h2 className='pt-20 text-2xl font-black leading-10 text-center text-black uppercase dark:text-white'>
-							all set <br />
+							all set to
 							<br />
-							now go down <br />
-							memory lane!
+							go down memory lane!
 						</h2>
 					</div>
 				</div>

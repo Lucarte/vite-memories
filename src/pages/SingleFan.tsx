@@ -9,7 +9,7 @@ import { getFanById, loggedInData, deleteFanById } from "../utils/api";
 import { FanValues } from "../types/FanValues";
 import { useTheme } from "../context/ThemeContext";
 import { useState } from "react";
-import DarkModeBtn from "../partials/DarkModeBtn";
+import LineSpinner from "../components/LineSpinner";
 
 export const loader: LoaderFunction = async ({ params }) => {
 	const { loggedIn, isAdmin, user } = await loggedInData();
@@ -23,6 +23,8 @@ export const loader: LoaderFunction = async ({ params }) => {
 		throw new Response("Invalid fan id", { status: 400 });
 	}
 
+	console.log("User ID:", userId);
+
 	// Check if the user is allowed to access the profile
 	if (isAdmin || (user && user.id === userId)) {
 		try {
@@ -35,7 +37,7 @@ export const loader: LoaderFunction = async ({ params }) => {
 	}
 
 	console.log("Access denied");
-	return redirect("/login");
+	return;
 };
 
 // SingleFan Component
@@ -50,7 +52,7 @@ const SingleFan = () => {
 	const [showOverlay, setShowOverlay] = useState(false);
 
 	if (!fan) {
-		return <div>Loading...</div>;
+		return <LineSpinner />;
 	}
 
 	const handleDeleteFan = async () => {

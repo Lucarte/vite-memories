@@ -84,7 +84,7 @@ const ViewSingleMemory: React.FC<Props> = ({ memory }) => {
 								className={`object-cover mt-4 ${
 									mime.getType(file.file_path)?.startsWith("image/") ||
 									mime.getType(file.file_path)?.startsWith("video/")
-										? "h-auto"
+										? "h-auto max-w-96"
 										: "h-auto min-w-[80vw]"
 								}`}
 								key={file.id}>
