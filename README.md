@@ -1,93 +1,114 @@
-# React + TypeScript + Vite
+# MY PEARLS OF GREAT PRICE
 
-This template provides a minimal setup to get React working in Vite with HMR and
-some ESLint rules.
+![Logo](../assets/LogoBlack.svg)
 
-Currently, two official plugins are available:
+MY PEARLS OF GREAT PRICE is an online digital memory book, which lets you upload
+memories in the form of pictures, videos, audio. More than one of each category
+can be uploaded in a single memory, as well as all combined and mixed up. These
+memories can then be read, seen, and heard by registered fans, and can be
+deleted and updated by the person who uploaded them or by the one who has an
+admin role.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md)
-  uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc)
-  uses [SWC](https://swc.rs/) for Fast Refresh
+## Getting Started
 
-## Expanding the ESLint configuration
+These set of instructions will help you get a copy of this project locally for
+development and testing purposes.
 
-If you are developing a production application, we recommend updating the
-configuration to enable type aware lint rules:
+### Prerequisites
 
-- Configure the top-level `parserOptions` property like this:
+[Node.js](https://nodejs.org/en)(version 12.x or higher) - The JavaScript
+runtime environment. It's used to run the application.
+[npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/) - Package
+managers, which install the necessary libraries.
 
-```js
-export default {
-	// other rules...
-	parserOptions: {
-		ecmaVersion: "latest",
-		sourceType: "module",
-		project: ["./tsconfig.json", "./tsconfig.node.json"],
-		tsconfigRootDir: __dirname,
-	},
-};
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to
-  `plugin:@typescript-eslint/recommended-type-checked` or
-  `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install
-  [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and
-  add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends`
-  list
-
-example von Vista
-
-# FotoVista
-
-Dies ist ein Fotografie-Blog Projekt
+> [!IMPORTANT] In order to make sure you have these installed simply run
+> `node -v` and `npm -v` in the terminal. This will display the current
+> installed versions and confirm their installation.
 
 ## Installation
 
-Stelle sicher, dass [Node.js](https://nodejs.org/) auf dem Computer installiert
-ist.
+1. Clone the repository in your computer:
 
-1. Klone das Repository auf deinen lokalen Computer:
+git clone https://github.com/lucarte/vite-memories
 
-git clone https://github.com/sdarby1/FotoVistaReact
+2. Navigate to the project directory
 
-2. Wechsle in das Projektverzeichnis
+3. Install dependencies by running:
 
-3. Installiere die Abhängigkeiten:
+```sh
+npm run dev
+```
 
-npm install
-
-- npm install react-hook-form
-- npm install -D vitest
-- npm install react-masonry-css
-- npm install react-router-dom
-
-4. Öffne die Datei src/utils/http.ts in Ihrem React-Projekt und ändern Sie die
-   Basis-URL, um sie mit Ihrem Laravel-Backend-Endpunkt zu verbinden. Zum
-   Beispiel:
+4. Now open the following file: `src/utils/http.ts` in the project and change
+   the url to the one matching your Laravel-Backend-Endpoint. For example:
 
 const BASE_URL = 'http://localhost:8000/api';
 
-5. Nachdem Sie die Basis-URL geändert haben, speichern Sie die Datei und starten
-   Sie den React-Entwicklungsserver erneut:
+5. After changing the base URL, save the file and restart the React development
+   server:
 
-npm start
+```sh
+npm run start
+```
 
-# Logindaten
+## Login Credentials
 
-### Administrator
+#### Administrator Role
 
-- EMail: admin@administration.com
-- Passwort: sJi3X23LqQ
+- E-Mail: luca@mail.com
+- Passwort: Password?1
 
-### Beispielbenutzer
+#### Regular User Role
 
-- EMail: test@test.de
-- Passwort: test1234
+- E-Mail: gabriel@mail.com
+- Passwort: Password?1
 
-# Tests
+## Runnig Tests
 
-Für die Vitest Tests öffne in deinem Projektverzeichnis das Terminal und gebe
-den Befel "npm test" ein.
+In order to run the Vitest Tests simply open the terminal and run this command:
+
+```sh
+npm run test
+```
+
+## Built with
+
+The project was built using a range of varied technologies and libraries. Here
+some of them:
+
+## Built with
+
+The project was built using a range of varied technologies and libraries. Here
+are some of them:
+
+- **[Vite](https://vitejs.dev/)**: A fast build tool and development server.
+- **[React](https://reactjs.org/)**: A JavaScript library for building user
+  interfaces.
+- **[TypeScript](https://www.typescriptlang.org/)**: A superset of JavaScript
+  that adds static types.
+- **[React Router](https://reactrouter.com/)**: A collection of navigational
+  components that compose declaratively with your application.
+- **[React Hook Form](https://react-hook-form.com/)**: Performant, flexible, and
+  extensible forms with easy-to-use validation.
+- **[Axios](https://axios-http.com/)**: A promise-based HTTP client for the
+  browser and Node.js.
+- **[Tailwind CSS](https://tailwindcss.com/)**: A utility-first CSS framework
+  for rapid UI development.
+- **[MeiliSearch](https://www.meilisearch.com/)**: An open-source search engine
+  that's easy to use and integrates seamlessly with your app.
+- **[Heroicons](https://heroicons.com/)**: Beautiful hand-crafted SVG icons, by
+  the makers of Tailwind CSS.
+- **[Headless UI](https://headlessui.dev/)**: Completely unstyled, fully
+  accessible UI components, designed to integrate beautifully with Tailwind CSS.
+
+### Development Tools
+
+- **[Vitest](https://vitest.dev/)**: A Vite-native unit test framework. It's
+  fast!
+- **[ESLint](https://eslint.org/)**: A static code analysis tool for identifying
+  and fixing problems in JavaScript code.
+- **[Testing Library](https://testing-library.com/)**: Simple and complete
+  testing utilities that encourage good testing practices.
+
+By utilizing these technologies, we ensure a robust, efficient, and scalable
+application architecture.
