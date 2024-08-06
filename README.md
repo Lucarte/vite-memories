@@ -1,29 +1,27 @@
-# MY PEARLS OF GREAT PRICE
+# My Pearls of Great Price
 
-![Logo](../assets/LogoBlack.svg)
-
-MY PEARLS OF GREAT PRICE is an online digital memory book, which lets you upload
-memories in the form of pictures, videos, audio. More than one of each category
-can be uploaded in a single memory, as well as all combined and mixed up. These
-memories can then be read, seen, and heard by registered fans, and can be
-deleted and updated by the person who uploaded them or by the one who has an
-admin role.
+My Pearls of Great Price is an online digital memory book, which lets you upload
+memories in the form of pictures, videos, and/or audio. More than one of each
+category can be uploaded in a single memory, as well as all combined or mixed
+up. These memories can then be read, seen, and heard by registered fans, and can
+be deleted and updated by the person owning the necessary credentials.
 
 ## Getting Started
 
-These set of instructions will help you get a copy of this project locally for
-development and testing purposes.
+These set of instructions will help you get a copy of this project --locally--
+for development and testing purposes.
 
 ### Prerequisites
 
-[Node.js](https://nodejs.org/en)(version 12.x or higher) - The JavaScript
+[Node.js](https://nodejs.org/en) (version 12.x or higher) - The JavaScript
 runtime environment. It's used to run the application.
+
 [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/) - Package
 managers, which install the necessary libraries.
 
-> [!IMPORTANT] In order to make sure you have these installed simply run
-> `node -v` and `npm -v` in the terminal. This will display the current
-> installed versions and confirm their installation.
+> [!TIP] In order to make sure you have these installed simply run `node -v` and
+> `npm -v` in the terminal. This will display the current installed versions and
+> confirm their installation.
 
 ## Installation
 
@@ -37,18 +35,6 @@ git clone https://github.com/lucarte/vite-memories
 
 ```sh
 npm run dev
-```
-
-4. Now open the following file: `src/utils/http.ts` in the project and change
-   the url to the one matching your Laravel-Backend-Endpoint. For example:
-
-const BASE_URL = 'http://localhost:8000/api';
-
-5. After changing the base URL, save the file and restart the React development
-   server:
-
-```sh
-npm run start
 ```
 
 ## Login Credentials
@@ -71,15 +57,7 @@ In order to run the Vitest Tests simply open the terminal and run this command:
 npm run test
 ```
 
-## Built with
-
-The project was built using a range of varied technologies and libraries. Here
-some of them:
-
-## Built with
-
-The project was built using a range of varied technologies and libraries. Here
-are some of them:
+## Technologies and Libraries
 
 - **[Vite](https://vitejs.dev/)**: A fast build tool and development server.
 - **[React](https://reactjs.org/)**: A JavaScript library for building user
