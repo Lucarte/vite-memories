@@ -91,7 +91,6 @@ const EditSingleMemory = ({ memory }: Props) => {
 
 		// Log category IDs to verify they are correct
 		const categoryIds = getValues("category_ids");
-		console.log("Category IDs:", categoryIds);
 
 		// Remove existing category_ids from FormData
 		formData.delete("category_ids");
@@ -109,13 +108,6 @@ const EditSingleMemory = ({ memory }: Props) => {
 			id: url.url_address,
 			url_address: url.url_address,
 		}));
-
-		// Log the prepared data to inspect
-		console.log("Prepared Data:", {
-			...data,
-			id: memory.id,
-			urls: formattedUrls,
-		});
 
 		// Append additional data to FormData
 		formData.append("id", memory.id.toString());

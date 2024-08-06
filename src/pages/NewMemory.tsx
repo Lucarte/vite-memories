@@ -147,9 +147,9 @@ const CreateMemory = () => {
 	return (
 		<>
 			{showOverlay && (
-				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 dark:bg-white dark:bg-opacity-70'>
-					<div className='z-10 2xl:w-72 w-64 px-6 py-10 flex flex-col items-center justify-center bg-white rounded-[5rem] rounded-tr-lg shadow-lg h-auto dark:bg-black'>
-						<h2 className='text-2xl font-black leading-10 text-center text-black uppercase dark:text-white'>
+				<div className='fixed inset-0 z-50 flex items-center justify-center bg-white'>
+					<div className='text-center'>
+						<h2 className='mb-4 text-2xl font-bold tracking-wider text-black uppercase lg:text-3xl xl:text-4xl 2xl:text-5xl'>
 							{error}
 						</h2>
 					</div>
@@ -455,7 +455,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 	const formData = await request.formData();
 
 	if (!isAdmin) {
-		return { message: "Admin Zone: Access denied" };
+		return { message: "Admin Zone" };
 	}
 
 	try {
@@ -471,7 +471,7 @@ export const loader = async () => {
 	const { isAdmin } = await loggedInData();
 
 	if (!isAdmin) {
-		return { error: "Admin Zone: Access denied" };
+		return { error: "Admin Zone" };
 	}
 
 	return null;

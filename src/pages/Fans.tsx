@@ -18,7 +18,6 @@ export const loader: LoaderFunction = async () => {
 	const { isAdmin } = await loggedInData();
 
 	if (!isAdmin) {
-		console.log("Admin Zone: Access denied");
 		return { fans: [], error: "Admin Zone" };
 	}
 
@@ -57,7 +56,7 @@ const Fans = () => {
 		return (
 			<div className='fixed inset-0 z-50 flex items-center justify-center bg-white'>
 				<div className='text-center'>
-					<h2 className='mb-4 text-2xl font-bold tracking-wider uppercase'>
+					<h2 className='mb-4 text-2xl font-bold tracking-wider text-black uppercase lg:text-3xl xl:text-4xl 2xl:text-5xl'>
 						{error}
 					</h2>
 				</div>

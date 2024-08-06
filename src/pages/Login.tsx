@@ -88,7 +88,6 @@ const Login = () => {
 		}
 
 		if (actionData?.errorMessage) {
-			console.log("Login error: Navigating to /login with from:", from);
 			setTimeout(() => {
 				if (typeof from === "string") {
 					navigate("/login", { state: { from } });

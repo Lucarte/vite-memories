@@ -86,7 +86,6 @@ export const deleteMemory = async (title: string) => {
 // UPDATE MEMORY
 export const patchMemory = async (id: number, data: PatchValues) => {
 	const res = await http.patch(`/api/auth/memories/${id}`, data);
-	console.log(`Patching memory with ID ${id}:`, data);
 	if (res.status !== 200) throw res;
 	return res.data;
 };

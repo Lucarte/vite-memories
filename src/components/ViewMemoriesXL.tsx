@@ -26,7 +26,7 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 	);
 
 	return (
-		<div className='mx-10 text-white bg-black'>
+		<div className='min-h-screen pb-24 mx-10 text-white bg-black'>
 			{/* Main Container with padding for margins */}
 			<div className='grid h-full pr-10 pt-16 grid-cols-[auto,1fr] pb-20'>
 				{/* Left Column - List of Titles */}

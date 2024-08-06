@@ -31,6 +31,7 @@ export const loader: LoaderFunction = async () => {
 	// Check if logged in
 	const { loggedIn } = await loggedInData();
 	if (!loggedIn) {
+		alert("Login Required ;)");
 		return redirect("/login");
 	}
 

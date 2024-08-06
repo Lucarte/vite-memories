@@ -23,8 +23,6 @@ export const loader: LoaderFunction = async ({ params }) => {
 		throw new Response("Invalid fan id", { status: 400 });
 	}
 
-	console.log("User ID:", userId);
-
 	// Check if the user is allowed to access the profile
 	if (isAdmin || (user && user.id === userId)) {
 		try {
@@ -35,8 +33,6 @@ export const loader: LoaderFunction = async ({ params }) => {
 			throw new Response("Fan not found", { status: 404 });
 		}
 	}
-
-	console.log("Access denied");
 	return;
 };
 
