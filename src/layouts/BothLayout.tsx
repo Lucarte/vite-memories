@@ -163,7 +163,7 @@ const BothLayout = () => {
 						<DarkModeBtn classes='bottom-24 md:opacity-0' />
 						<Outlet />
 					</main>
-					<FooterWithTheme customStyle='uppercase bg-white w-full' />
+					<FooterWithTheme customStyle='uppercase bg-white md:w-full border-b-black border-b-8 dark:border-none' />
 					{isMenuOpen && (
 						<nav
 							className={`${

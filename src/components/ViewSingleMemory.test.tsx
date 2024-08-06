@@ -49,21 +49,6 @@ describe("Component: ViewSingleMemory", () => {
 		).toBeInTheDocument();
 	});
 
-	// FIX THIS STYLE - style being overide
-	// it("should apply dark theme styles", () => {
-	// 	render(
-	// 		<ThemeProvider>
-	// 			<ViewSingleMemory memory={mockMemory} />
-	// 		</ThemeProvider>
-	// 	);
-
-	// 	// Check if the component applies dark theme styles
-	// 	expect(screen.getByText(/sample memory/i)).toHaveClass("text-gray-200");
-	// 	expect(
-	// 		screen.getByText(/this is a description of the memory/i)
-	// 	).toHaveClass("text-gray-300");
-	// });
-
 	it("should apply light theme styles", () => {
 		// Mock the ThemeContext to return light theme
 		render(

@@ -37,9 +37,11 @@ const HomeLayout = () => {
 	}, [isMenuOpen]);
 
 	const logoSrc = enabled
-		? isMdViewport
-			? logoBlack
+		? !isMdViewport
+			? logoWhiteThick
 			: logoWhiteThick
+		: !isMdViewport
+		? logoBlack
 		: logoBlack;
 
 	const logoAlt = enabled && !isMdViewport ? "Logo White Thick" : "Logo Black";

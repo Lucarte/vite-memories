@@ -149,9 +149,9 @@ const PabloIntroLaptopPlus = () => {
 								<div className='flex flex-col items-center gap-1 font-sans uppercase rotate-180'>
 									<h2 className='text-3xl font-bold underline'>VIOLA</h2>
 									<p className='font-normal text-[.6rem] text-center'>
-										"The information you consume each day is the soil from
-										<br /> which your future thoughts are grown" <br />
-										<span className='font-medium'>James Clear</span>
+										"Du kannst die Wellen nicht anhalten,
+										<br /> aber du kannst lernen zu surfen." <br />
+										<span className='font-medium'>Jon Kabat-Zinn</span>
 									</p>
 								</div>
 								<div className='text-[10px] text-center -mt-5'>
