@@ -25,6 +25,16 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 			new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
 	);
 
+	// Flatten memories, splitting those with multiple files
+	const flattenedMemories = sortedMemories.flatMap((memory) =>
+		memory.files.map((file, index) => ({
+			...memory,
+			files: [file], // Only keep the single file for this memory
+			id: index === 0 ? memory.id : `${memory.id}. (cont.)`,
+			title: index === 0 ? memory.title : `${memory.title} (cont.)`,
+		}))
+	);
+
 	return (
 		<div className='min-h-screen pb-24 mx-10 text-white bg-black'>
 			{/* Main Container with padding for margins */}
@@ -32,7 +42,7 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 				{/* Left Column - List of Titles */}
 				<div className='sticky max-h-screen pl-12 pr-24 overflow-y-auto top-16'>
 					<ul className='space-y-4 text-xl text-left lowercase list-none'>
-						{sortedMemories.map((memory) => (
+						{flattenedMemories.map((memory) => (
 							<li
 								key={memory.id}
 								className='cursor-pointer hover:text-gray-500'
@@ -48,15 +58,15 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 					ref={containerRef}
 					className='grid grid-cols-1 overflow-auto text-justify gap-y-16 gap-x-10 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5'>
 					<ScrollUpBtn />
-					{sortedMemories.length > 0 ? (
-						sortedMemories.map((memory) => (
+					{flattenedMemories.length > 0 ? (
+						flattenedMemories.map((memory) => (
 							<div
 								key={memory.id}
 								className='cursor-pointer'
 								onClick={() => handleMemoryLoad(memory.title)}>
 								<article className='space-y-3 shadow-md'>
 									<span className='font-serif text-4xl font-bold'>
-										{memory.id}.
+										{memory.id}
 									</span>
 									<h1
 										className={`font-medium text-xl pb-1 ${
