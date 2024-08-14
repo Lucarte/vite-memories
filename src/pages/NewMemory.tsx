@@ -120,7 +120,7 @@ const CreateMemory = () => {
 		});
 	};
 
-	const onValid: SubmitHandler<MemoryValues> = (data, event) => {
+	const onValid: SubmitHandler<MemoryValues> = (_data, event) => {
 		const formData = new FormData(event?.target as HTMLFormElement);
 		const categoryIds = getValues("category_ids");
 
@@ -130,12 +130,6 @@ const CreateMemory = () => {
 		} else {
 			formData.append("category_ids[]", categoryIds);
 		}
-
-		const urlList = Array.isArray(data.urls) ? data.urls : [];
-		const formattedUrls = urlList.map((url) => ({
-			id: url.url_address,
-			url_address: url.url_address,
-		}));
 
 		submit(formData, {
 			method: "POST",

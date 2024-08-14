@@ -19,7 +19,7 @@ export const loader = async () => {
 };
 
 const PabloLayout = () => {
-	const [loggedIn, setLoggedIn] = useState(false);
+	const [, setLoggedIn] = useState(false);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const { enabled } = useTheme();
 	// Use Outlet context to get footer visibility state from child routes

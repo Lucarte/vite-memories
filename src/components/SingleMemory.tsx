@@ -40,7 +40,7 @@ type DeferredLoaderData = {
 
 const SingleMemory = () => {
 	const deferredData = useLoaderData() as DeferredLoaderData;
-	const [view, setView] = useState<"view" | "edit">("view");
+	const [view] = useState<"view" | "edit">("view");
 	const [isMobile, setIsMobile] = useState<boolean>(false);
 
 	useEffect(() => {

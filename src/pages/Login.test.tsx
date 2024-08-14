@@ -1,4 +1,4 @@
-import { render, screen, userEvent } from "../utils/testUtils";
+import { render, screen } from "../utils/testUtils";
 import { ThemeProvider } from "../context/ThemeContext";
 import { RouterProvider, createMemoryRouter } from "react-router-dom";
 import Login from "../pages/Login";

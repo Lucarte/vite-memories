@@ -10,7 +10,7 @@ import { logout } from "../utils/api";
 import LogoutIcon from "../components/LogoutIcon";
 import { FooterProps } from "../types/FooterProps";
 
-const Footer = ({ enabled, customStyle }: FooterProps) => {
+const Footer = ({ customStyle }: FooterProps) => {
 	const { loggedIn, user } = useLoaderData() as {
 		loggedIn: boolean;
 		user: { id: number; first_name: string } | null;

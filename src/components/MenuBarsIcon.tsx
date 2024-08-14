@@ -2,7 +2,7 @@ import classNames from "classnames";
 
 type Props = {
 	classes?: string;
-	barColor: string;
+	barColor?: string;
 };
 
 const MenuBarsIcon = ({ classes, barColor }: Props) => {

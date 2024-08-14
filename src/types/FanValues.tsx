@@ -1,4 +1,4 @@
-import { Avatar, User } from "./MemoryValues";
+import { Avatar } from "./MemoryValues";
 
 export type FanValues = {
 	id: number;

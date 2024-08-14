@@ -18,10 +18,6 @@ type Props = {
 	memory: MemoryValues;
 };
 
-type DeferredLoaderData = {
-	memory: Promise<MemoryValues>;
-};
-
 const ViewSingleMemoryXL = ({ memory }: Props) => {
 	return (
 		<article className='flex flex-col gap-12 px-16 pt-12 overflow-hidden text-gray-300 screen font-extralight'>

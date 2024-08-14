@@ -9,7 +9,6 @@ import Tailspin from "./Tailspin";
 import { useEffect, useState } from "react";
 import http from "../utils/http";
 import { days, kidOptions, months, years } from "../utils/memoryUtils";
-import { deleteMemory } from "../utils/api";
 
 // Helper function to format the date
 const formatDate = (dateString: string): string => {

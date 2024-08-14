@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest"; // Import Vitest functions
+import { describe, it, expect } from "vitest"; // Import Vitest functions
 import { render, screen } from "../utils/testUtils";
 import ViewSingleMemory from "../components/ViewSingleMemory";
 import { ThemeProvider } from "../context/ThemeContext";

@@ -20,7 +20,7 @@ export const loader = async () => {
 };
 
 const BothLayout = () => {
-	const [loggedIn, setLoggedIn] = useState(false);
+	const [, setLoggedIn] = useState(false);
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const { enabled } = useTheme();
 	const [isSearchVisible, setIsSearchVisible] = useState(false);

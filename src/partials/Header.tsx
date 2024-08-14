@@ -12,7 +12,7 @@ import logoWhiteThick from "../assets/LogoBlack.svg";
 
 const Header = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const [loggedIn, setLoggedIn] = useState(false);
+	const [, setLoggedIn] = useState(false);
 	const [userId, setUserId] = useState<number | null>(null);
 	const [isSearchVisible, setIsSearchVisible] = useState(false);
 	const { enabled } = useTheme();

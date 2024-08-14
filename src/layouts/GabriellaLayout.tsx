@@ -24,7 +24,7 @@ const GabriellaLayout = () => {
 	// Use Outlet context to get footer visibility state from child routes
 	const [showFooter, setShowFooter] = useState(false);
 	const [isSearchVisible, setIsSearchVisible] = useState(false);
-	const [loggedIn, setLoggedIn] = useState(false);
+	const [, setLoggedIn] = useState(false);
 	const [userId, setUserId] = useState<number | null>(null);
 
 	const handleClick = () => {
