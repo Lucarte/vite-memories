@@ -2,6 +2,8 @@ import { Link, useNavigation } from "react-router-dom";
 import CustomButton from "../components/CustomButton";
 import { useTheme } from "../context/ThemeContext";
 import HourGlassSpinner from "../components/HourGlassSpinner";
+import homeBlack from "../assets/HomeBlack.svg";
+import homeWhite from "../assets/HomeWhite.svg";
 
 const Home = () => {
 	const navigation = useNavigation();
@@ -17,11 +19,7 @@ const Home = () => {
 			<div className='relative'>
 				<img
 					className='mb-6 w-60 lg:w-72 lg:-mb-2'
-					src={
-						enabled
-							? "../src/assets/HomeWhite.svg"
-							: "../src/assets/HomeBlack.svg"
-					}
+					src={enabled ? homeWhite : homeBlack}
 					alt='Home Page Logo for Mobile version'
 				/>
 
