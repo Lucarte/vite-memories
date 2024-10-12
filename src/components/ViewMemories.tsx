@@ -87,7 +87,7 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 								<div className='flex justify-end mb-2'>
 									<img
 										className='w-10 h-10 rounded rounded-tl-xl'
-										src={`http://localhost/storage/${memory.user.avatar.avatar_path}`}
+										src={`http://104.248.123.220/storage/${memory.user.avatar.avatar_path}`}
 										alt={`Picture of ${memory.user.first_name} ${memory.user.last_name}`}
 										onError={(e) => {
 											console.error("Failed to load avatar:", e);

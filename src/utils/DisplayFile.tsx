@@ -9,7 +9,7 @@ const displayFile = (file: MemoryFile, customClass?: string) => {
 		return <p>Unsupported file type</p>;
 	}
 
-	const fileUrl = `http://localhost/storage/${file.file_path}`;
+	const fileUrl = `http//104.248.123.220/storage/${file.file_path}`;
 
 	if (mimeType.startsWith("image/")) {
 		return (
