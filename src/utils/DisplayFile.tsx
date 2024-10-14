@@ -9,7 +9,9 @@ const displayFile = (file: MemoryFile, customClass?: string) => {
 		return <p>Unsupported file type</p>;
 	}
 
-	const fileUrl = `http//104.248.123.220/storage/${file.file_path}`;
+	const fileUrl = `http//${import.meta.env.VITE_API_URL}/storage/${
+		file.file_path
+	}`;
 
 	if (mimeType.startsWith("image/")) {
 		return (

@@ -89,7 +89,9 @@ const SingleFan = () => {
 			<div className='flex flex-col gap-2'>
 				{fan.avatar && fan.avatar.avatar_path ? (
 					<img
-						src={`https://104.248.123.220/storage/${fan.avatar.avatar_path}`}
+						src={`https://${import.meta.env.VITE_API_URL}/storage/${
+							fan.avatar.avatar_path
+						}`}
 						alt={`Picture of ${fan.first_name} ${fan.last_name}`}
 						className='w-10 h-10 mb-2 rounded'
 						onError={(e) => {

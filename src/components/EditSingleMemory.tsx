@@ -135,7 +135,9 @@ const EditSingleMemory = ({ memory }: Props) => {
 					<div className='flex justify-end mb-2'>
 						<img
 							className='w-10 h-10 rounded rounded-tl-xl'
-							src={`https://104.248.123.220/storage/${memory.user.avatar.avatar_path}`}
+							src={`https://${import.meta.env.VITE_API_URL}/storage/${
+								memory.user.avatar.avatar_path
+							}`}
 							alt={`Picture of ${memory.user.first_name} ${memory.user.last_name}`}
 						/>
 					</div>

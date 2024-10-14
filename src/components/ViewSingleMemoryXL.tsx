@@ -32,7 +32,9 @@ const ViewSingleMemoryXL = ({ memory }: Props) => {
 						<div className='flex justify-start w-full mb-2'>
 							<img
 								className='w-10 h-10 mt-1'
-								src={`https://104.248.123.220/storage/${memory.user.avatar.avatar_path}`}
+								src={`https://${import.meta.env.VITE_API_URL}/storage/${
+									memory.user.avatar.avatar_path
+								}`}
 								alt={`Picture of ${memory.user.first_name} ${memory.user.last_name}`}
 								onError={(e) => {
 									console.error("Failed to load avatar:", e);
