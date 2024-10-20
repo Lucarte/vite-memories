@@ -6,6 +6,7 @@ import { RegisterFormValues } from "../types/RegisterFormValues";
 import { useSubmit, useNavigate } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 import classNames from "classnames";
+import defaultAvatar from "../assets/default-avatar.jpg";
 
 const relationships = ["Family", "Friend", "Teacher"];
 

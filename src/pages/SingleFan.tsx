@@ -10,6 +10,7 @@ import { FanValues } from "../types/FanValues";
 import { useTheme } from "../context/ThemeContext";
 import { useState } from "react";
 import LineSpinner from "../components/LineSpinner";
+import defaultAvatar from "../assets/default-avatar.jpg";
 
 export const loader: LoaderFunction = async ({ params }) => {
 	const { loggedIn, isAdmin, user } = await loggedInData();
@@ -89,9 +90,14 @@ const SingleFan = () => {
 			<div className='flex flex-col gap-2'>
 				{fan.avatar && fan.avatar.avatar_path ? (
 					<img
-						src={`https://${import.meta.env.VITE_API_URL}/storage/${
-							fan.avatar.avatar_path
-						}`}
+						src={
+							fan.avatar
+								? `https://${import.meta.env.VITE_API_URL}/storage/${
+										fan.avatar.avatar_path
+										// eslint-disable-next-line no-mixed-spaces-and-tabs
+								  }`
+								: defaultAvatar
+						}
 						alt={`Picture of ${fan.first_name} ${fan.last_name}`}
 						className='w-10 h-10 mb-2 rounded'
 						onError={(e) => {

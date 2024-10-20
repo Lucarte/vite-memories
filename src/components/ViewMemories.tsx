@@ -5,7 +5,7 @@ import mime from "mime";
 import displayFile from "../utils/DisplayFile";
 import { useTheme } from "../context/ThemeContext";
 import ScrollUpBtn from "../partials/ScrollUpBtn";
-
+import defaultAvatar from "../assets/default-avatar.jpg";
 // Helper function to format the date
 const formatDate = (dateString: string): string => {
 	const date = new Date(dateString);
@@ -87,9 +87,14 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 								<div className='flex justify-end mb-2'>
 									<img
 										className='w-10 h-10 rounded rounded-tl-xl'
-										src={`http://${import.meta.env.VITE_API_URL}/storage/${
-											memory.user.avatar.avatar_path
-										}`}
+										src={
+											memory.user.avatar
+												? `https://${import.meta.env.VITE_API_URL}/storage/${
+														memory.user.avatar.avatar_path
+														// eslint-disable-next-line no-mixed-spaces-and-tabs
+												  }`
+												: defaultAvatar
+										}
 										alt={`Picture of ${memory.user.first_name} ${memory.user.last_name}`}
 										onError={(e) => {
 											console.error("Failed to load avatar:", e);

@@ -9,6 +9,7 @@ import Tailspin from "./Tailspin";
 import { useEffect, useState } from "react";
 import http from "../utils/http";
 import { days, kidOptions, months, years } from "../utils/memoryUtils";
+import defaultAvatar from "../assets/default-avatar.jpg";
 
 // Helper function to format the date
 const formatDate = (dateString: string): string => {
@@ -135,9 +136,14 @@ const EditSingleMemory = ({ memory }: Props) => {
 					<div className='flex justify-end mb-2'>
 						<img
 							className='w-10 h-10 rounded rounded-tl-xl'
-							src={`https://${import.meta.env.VITE_API_URL}/storage/${
-								memory.user.avatar.avatar_path
-							}`}
+							src={
+								memory.user.avatar
+									? `https://${import.meta.env.VITE_API_URL}/storage/${
+											memory.user.avatar.avatar_path
+											// eslint-disable-next-line no-mixed-spaces-and-tabs
+									  }`
+									: defaultAvatar
+							}
 							alt={`Picture of ${memory.user.first_name} ${memory.user.last_name}`}
 						/>
 					</div>
