@@ -89,7 +89,7 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 										className='w-10 h-10 rounded rounded-tl-xl'
 										src={
 											memory.user.avatar
-												? `https://${import.meta.env.VITE_API_URL}/storage/${
+												? `${import.meta.env.VITE_API_URL}/storage/${
 														memory.user.avatar.avatar_path
 														// eslint-disable-next-line no-mixed-spaces-and-tabs
 												  }`

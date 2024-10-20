@@ -92,7 +92,7 @@ const SingleFan = () => {
 					<img
 						src={
 							fan.avatar
-								? `https://${import.meta.env.VITE_API_URL}/storage/${
+								? `${import.meta.env.VITE_API_URL}/storage/${
 										fan.avatar.avatar_path
 										// eslint-disable-next-line no-mixed-spaces-and-tabs
 								  }`
