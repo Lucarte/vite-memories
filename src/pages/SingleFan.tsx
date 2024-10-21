@@ -92,10 +92,7 @@ const SingleFan = () => {
 					<img
 						src={
 							fan.avatar
-								? `${import.meta.env.VITE_API_URL}/storage/${
-										fan.avatar.avatar_path
-										// eslint-disable-next-line no-mixed-spaces-and-tabs
-								  }`
+								? `https://www.mypearlsofgreatprice.de/storage/${fan.avatar.avatar_path}`
 								: defaultAvatar
 						}
 						alt={`Picture of ${fan.first_name} ${fan.last_name}`}

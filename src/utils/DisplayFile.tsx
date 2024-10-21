@@ -9,9 +9,8 @@ const displayFile = (file: MemoryFile, customClass?: string) => {
 		return <p>Unsupported file type</p>;
 	}
 
-	const fileUrl = `http//${import.meta.env.VITE_API_URL}/storage/${
-		file.file_path
-	}`;
+	const fileUrl = `https://www.mypearlsofgreatprice.de/storage/${file.file_path}`;
+	// const fileUrl = `${import.meta.env.VITE_API_URL}/storage/${file.file_path}`;
 
 	if (mimeType.startsWith("image/")) {
 		return (
