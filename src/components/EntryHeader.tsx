@@ -1,4 +1,4 @@
-import editIcon from "../media/featherEdit.png";
+import editIcon from "../assets/EditIcon.svg";
 const EntryHeader = () => {
 	return (
 		<>
