@@ -92,7 +92,7 @@ const SingleFan = () => {
 					<img
 						src={
 							fan.avatar
-								? `https://www.mypearlsofgreatprice.de/storage/${fan.avatar.avatar_path}`
+								? `${import.meta.env.VITE_API_URL}/${fan.avatar.avatar_path}`
 								: defaultAvatar
 						}
 						alt={`Picture of ${fan.first_name} ${fan.last_name}`}

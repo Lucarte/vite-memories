@@ -89,7 +89,10 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 										className='w-10 h-10 rounded rounded-tl-xl'
 										src={
 											memory.user.avatar
-												? `https://www.mypearlsofgreatprice.de/storage/${memory.user.avatar.avatar_path}`
+												? `${import.meta.env.VITE_API_URL}/${
+														memory.user.avatar.avatar_path
+														// eslint-disable-next-line no-mixed-spaces-and-tabs
+												  }`
 												: defaultAvatar
 										}
 										alt={`Picture of ${memory.user.first_name} ${memory.user.last_name}`}
