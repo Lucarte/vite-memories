@@ -10,7 +10,9 @@ const displayFile = (file: MemoryFile, customClass?: string) => {
 	}
 
 	// const fileUrl = `https://www.mypearlsofgreatprice.de/storage/${file.file_path}`;
-	const fileUrl = `${import.meta.env.VITE_API_URL}/${file.file_path}`;
+	const fileUrl = `${import.meta.env.VITE_DO_SPACES_ENDPOINT}/${
+		import.meta.env.VITE_DO_SPACES_BUCKET
+	}/${file.file_path}`;
 
 	if (mimeType.startsWith("image/")) {
 		return (

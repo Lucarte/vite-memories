@@ -92,7 +92,10 @@ const SingleFan = () => {
 					<img
 						src={
 							fan.avatar
-								? `${import.meta.env.VITE_API_URL}/${fan.avatar.avatar_path}`
+								? `${import.meta.env.VITE_DO_SPACES_ENDPOINT}/${
+										import.meta.env.VITE_DO_SPACES_BUCKET
+										// eslint-disable-next-line no-mixed-spaces-and-tabs
+								  }/${fan.avatar.avatar_path}`
 								: defaultAvatar
 						}
 						alt={`Picture of ${fan.first_name} ${fan.last_name}`}
