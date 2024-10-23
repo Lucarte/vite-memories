@@ -25,7 +25,7 @@ const Footer = ({ customStyle }: FooterProps) => {
 					action='/logout'
 					method='POST'
 					className='flex items-center gap-4'>
-					<p className='text-sm text-black lg:font-bold lg:text-lg'>
+					<p className='text-[1.18rem] text-black lg:font-bold lg:text-lg'>
 						{loggedIn
 							? `Welcome to the past, ${userName}!`
 							: "Welcome to the past!"}
