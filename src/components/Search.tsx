@@ -1,7 +1,7 @@
 import Client from "meilisearch";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { SearchResult } from "../types/SearchResult";
-import { Index } from "meilisearch";
+// import { Index } from "meilisearch";
 import LineSpinner from "./LineSpinner";
 import { Link } from "react-router-dom";
 
@@ -24,10 +24,10 @@ const Search = ({ onResultClick, initialQuery, category }: SearchProps) => {
 	const [loading, setLoading] = useState(false);
 
 	// Function to handle the search operation
-	const handleSearch = async () => {
+	const handleSearch = useCallback(async () => {
 		setLoading(true);
 		try {
-			const index: Index = client.index("memories");
+			const index = client.index("memories");
 			const searchResults = await index.search<SearchResult>(query, {
 				filter: category ? `category = "${category}"` : "",
 			});
@@ -36,7 +36,7 @@ const Search = ({ onResultClick, initialQuery, category }: SearchProps) => {
 			console.error("Error searching:", error);
 		}
 		setLoading(false);
-	};
+	}, [query, category]); // Add query and category as dependencies
 
 	// Effect to perform search when query changes
 	useEffect(() => {
@@ -45,7 +45,30 @@ const Search = ({ onResultClick, initialQuery, category }: SearchProps) => {
 		} else {
 			setResults([]);
 		}
-	}, [query]);
+	}, [query, handleSearch]); // Add handleSearch as a dependency
+	// // Function to handle the search operation
+	// const handleSearch = async () => {
+	// 	setLoading(true);
+	// 	try {
+	// 		const index: Index = client.index("memories");
+	// 		const searchResults = await index.search<SearchResult>(query, {
+	// 			filter: category ? `category = "${category}"` : "",
+	// 		});
+	// 		setResults(searchResults.hits as SearchResult[]);
+	// 	} catch (error) {
+	// 		console.error("Error searching:", error);
+	// 	}
+	// 	setLoading(false);
+	// };
+
+	// // Effect to perform search when query changes
+	// useEffect(() => {
+	// 	if (query.length > 0) {
+	// 		handleSearch();
+	// 	} else {
+	// 		setResults([]);
+	// 	}
+	// }, [query]);
 
 	return (
 		<div className=''>
