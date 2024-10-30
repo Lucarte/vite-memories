@@ -63,7 +63,7 @@ const SingleMemory = () => {
 		<SingleMemoryXL />
 	) : (
 		<>
-			<h1 className='pb-6 mt-8 -mb-24 text-xl font-bold text-center'>
+			<h1 className='pb-20 mt-8 -mb-24 text-xl font-bold text-center'>
 				s.i.n.g.l.e <br /> .M.e.m.o.r.Y.
 			</h1>
 			<article className='flex flex-col items-center gap-6 pt-8 pb-48 overflow-hidden text-right text-gray-300 font-extralight'>
