@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import http from "../utils/http";
 import { days, kidOptions, months, years } from "../utils/memoryUtils";
 import defaultAvatar from "../assets/default-avatar.jpg";
+import editIcon from "../assets/EditIcon.svg";
 
 // Helper function to format the date
 const formatDate = (dateString: string): string => {
@@ -243,7 +244,7 @@ const EditSingleMemory = ({ memory }: Props) => {
 						className={`${
 							enabled ? "text-white" : ""
 						} 'w-8 h-8 cursor-pointer'`}
-						src='/src/assets/EditIcon.svg'
+						src={editIcon}
 						alt='link to edit entry'
 						onClick={() => setShowEdit(!showEdit)}
 					/>
