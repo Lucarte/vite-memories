@@ -69,7 +69,7 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 	return (
 		<>
 			<ScrollUpBtn />
-			<h1 className='pt-4 pb-6 text-xl font-bold text-center'>
+			<h1 className='pt-8 pb-20 text-xl font-bold text-center'>
 				{/* .M.e.m.o.r.i.e.S. */}
 				{getTitle()}
 			</h1>
