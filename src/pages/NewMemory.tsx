@@ -261,7 +261,7 @@ const CreateMemory = () => {
 						<label
 							htmlFor='date'
 							className='text-sm font-semibold text-gray-700 '>
-							Date
+							Date of Memory
 						</label>
 						<div className='flex space-x-4'>
 							<select
