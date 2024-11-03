@@ -59,14 +59,14 @@ export const useFileUpload = () => {
 				let maxSize = 0;
 
 				if (validImageExtensions.includes(fileExtension)) {
-					maxSize = 3 * 1024 * 1024; // 3MB for images
+					maxSize = 10 * 1024 * 1024; // 3MB for images
 					imageFiles.push(file);
 					setImagePreviews((prevPreviews) => [
 						...prevPreviews,
 						URL.createObjectURL(file),
 					]);
 				} else if (validAudioExtensions.includes(fileExtension)) {
-					maxSize = 20 * 1024 * 1024; // 20MB for audio
+					maxSize = 30 * 1024 * 1024; // 20MB for audio
 					audioFiles.push(file);
 					setAudioPreviews((prevPreviews) => [
 						...prevPreviews,
