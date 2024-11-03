@@ -37,18 +37,6 @@ git clone https://github.com/lucarte/vite-memories
 npm run dev
 ```
 
-## Login Credentials
-
-#### Administrator Role
-
-- E-Mail: luca@mail.com
-- Passwort: Password?1
-
-#### Regular User Role
-
-- E-Mail: gabriel@mail.com
-- Passwort: Password?1
-
 ## Runnig Tests
 
 In order to run the Vitest Tests simply open the terminal and run this command:

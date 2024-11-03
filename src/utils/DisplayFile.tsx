@@ -19,20 +19,9 @@ const displayFile = (file: MemoryFile, customClass?: string) => {
 				src={fileUrl}
 				alt={`Memory ${file.id}`}
 				className={`aspect-square object-cover w-full h-full ${
-					customClass || "rounded-4xl"
+					customClass || "rounded-3xl"
 				}`}
 			/>
-		);
-	} else if (mimeType.startsWith("video/")) {
-		return (
-			<video
-				controls
-				className={`w-full h-full aspect-video object-cover ${
-					customClass || "rounded-4xl"
-				}`}>
-				<source src={fileUrl} type={mimeType} />
-				Your browser does not support the video tag.
-			</video>
 		);
 	} else if (mimeType.startsWith("audio/")) {
 		return (
