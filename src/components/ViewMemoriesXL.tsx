@@ -41,7 +41,7 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 			<div className='grid h-full pr-10 pt-16 grid-cols-[auto,1fr] pb-20'>
 				{/* Left Column - List of Titles */}
 				<div className='sticky max-h-screen max-w-[20rem] pl-12 pr-24 overflow-y-auto top-16'>
-					<ul className='space-y-4 text-lg text-left lowercase list-none'>
+					<ul className='space-y-4 text-left lowercase list-none text-md'>
 						{flattenedMemories.map((memory) => (
 							<li
 								key={memory.id}
@@ -56,7 +56,7 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 				{/* Right Column - Memory Files */}
 				<div
 					ref={containerRef}
-					className='grid grid-cols-1 overflow-auto text-justify gap-y-16 gap-x-10 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5'>
+					className='grid grid-cols-1 pl-8 overflow-auto text-justify gap-y-16 gap-x-10 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5'>
 					<ScrollUpBtn />
 					{flattenedMemories.length > 0 ? (
 						flattenedMemories.map((memory) => (

@@ -30,7 +30,7 @@ const ViewSingleMemoryXL = ({ memory }: Props) => {
 							<p>{formatDate(memory.created_at)}</p>
 							<p>{`By: ${memory.user.first_name} ${memory.user.last_name}`}</p>
 						</div>
-						<div className='flex justify-start w-full mb-2'>
+						<div className='flex justify-start w-full mb-2 -ml-3'>
 							<img
 								className='w-10 h-10 mt-1'
 								src={
