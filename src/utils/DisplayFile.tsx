@@ -9,7 +9,6 @@ const displayFile = (file: MemoryFile, customClass?: string) => {
 		return <p>Unsupported file type</p>;
 	}
 
-	// const fileUrl = `https://www.mypearlsofgreatprice.de/storage/${file.file_path}`;
 	const fileUrl = `${import.meta.env.VITE_DO_SPACES_ENDPOINT}/${
 		import.meta.env.VITE_DO_SPACES_BUCKET
 	}/${file.file_path}`;
@@ -20,7 +19,7 @@ const displayFile = (file: MemoryFile, customClass?: string) => {
 				src={fileUrl}
 				alt={`Memory ${file.id}`}
 				className={`aspect-square object-cover w-full h-full ${
-					customClass || "rounded-2xl rounded-tl-[7rem]"
+					customClass || "rounded-4xl"
 				}`}
 			/>
 		);
@@ -29,7 +28,7 @@ const displayFile = (file: MemoryFile, customClass?: string) => {
 			<video
 				controls
 				className={`w-full h-full aspect-video object-cover ${
-					customClass || "rounded-2xl rounded-tl-[7rem]"
+					customClass || "rounded-4xl"
 				}`}>
 				<source src={fileUrl} type={mimeType} />
 				Your browser does not support the video tag.
