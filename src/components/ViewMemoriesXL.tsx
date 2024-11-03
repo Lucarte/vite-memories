@@ -40,8 +40,8 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 			{/* Main Container with padding for margins */}
 			<div className='grid h-full pr-10 pt-16 grid-cols-[auto,1fr] pb-20'>
 				{/* Left Column - List of Titles */}
-				<div className='sticky max-h-screen pl-12 pr-24 overflow-y-auto top-16'>
-					<ul className='space-y-4 text-xl text-left lowercase list-none'>
+				<div className='sticky max-h-screen max-w-[20rem] pl-12 pr-24 overflow-y-auto top-16'>
+					<ul className='space-y-4 text-lg text-left lowercase list-none'>
 						{flattenedMemories.map((memory) => (
 							<li
 								key={memory.id}
