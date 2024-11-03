@@ -86,7 +86,7 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 							<section className='flex flex-col w-full'>
 								<div className='flex justify-end mb-2'>
 									<img
-										className='w-10 h-10 rounded rounded-tl-xl'
+										className='w-10 h-10 rounded-md'
 										src={
 											memory.user.avatar
 												? `${import.meta.env.VITE_DO_SPACES_ENDPOINT}/${

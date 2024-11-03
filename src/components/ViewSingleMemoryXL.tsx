@@ -26,13 +26,13 @@ const ViewSingleMemoryXL = ({ memory }: Props) => {
 			<section className='flex justify-center w-full'>
 				<div className='flex flex-col w-full max-w-3xl gap-10'>
 					<div className='flex gap-10'>
-						<div className='flex flex-col items-end w-full pr-[3.5rem] font-light text-gray-500'>
+						<div className='flex flex-col items-end w-full pr-[3.5rem] font-light text-violet-600'>
 							<p>{formatDate(memory.created_at)}</p>
 							<p>{`By: ${memory.user.first_name} ${memory.user.last_name}`}</p>
 						</div>
 						<div className='flex justify-start w-full mb-2 -ml-12'>
 							<img
-								className='w-10 h-10 mt-1'
+								className='w-10 h-10 mt-1 -ml-2'
 								src={
 									memory.user.avatar
 										? `${import.meta.env.VITE_DO_SPACES_ENDPOINT}/${
