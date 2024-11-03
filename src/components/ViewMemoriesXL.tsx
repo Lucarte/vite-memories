@@ -35,6 +35,11 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 		}))
 	);
 
+	// Filtered list for the left column (only the original title)
+	const originalTitles = flattenedMemories.filter(
+		(memory) => !memory.title.includes("(cont.)")
+	);
+
 	return (
 		<div className='min-h-screen pb-24 mx-10 text-white bg-black'>
 			{/* Main Container with padding for margins */}
@@ -42,7 +47,7 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 				{/* Left Column - List of Titles */}
 				<div className='sticky max-h-screen max-w-[20rem] pl-12 pr-24 overflow-y-auto top-16'>
 					<ul className='space-y-4 text-left lowercase list-none text-md'>
-						{flattenedMemories.map((memory) => (
+						{originalTitles.map((memory) => (
 							<li
 								key={memory.id}
 								className='cursor-pointer hover:text-gray-500'
