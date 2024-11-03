@@ -11,20 +11,19 @@ import LogoutIcon from "../components/LogoutIcon";
 import { FooterProps } from "../types/FooterProps";
 
 const Footer = ({ customStyle }: FooterProps) => {
-	const { loggedIn, user } = useLoaderData() as {
+	const { loggedIn, isAdmin, user } = useLoaderData() as {
 		loggedIn: boolean;
-		user: { id: number; first_name: string; role: string } | null;
+		isAdmin: boolean;
+		user: { id: number; first_name: string } | null;
 	};
+
+	// Determine the display name based on the `isAdmin` status
 	const userName =
-		loggedIn && user
-			? user.role === "admin"
-				? "Mammut"
-				: `${user.first_name}`
-			: "";
+		loggedIn && user ? (isAdmin ? "Mammut" : user.first_name) : "";
 
 	return (
 		<footer
-			className={`${customStyle} fixed bottom-0 bg-white flex shadow-inner items-center z-10 justify-center w-[calc(100vw-16px)] h-20 font-titles `}>
+			className={`${customStyle} fixed bottom-0 bg-white flex shadow-inner items-center z-10 justify-center w-[calc(100vw-16px)] h-20 font-titles`}>
 			<div className='flex items-center justify-between'>
 				<Form
 					action='/logout'
