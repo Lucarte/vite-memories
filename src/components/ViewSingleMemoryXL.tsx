@@ -26,7 +26,7 @@ const ViewSingleMemoryXL = ({ memory }: Props) => {
 			<section className='flex justify-center w-full'>
 				<div className='flex flex-col w-full max-w-3xl gap-10'>
 					<div className='flex gap-10'>
-						<div className='flex flex-col items-end w-full pr-6 font-light text-gray-500'>
+						<div className='flex flex-col items-end w-full pr-[3.5rem] font-light text-gray-500'>
 							<p>{formatDate(memory.created_at)}</p>
 							<p>{`By: ${memory.user.first_name} ${memory.user.last_name}`}</p>
 						</div>
