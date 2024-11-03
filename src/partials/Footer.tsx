@@ -13,9 +13,14 @@ import { FooterProps } from "../types/FooterProps";
 const Footer = ({ customStyle }: FooterProps) => {
 	const { loggedIn, user } = useLoaderData() as {
 		loggedIn: boolean;
-		user: { id: number; first_name: string } | null;
+		user: { id: number; first_name: string; role: string } | null;
 	};
-	const userName = loggedIn && user ? `${user.first_name}` : "";
+	const userName =
+		loggedIn && user
+			? user.role === "admin"
+				? "Mammut"
+				: `${user.first_name}`
+			: "";
 
 	return (
 		<footer
