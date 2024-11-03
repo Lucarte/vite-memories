@@ -47,7 +47,7 @@ const ViewSingleMemory: React.FC<Props> = ({ memory }) => {
 				</div>
 				<div
 					className={`flex flex-col font-light items-end w-full ${
-						enabled ? "text-violet-600" : "text-violet-600"
+						enabled ? "text-gray-600" : "text-black text-opacity-40"
 					}`}>
 					<p>{formatDate(memory.created_at)}</p>
 					<p>{`By: ${memory.user.first_name} ${memory.user.last_name}`}</p>
