@@ -15,8 +15,8 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 	const navigate = useNavigate();
 	const containerRef = React.useRef<HTMLDivElement | null>(null);
 
-	const handleMemoryLoad = (title: string) => {
-		navigate(`/memories/title/${title}`);
+	const handleMemoryLoad = (id: number) => {
+		navigate(`/memories/${id}`);
 	};
 
 	// Sort memories from newest to oldest
@@ -30,7 +30,7 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 		memory.files.map((file, index) => ({
 			...memory,
 			files: [file], // Only keep the single file for this memory
-			id: index === 0 ? memory.id : `${memory.id}. (cont.)`,
+			id: index === 0 ? memory.id : `${memory.id}. (cont.)`, // Can produce a string id
 			title: index === 0 ? memory.title : `${memory.title} (cont.)`,
 		}))
 	);
@@ -51,7 +51,10 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 							<li
 								key={memory.id}
 								className='cursor-pointer hover:text-gray-500'
-								onClick={() => handleMemoryLoad(memory.title)}>
+								onClick={() =>
+									typeof memory.id === "number" && handleMemoryLoad(memory.id)
+								} // Only call if id is a number
+							>
 								{memory.title}
 							</li>
 						))}
@@ -65,10 +68,7 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 					<ScrollUpBtn />
 					{flattenedMemories.length > 0 ? (
 						flattenedMemories.map((memory) => (
-							<div
-								key={memory.id}
-								className='cursor-pointer'
-								onClick={() => handleMemoryLoad(memory.title)}>
+							<div key={memory.id} className='cursor-pointer'>
 								<article className='space-y-3 shadow-md'>
 									<span className='font-serif text-4xl font-bold'>
 										{memory.id}
@@ -93,7 +93,12 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 														className={`relative overflow-hidden ${
 															isImageOrVideo ? "group" : ""
 														}`}
-														key={file.id}>
+														key={file.id}
+														onClick={() =>
+															typeof memory.id === "number" &&
+															handleMemoryLoad(memory.id)
+														} // Only call if id is a number
+													>
 														{/* Media item with hover effect */}
 														{displayFile(
 															file,
