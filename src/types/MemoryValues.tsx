@@ -1,4 +1,5 @@
 export type MemoryValues = {
+	memory_date: string | number | Date;
 	id: number;
 	kid: string;
 	title: string;

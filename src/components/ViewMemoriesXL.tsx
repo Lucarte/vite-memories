@@ -23,7 +23,7 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 	// Sort memories from newest to oldest
 	const sortedMemories = memories.sort(
 		(a, b) =>
-			new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+			new Date(b.memory_date).getTime() - new Date(a.memory_date).getTime()
 	);
 
 	return (
