@@ -15,8 +15,9 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 	const navigate = useNavigate();
 	const containerRef = React.useRef<HTMLDivElement | null>(null);
 
-	const handleMemoryLoad = (id: number) => {
-		navigate(`/memories/${id}`);
+	// Navigate using the memory title
+	const handleMemoryLoad = (title: string) => {
+		navigate(`/memories/title/${title}`);
 	};
 
 	// Sort memories from newest to oldest
@@ -36,7 +37,7 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 							<li
 								key={memory.id}
 								className='cursor-pointer hover:text-gray-500'
-								onClick={() => handleMemoryLoad(memory.id)}>
+								onClick={() => handleMemoryLoad(memory.title)}>
 								{memory.title}
 							</li>
 						))}
@@ -53,7 +54,7 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 							<div
 								key={memory.id}
 								className='cursor-pointer'
-								onClick={() => handleMemoryLoad(memory.id)}>
+								onClick={() => handleMemoryLoad(memory.title)}>
 								<article className='space-y-3 shadow-md'>
 									<span className='font-serif text-4xl font-bold'>
 										{memory.id}
