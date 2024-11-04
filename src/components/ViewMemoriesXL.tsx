@@ -15,8 +15,12 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 	const navigate = useNavigate();
 	const containerRef = React.useRef<HTMLDivElement | null>(null);
 
-	const handleMemoryLoad = (id: number) => {
-		navigate(`/memories/${id}`);
+	const handleMemoryLoad = (id: number | string) => {
+		// If id is a string, convert to a number if it’s valid, else skip
+		const numericId = typeof id === "number" ? id : parseInt(id, 10);
+		if (!isNaN(numericId)) {
+			navigate(`/memories/${numericId}`);
+		}
 	};
 
 	// Sort memories from newest to oldest
@@ -30,7 +34,7 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 		memory.files.map((file, index) => ({
 			...memory,
 			files: [file], // Only keep the single file for this memory
-			id: index === 0 ? memory.id : `${memory.id}. (cont.)`, // Can produce a string id
+			id: index === 0 ? memory.id : `${memory.id}-cont`, // Use a hyphen for easier parse
 			title: index === 0 ? memory.title : `${memory.title} (cont.)`,
 		}))
 	);
@@ -42,19 +46,14 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 
 	return (
 		<div className='min-h-screen pb-24 mx-10 text-white bg-black'>
-			{/* Main Container with padding for margins */}
 			<div className='grid h-full pr-10 pt-16 grid-cols-[auto,1fr] pb-20'>
-				{/* Left Column - List of Titles */}
 				<div className='sticky max-h-screen max-w-[20rem] pl-12 pr-24 overflow-y-auto top-16'>
 					<ul className='space-y-4 text-left lowercase list-none text-md'>
 						{originalTitles.map((memory) => (
 							<li
 								key={memory.id}
 								className='cursor-pointer hover:text-gray-500'
-								onClick={() =>
-									typeof memory.id === "number" && handleMemoryLoad(memory.id)
-								} // Only call if id is a number
-							>
+								onClick={() => handleMemoryLoad(memory.id)}>
 								{memory.title}
 							</li>
 						))}
@@ -68,7 +67,10 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 					<ScrollUpBtn />
 					{flattenedMemories.length > 0 ? (
 						flattenedMemories.map((memory) => (
-							<div key={memory.id} className='cursor-pointer'>
+							<div
+								key={memory.id}
+								className='cursor-pointer'
+								onClick={() => handleMemoryLoad(memory.id)}>
 								<article className='space-y-3 shadow-md'>
 									<span className='font-serif text-4xl font-bold'>
 										{memory.id}
@@ -93,20 +95,13 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 														className={`relative overflow-hidden ${
 															isImageOrVideo ? "group" : ""
 														}`}
-														key={file.id}
-														onClick={() =>
-															typeof memory.id === "number" &&
-															handleMemoryLoad(memory.id)
-														} // Only call if id is a number
-													>
-														{/* Media item with hover effect */}
+														key={file.id}>
 														{displayFile(
 															file,
 															isAudio
 																? "bg-white no-rounded-corners"
 																: "rounded-none"
 														)}
-														{/* Hover overlay for images and videos */}
 														{isImageOrVideo && memory.description && (
 															<div className='absolute inset-0 flex items-center justify-center text-white transition-opacity duration-300 bg-black opacity-0 group-hover:opacity-100'>
 																<p className='p-4 text-sm'>
@@ -114,7 +109,6 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 																</p>
 															</div>
 														)}
-														{/* Apply description below audio */}
 														{isAudio && memory.description && (
 															<p className='pt-4 overflow-auto max-h-72'>
 																{memory.description}
@@ -124,7 +118,6 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 												);
 											})
 										) : (
-											// Display description if no files exist
 											<p className='overflow-auto max-h-80'>
 												{memory.description}
 											</p>
