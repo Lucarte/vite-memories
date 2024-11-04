@@ -34,7 +34,7 @@ const GabIntroMobile = () => {
 			<div className='mt-72'>
 				<Link
 					to='/memory/create'
-					className='relative overflow-hidden inline-block h-[1.8rem] px-3 pt-3 text-white bg-black rounded-tl-lg rounded-tr-lg dark:bg-white dark:text-black mb-6'>
+					className='relative overflow-hidden inline-block h-[1.8rem] px-3 pt-3 text-white bg-black rounded-tl-lg rounded-tr-lg dark:bg-white dark:text-black mb-2'>
 					<span className='text-white uppercase dark:text-black animate-bounceText'>
 						Add Memory
 					</span>

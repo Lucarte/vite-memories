@@ -113,7 +113,7 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 							<section>
 								<h1
 									className={`font-sans font-medium underline text-2xl tracking-widest ${
-										enabled ? "text-gray-200 mb-3" : "text-black mb-6"
+										enabled ? "text-gray-200 mb-3" : "text-black mb-2"
 									}`}>
 									{memory.title}{" "}
 								</h1>
