@@ -32,10 +32,12 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 	};
 
 	// Sort memories from newest to oldest
-	const sortedMemories = memories.sort(
+	const sortedMemories = [...memories].sort(
 		(a, b) =>
 			new Date(b.memory_date).getTime() - new Date(a.memory_date).getTime()
 	);
+
+	console.log(memories.map((memory) => memory.memory_date));
 
 	const getTitle = () => {
 		if (location.pathname.includes("/pablo/memories")) {
@@ -198,39 +200,6 @@ const ViewMemories: React.FC<ViewMemoriesProps> = ({ memories }) => {
 			) : (
 				<p className='text-center text-orange-500'>No memories founD</p>
 			)}
-			{/* <aside
-				className={classNames(
-					"flex mb-36 mt-16 items-center justify-center cursor-pointer",
-					{
-						"-mt-10": view !== "edit",
-						"-mt-20": view === "edit",
-					}
-				)}>
-				<div className='flex justify-center gap-1'>
-					<button
-						onClick={() => setView("view")}
-						className={classNames(
-							"py-1 text-sm px-3 rounded-md rounded-bl-none border-2 ",
-							{
-								"border-black bg-black text-white": view !== "view",
-								"border-black bg-white text-black": view === "view",
-							}
-						)}>
-						View <br /> Memories
-					</button>
-					<button
-						onClick={() => setView("edit")}
-						className={classNames(
-							"py-1 text-sm px-3 rounded-md rounded-br-none border-2",
-							{
-								"border-black bg-black text-white": view !== "edit",
-								"border-black bg-white text-black": view === "edit",
-							}
-						)}>
-						Update <br /> Memories
-					</button>
-				</div>
-			</aside> */}
 		</>
 	);
 };

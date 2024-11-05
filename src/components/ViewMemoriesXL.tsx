@@ -21,10 +21,12 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 	};
 
 	// Sort memories from newest to oldest
-	const sortedMemories = memories.sort(
+	const sortedMemories = [...memories].sort(
 		(a, b) =>
 			new Date(b.memory_date).getTime() - new Date(a.memory_date).getTime()
 	);
+
+	console.log(memories.map((memory) => memory.memory_date));
 
 	return (
 		<div className='min-h-screen pb-24 mx-10 text-white bg-black'>
