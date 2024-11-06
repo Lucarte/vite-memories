@@ -26,7 +26,12 @@ const ViewMemoriesXL = ({ memories }: ViewMemoriesProps) => {
 			new Date(b.memory_date).getTime() - new Date(a.memory_date).getTime()
 	);
 
-	console.log(memories.map((memory) => memory.memory_date));
+	// Log the memory data and check the memory_date field
+	console.log("Fetched Memories Data:", memories); // Logs full data for each memory
+	console.log(
+		"Memory Dates:",
+		memories.map((memory) => memory.memory_date)
+	); // Logs dates to check for proper ordering
 
 	return (
 		<div className='min-h-screen pb-24 mx-10 text-white bg-black'>
