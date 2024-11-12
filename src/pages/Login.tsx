@@ -1,4 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
+import { useState, useEffect } from "react";
 import CustomButton from "../components/CustomButton";
 import {
 	ActionFunction,
@@ -16,7 +17,6 @@ import {
 } from "react-hook-form";
 import { useTheme } from "../context/ThemeContext";
 import { login } from "../utils/api";
-import { useEffect } from "react";
 import { json } from "react-router-dom";
 
 type FormValues = {
@@ -48,6 +48,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 const Login = () => {
 	const { enabled } = useTheme();
+	const [showPassword, setShowPassword] = useState(false);
 	const {
 		register,
 		handleSubmit,
@@ -96,6 +97,10 @@ const Login = () => {
 		}
 	}, [actionData, navigate, from]);
 
+	const togglePasswordVisibility = () => {
+		setShowPassword((prevState) => !prevState);
+	};
+
 	return (
 		<article className='flex flex-col items-center px-6 py-12 text-center'>
 			<h1
@@ -109,6 +114,7 @@ const Login = () => {
 				autoComplete='off'
 				onSubmit={handleSubmit(onValid, onInvalid)}
 				className='mt-12 space-y-8 md:w-[19rem] flex flex-col items-center'>
+				{/* Email Input */}
 				<div className='relative'>
 					<label
 						htmlFor='email'
@@ -123,16 +129,13 @@ const Login = () => {
 						type='email'
 						className={`w-[17rem] rounded-[3px] py-4 px-6 ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-blue-600 sm:leading-6 ${
 							enabled
-								? "bg-black border-white text-white placeholder:text-gray-500 "
-								: "bg-white border-black text-black placeholder:text-gray-500 "
+								? "bg-black border-white text-white placeholder:text-gray-500"
+								: "bg-white border-black text-black placeholder:text-gray-500"
 						}`}
 						placeholder='me@gmail.com'
 						aria-invalid={errors.email ? "true" : "false"}
 						{...register("email", {
-							required: {
-								value: true,
-								message: "Please enter an email",
-							},
+							required: "Please enter an email",
 							pattern: {
 								value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
 								message: "Invalid email format",
@@ -145,6 +148,8 @@ const Login = () => {
 						</p>
 					)}
 				</div>
+
+				{/* Password Input with Show/Hide Toggle */}
 				<div className='relative flex flex-col items-center'>
 					<label
 						htmlFor='password'
@@ -153,46 +158,56 @@ const Login = () => {
 						}`}>
 						Password
 					</label>
-					<input
-						id='password'
-						className={`w-[17rem] rounded-[3px] py-4 px-6 ring-[2.5px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-blue-600 ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
-							enabled
-								? "bg-black border-white text-white placeholder:text-gray-500"
-								: "bg-white border-black text-black placeholder:text-gray-500"
-						}`}
-						placeholder='password'
-						type='password'
-						aria-invalid={errors.password ? "true" : "false"}
-						{...register("password", {
-							required: {
-								value: true,
-								message: "Please enter a password",
-							},
-							validate: {
-								minLength: (value) =>
-									value.length >= 8 ||
-									"Password must be at least 8 characters long",
-								lowercase: (value) =>
-									/^(?=.*[a-z])/.test(value) ||
-									"Password must contain at least one lowercase letter",
-								uppercase: (value) =>
-									/^(?=.*[A-Z])/.test(value) ||
-									"Password must contain at least one uppercase letter",
-								number: (value) =>
-									/^(?=.*\d)/.test(value) ||
-									"Password must contain at least one number",
-								specialChar: (value) =>
-									/^(?=.*[@$!%*?&])/.test(value) ||
-									"Password must contain at least one special character",
-							},
-						})}
-					/>
+					<div className='relative w-[17rem]'>
+						<input
+							id='password'
+							type={showPassword ? "text" : "password"}
+							className={`w-full rounded-[3px] py-4 px-6 ring-[2.5px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-blue-600 ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
+								enabled
+									? "bg-black border-white text-white placeholder:text-gray-500"
+									: "bg-white border-black text-black placeholder:text-gray-500"
+							}`}
+							placeholder='password'
+							aria-invalid={errors.password ? "true" : "false"}
+							{...register("password", {
+								required: {
+									value: true,
+									message: "Please enter a password",
+								},
+								validate: {
+									minLength: (value) =>
+										value.length >= 8 ||
+										"Password must be at least 8 characters long",
+									lowercase: (value) =>
+										/^(?=.*[a-z])/.test(value) ||
+										"Password must contain at least one lowercase letter",
+									uppercase: (value) =>
+										/^(?=.*[A-Z])/.test(value) ||
+										"Password must contain at least one uppercase letter",
+									number: (value) =>
+										/^(?=.*\d)/.test(value) ||
+										"Password must contain at least one number",
+									specialChar: (value) =>
+										/^(?=.*[@$!%*?&])/.test(value) ||
+										"Password must contain at least one special character",
+								},
+							})}
+						/>
+						<button
+							type='button'
+							onClick={togglePasswordVisibility}
+							className='absolute inset-y-0 text-gray-500 right-4 hover:text-gray-700 focus:outline-none'>
+							{showPassword ? "Hide" : "Show"}
+						</button>
+					</div>
 					{errors.password && (
 						<p className='max-w-[17rem] w-full px-4 py-2 mb-8 text-sm text-white bg-black rounded-md dark:text-black dark:bg-white rounded-bl-3xl rounded-br-3xl'>
 							{errors.password?.message}
 						</p>
 					)}
 				</div>
+
+				{/* Submit Button */}
 				<CustomButton
 					type='submit'
 					classes={`px-3 uppercase text-md py-3 rounded-tr-none rounded-bl-none rounded-2xl font-medium leading-6 focus-visible:outline focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-blue-600 ${
