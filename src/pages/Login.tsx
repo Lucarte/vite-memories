@@ -18,6 +18,8 @@ import {
 import { useTheme } from "../context/ThemeContext";
 import { login } from "../utils/api";
 import { json } from "react-router-dom";
+import HidePasswordIcon from "../assets/HidePasswordIcon.svg";
+import ShowPasswordIcon from "../assets/ShowPasswordIcon.svg";
 
 type FormValues = {
 	email: string;
@@ -153,7 +155,7 @@ const Login = () => {
 				<div className='relative flex flex-col items-center'>
 					<label
 						htmlFor='password'
-						className={`absolute inline-block px-2 text-xs font-light -top-2 left-4 ${
+						className={`z-10 absolute inline-block px-2 text-xs font-light -top-2 left-4 ${
 							enabled ? "bg-black text-white" : "text-gray-800 bg-white"
 						}`}>
 						Password
@@ -197,7 +199,10 @@ const Login = () => {
 							type='button'
 							onClick={togglePasswordVisibility}
 							className='absolute inset-y-0 text-gray-500 right-4 hover:text-gray-700 focus:outline-none'>
-							{showPassword ? "Hide" : "Show"}
+							<img
+								src={showPassword ? HidePasswordIcon : ShowPasswordIcon}
+								alt={showPassword ? "Hide password" : "Show password"}
+							/>
 						</button>
 					</div>
 					{errors.password && (
