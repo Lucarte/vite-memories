@@ -25,7 +25,7 @@ const PabloIntroLaptopPlus = () => {
 				setShowImage((prev) => !prev);
 				setIsFading(false);
 			}, 1000);
-		}, 3000);
+		}, 1000);
 
 		return () => clearInterval(intervalId);
 	}, []);

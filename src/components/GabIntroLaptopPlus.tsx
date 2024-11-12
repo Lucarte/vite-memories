@@ -25,7 +25,7 @@ const GabIntroLaptopPlus = () => {
 				setShowImage((prev) => !prev);
 				setIsFading(false);
 			}, 1000);
-		}, 2000);
+		}, 1000);
 
 		return () => clearInterval(intervalId);
 	}, []);
