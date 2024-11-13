@@ -383,8 +383,8 @@ const RegisterForm = ({
 								You have been <br />
 								successfully <br />
 								adopted <br />
-								as a <i>fan</i> <br />
-								of the <i>fam!</i>
+								as a <i className='text-violet-500'>fan</i> <br />
+								of the <i className='text-violet-500'>fam!</i>
 							</h2>
 						</div>
 					</div>

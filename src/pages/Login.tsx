@@ -30,7 +30,19 @@ export const action: ActionFunction = async ({ request }) => {
 	const formData = await request.formData();
 
 	try {
-		await login(formData);
+		const response = await login(formData); // This calls the backend login function
+
+		if (response.status === 403) {
+			// If the response status is 403, it means the account is not approved
+			return json(
+				{
+					errorMessage:
+						"Your account is pending approval. Please check again later",
+				},
+				{ status: 403 }
+			);
+		}
+
 		return json(
 			{
 				successMessage: "You can now go down memory lane!",
@@ -41,7 +53,7 @@ export const action: ActionFunction = async ({ request }) => {
 	} catch (error) {
 		return json(
 			{
-				errorMessage: `Invalid credentials <br> Only registered users can login`,
+				errorMessage: `Invalid credentials. Only registered users can log in.`,
 			},
 			{ status: 400 }
 		);
