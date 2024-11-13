@@ -204,7 +204,6 @@ const Login = () => {
 								src={showPassword ? HidePasswordIcon : ShowPasswordIcon}
 								alt={showPassword ? "Hide password" : "Show password"}
 							/>
-							aria-label={showPassword ? "Hide password" : "Show password"}
 						</button>
 					</div>
 					{errors.password && (
