@@ -13,7 +13,8 @@ const http = axios.create({
 	baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000",
 	withCredentials: true,
 	headers: {
-		"X-CSRF-TOKEN": csrfToken, // CSRF token, fallback to empty string if not found
+		"X-CSRF-TOKEN": csrfToken, // For Laravel CSRF
+		"X-XSRF-TOKEN": csrfToken, // For Axios CSRF
 	},
 });
 
