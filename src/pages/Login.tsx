@@ -16,7 +16,7 @@ import {
 	useForm,
 } from "react-hook-form";
 import { useTheme } from "../context/ThemeContext";
-import { login } from "../utils/api";
+import { loggedInData, login } from "../utils/api";
 import { json } from "react-router-dom";
 import HidePasswordIcon from "../assets/HidePasswordIcon.svg";
 import ShowPasswordIcon from "../assets/ShowPasswordIcon.svg";
@@ -26,9 +26,10 @@ type FormValues = {
 	password: string;
 };
 
+// action function (modified to handle login status check)
 export const action: ActionFunction = async ({ request }) => {
 	const formData = await request.formData();
-	const { status } = await login(formData); // Use the updated login function
+	const { status, data } = await login(formData); // Use the updated login function
 
 	if (status === 403) {
 		// Account not approved
@@ -53,13 +54,27 @@ export const action: ActionFunction = async ({ request }) => {
 
 	if (status === 200) {
 		// Successful login
-		return json(
-			{
-				successMessage: "You can now go down memory lane!",
-				redirectTo: "/memories",
-			},
-			{ status: 200 }
-		);
+		// Now check the login status to verify if the user is approved
+		const loginStatusResponse = await loggedInData(); // Fetch the login status
+
+		if (loginStatusResponse.loggedIn && loginStatusResponse.isApproved) {
+			// Redirect to the memories page if the user is logged in and approved
+			return json(
+				{
+					successMessage: "You can now go down memory lane!",
+					redirectTo: "/memories",
+				},
+				{ status: 200 }
+			);
+		} else {
+			// Show an appropriate message if the user is not approved
+			return json(
+				{
+					errorMessage: "Your account is pending approval.",
+				},
+				{ status: 403 }
+			);
+		}
 	}
 
 	// Catch-all for unexpected statuses
@@ -113,9 +128,7 @@ const Login = () => {
 
 		if (actionData?.errorMessage) {
 			setTimeout(() => {
-				if (typeof from === "string") {
-					navigate("/login", { state: { from } });
-				}
+				navigate("/login", { state: { error: actionData.errorMessage } });
 			}, 3000);
 		}
 	}, [actionData, navigate, from]);
@@ -264,9 +277,7 @@ const Login = () => {
 				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 dark:bg-white dark:bg-opacity-70'>
 					<div className='z-10 2xl:w-72 w-64 p-6 bg-white rounded-[6rem] relative rounded-tr-lg shadow-lg min-h-96 dark:bg-black'>
 						<h2 className='pt-20 text-2xl font-black leading-10 text-center text-black uppercase dark:text-white'>
-							all set to
-							<br />
-							go down memory lane!
+							{actionData.successMessage}
 						</h2>
 					</div>
 				</div>
@@ -276,10 +287,10 @@ const Login = () => {
 				<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 dark:bg-white dark:bg-opacity-70'>
 					<div className='z-10 2xl:w-72 w-64 p-6 bg-white rounded-[6rem] relative rounded-tr-lg shadow-lg min-h-96 dark:bg-black'>
 						<h2 className='pt-20 text-2xl font-black text-center text-black uppercase dark:text-white'>
-							<span className='text-red-600 '>Invalid Credentials</span>
+							<span className='text-red-600 '>Error</span>
 							<br />
 							<br />
-							Only registered users can login
+							{actionData.errorMessage}
 						</h2>
 					</div>
 				</div>
