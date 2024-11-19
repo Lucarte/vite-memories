@@ -1,23 +1,38 @@
 import { FanValues } from "../types/FanValues";
-import { PatchValues } from "../types/MemoryValues";
+import { PatchValues, User } from "../types/MemoryValues";
 import http from "./http";
 
-export const loggedInData = async () => {
-	const response = await fetch(
-		`${import.meta.env.VITE_API_URL}/api/auth/status`,
-		{
-			credentials: "include", // Send cookies with the request
+export const loggedInData = async (): Promise<{
+	loggedIn: boolean;
+	isAdmin: boolean;
+	isApproved: boolean;
+	user: User | null;
+}> => {
+	// export const loggedInData = async () => {
+	try {
+		const res = await http("/api/auth/login/status");
+		const data = res.data;
+		// Check if loggedIn is true and userId is present
+		if (data && data.loggedIn && data.userId) {
+			return {
+				loggedIn: true,
+				isAdmin: data.isAdmin,
+				isApproved: data.isApproved,
+				user: {
+					avatar: data.avatar,
+					id: data.userId,
+					first_name: data.firstName,
+					last_name: data.lastName,
+					isAdmin: data.isAdmin,
+					isApproved: data.isApproved,
+				},
+			};
 		}
-	);
-
-	const data = await response.json();
-	return {
-		loggedIn: data.loggedIn,
-		userId: data.userId,
-		isAdmin: data.isAdmin,
-		firstName: data.firstName,
-		isApproved: data.isApproved, // Ensure this is included
-	};
+		return { loggedIn: false, isAdmin: false, isApproved: false, user: null };
+	} catch (error) {
+		console.error("Error checking login status:", error);
+		return { loggedIn: false, isAdmin: false, isApproved: false, user: null };
+	}
 };
 
 // REGISTER
