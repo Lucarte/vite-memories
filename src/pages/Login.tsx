@@ -16,7 +16,7 @@ import {
 	useForm,
 } from "react-hook-form";
 import { useTheme } from "../context/ThemeContext";
-import { loggedInData, login } from "../utils/api";
+import { login } from "../utils/api";
 import { json } from "react-router-dom";
 import HidePasswordIcon from "../assets/HidePasswordIcon.svg";
 import ShowPasswordIcon from "../assets/ShowPasswordIcon.svg";
@@ -29,14 +29,13 @@ type FormValues = {
 // action function (modified to handle login status check)
 export const action: ActionFunction = async ({ request }) => {
 	const formData = await request.formData();
-	const { status } = await login(formData); // Use the updated login function
+	const { status, data } = await login(formData); // Use the updated login function
 
 	if (status === 403) {
 		// Account not approved
 		return json(
 			{
-				errorMessage:
-					"Your account is pending approval. Please check again later.",
+				errorMessage: data.errorMessage || "Your account is pending approval.",
 			},
 			{ status: 403 }
 		);
@@ -54,27 +53,13 @@ export const action: ActionFunction = async ({ request }) => {
 
 	if (status === 200) {
 		// Successful login
-		// Now check the login status to verify if the user is approved
-		const loginStatusResponse = await loggedInData(); // Fetch the login status
-
-		if (loginStatusResponse.loggedIn && loginStatusResponse.isApproved) {
-			// Redirect to the memories page if the user is logged in and approved
-			return json(
-				{
-					successMessage: "You can now go down memory lane!",
-					redirectTo: "/memories",
-				},
-				{ status: 200 }
-			);
-		} else {
-			// Show an appropriate message if the user is not approved
-			return json(
-				{
-					errorMessage: "Your account is pending approval.",
-				},
-				{ status: 403 }
-			);
-		}
+		return json(
+			{
+				successMessage: data.successMessage,
+				redirectTo: data.redirectTo, // Use the redirect URL from backend
+			},
+			{ status: 200 }
+		);
 	}
 
 	// Catch-all for unexpected statuses
