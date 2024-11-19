@@ -29,7 +29,7 @@ type FormValues = {
 // action function (modified to handle login status check)
 export const action: ActionFunction = async ({ request }) => {
 	const formData = await request.formData();
-	const { status, data } = await login(formData); // Use the updated login function
+	const { status } = await login(formData); // Use the updated login function
 
 	if (status === 403) {
 		// Account not approved
