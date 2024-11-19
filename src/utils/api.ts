@@ -41,9 +41,20 @@ export const register = async (formData: FormData) => {
 
 // LOGIN
 export const login = async (formData: FormData) => {
-	const res = await http.post("api/auth/login", formData);
-	if (res.status !== 200) throw res;
-	return res.data;
+	const response = await fetch(
+		`${import.meta.env.VITE_API_URL}/api/auth/login`,
+		{
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			credentials: "include", // Ensures cookies are sent
+			body: JSON.stringify(Object.fromEntries(formData)), // Converts FormData to JSON
+		}
+	);
+
+	// Parse the response body
+	const data = await response.json();
+
+	return { status: response.status, data }; // Return both status and data
 };
 
 // LOGOUT
