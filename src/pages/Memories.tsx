@@ -26,13 +26,18 @@ type DeferredLoaderData = {
 	memories: Promise<MemoryValues[]>;
 };
 
-// Loader - All Memories
 export const loader: LoaderFunction = async () => {
 	// Check if logged in
-	const { loggedIn } = await loggedInData();
+	const { loggedIn, isApproved } = await loggedInData();
+
 	if (!loggedIn) {
 		alert("Login Required ;)");
 		return redirect("/login");
+	}
+
+	if (!isApproved) {
+		alert("Your account is pending admin approval.");
+		return redirect("/login"); // Redirect to login or an appropriate page
 	}
 
 	try {
