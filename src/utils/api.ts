@@ -1,4 +1,3 @@
-import axios from "axios";
 import { FanValues } from "../types/FanValues";
 import { PatchValues, User } from "../types/MemoryValues";
 import http from "./http";
@@ -12,9 +11,8 @@ export const loggedInData = async (): Promise<{
 	// export const loggedInData = async () => {
 	try {
 		const res = await http("/api/auth/login/status");
-		console.log("API Response:", res.data); // Debugging line
 		const data = res.data;
-		// Check if loggedIn is true and userId is present
+		// Check if loggedIn is true and userId is present & is approved
 		if (data && data.loggedIn && data.userId) {
 			return {
 				loggedIn: true,
@@ -46,20 +44,9 @@ export const register = async (formData: FormData) => {
 
 // LOGIN
 export const login = async (formData: FormData) => {
-	try {
-		const response = await http.post("/api/auth/login", formData); // Use the axios instance
-		return { status: response.status, data: response.data };
-	} catch (error: unknown) {
-		if (axios.isAxiosError(error)) {
-			// Handle the AxiosError type specifically
-			console.error("Login failed:", error.response?.data);
-			return { status: error.response?.status, data: error.response?.data };
-		} else {
-			// Handle any other type of error
-			console.error("Unknown error:", error);
-			return { status: 500, data: { message: "An unexpected error occurred" } };
-		}
-	}
+	const res = await http.post("api/auth/login", formData);
+	if (res.status !== 200) throw res;
+	return res.data;
 };
 
 // LOGOUT
