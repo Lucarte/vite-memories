@@ -28,21 +28,31 @@ type FormValues = {
 
 export const action: ActionFunction = async ({ request }) => {
 	const formData = await request.formData();
+	const { status } = await login(formData); // Use the updated login function
 
-	try {
-		const response = await login(formData); // This calls the backend login function
+	if (status === 403) {
+		// Account not approved
+		return json(
+			{
+				errorMessage:
+					"Your account is pending approval. Please check again later.",
+			},
+			{ status: 403 }
+		);
+	}
 
-		if (response.status === 403) {
-			// If the response status is 403, it means the account is not approved
-			return json(
-				{
-					errorMessage:
-						"Your account is pending approval. Please check again later",
-				},
-				{ status: 403 }
-			);
-		}
+	if (status === 401 || status === 400) {
+		// Invalid credentials or bad request
+		return json(
+			{
+				errorMessage: "Invalid credentials. Only registered users can log in.",
+			},
+			{ status }
+		);
+	}
 
+	if (status === 200) {
+		// Successful login
 		return json(
 			{
 				successMessage: "You can now go down memory lane!",
@@ -50,14 +60,13 @@ export const action: ActionFunction = async ({ request }) => {
 			},
 			{ status: 200 }
 		);
-	} catch (error) {
-		return json(
-			{
-				errorMessage: `Invalid credentials. Only registered users can log in.`,
-			},
-			{ status: 400 }
-		);
 	}
+
+	// Catch-all for unexpected statuses
+	return json(
+		{ errorMessage: "Something went wrong. Please try again later." },
+		{ status: 500 }
+	);
 };
 
 const Login = () => {
