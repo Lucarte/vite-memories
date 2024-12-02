@@ -79,7 +79,6 @@ const Login = () => {
 	} = useForm<FormValues>();
 	const submit = useSubmit();
 	const location = useLocation();
-	const from = location.state?.from || "/"; // Default to '/' if 'from' is not set
 
 	const actionData = useActionData() as {
 		successMessage?: string;
@@ -104,19 +103,13 @@ const Login = () => {
 	useEffect(() => {
 		if (actionData?.successMessage) {
 			const redirectUrl = actionData.redirectTo ?? "/";
-			setTimeout(() => {
-				if (typeof redirectUrl === "string") {
-					navigate(redirectUrl);
-				}
-			}, 3000);
+			navigate(redirectUrl); // Navigate immediately after setting the state
 		}
 
 		if (actionData?.errorMessage) {
-			setTimeout(() => {
-				navigate("/login", { state: { error: actionData.errorMessage } });
-			}, 3000);
+			navigate("/login", { state: { error: actionData.errorMessage } }); // Navigate immediately
 		}
-	}, [actionData, navigate, from]);
+	}, [actionData, navigate]);
 
 	const togglePasswordVisibility = () => {
 		setShowPassword((prevState) => !prevState);
