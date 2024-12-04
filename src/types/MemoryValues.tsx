@@ -41,7 +41,6 @@ export type User = {
 	last_name: string;
 	avatar: Avatar;
 	isAdmin: boolean;
-	isApproved: boolean;
 };
 
 export type Avatar = {
