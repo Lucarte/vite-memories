@@ -380,11 +380,12 @@ const RegisterForm = ({
 					<div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 dark:bg-white dark:bg-opacity-70'>
 						<div className='z-10 2xl:w-72 w-64 p-6 bg-white rounded-[6rem] relative rounded-tr-lg shadow-lg min-h-96 dark:bg-black'>
 							<h2 className='pt-20 text-2xl font-black leading-10 text-center text-black uppercase dark:text-white'>
-								You have been <br />
-								successfully <br />
-								adopted <br />
-								as a <i className='text-violet-500'>fan</i> <br />
-								of the <i className='text-violet-500'>fam!</i>
+								Success! <br />
+								Your registration is now <br />
+								pending approval <br />
+								and you will be<i className='text-violet-500'>notified</i>{" "}
+								<br />
+								shortly.
 							</h2>
 						</div>
 					</div>
