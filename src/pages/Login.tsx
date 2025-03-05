@@ -5,14 +5,14 @@ import {
 	ActionFunction,
 	Link,
 	useLocation,
-	useSubmit,
+	// useSubmit,
 	useNavigate,
 	useActionData,
 } from "react-router-dom";
 import {
-	FieldValues,
-	SubmitErrorHandler,
-	SubmitHandler,
+	// FieldValues,
+	// SubmitErrorHandler,
+	// SubmitHandler,
 	useForm,
 } from "react-hook-form";
 import { useTheme } from "../context/ThemeContext";
@@ -56,7 +56,7 @@ export const action: ActionFunction = async ({ request }) => {
 		return json(
 			{
 				successMessage: data.successMessage,
-				redirectTo: data.redirectTo, // Use the redirect URL from backend
+				redirectTo: data.redirectTo ?? "/",
 			},
 			{ status: 200 }
 		);
@@ -75,41 +75,52 @@ const Login = () => {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors },
+		formState: { errors, isSubmitting },
 	} = useForm<FormValues>();
-	const submit = useSubmit();
+	// const submit = useSubmit();
 	const location = useLocation();
 
 	const actionData = useActionData() as {
 		successMessage?: string;
 		errorMessage?: string;
 		redirectTo?: string;
+		isApproved?: boolean;
 	};
 	const navigate = useNavigate();
-
-	// Takes place when all fields validate
-	const onValid: SubmitHandler<FormValues> = (data) => {
-		submit(data, {
-			action: location.pathname,
-			method: "POST",
-		});
-	};
-
-	// If errors found
-	const onInvalid: SubmitErrorHandler<FieldValues> = (errors) => {
-		console.log("Errors in Form: ", errors);
-	};
+	const [message, setMessage] = useState<{
+		type: "success" | "error";
+		text: string;
+	} | null>(null);
 
 	useEffect(() => {
-		if (actionData?.successMessage) {
-			const redirectUrl = actionData.redirectTo ?? "/";
-			navigate(redirectUrl); // Navigate immediately after setting the state
-		}
-
 		if (actionData?.errorMessage) {
-			navigate("/login", { state: { error: actionData.errorMessage } }); // Navigate immediately
+			setMessage({ type: "error", text: actionData.errorMessage });
+		} else if (actionData?.successMessage && actionData.isApproved) {
+			setMessage({ type: "success", text: actionData.successMessage });
+			setTimeout(() => navigate(actionData.redirectTo || "/dashboard"), 1500);
 		}
 	}, [actionData, navigate]);
+
+	const validatePassword = (value: string) => {
+		if (value.length < 8) return "Password must be at least 8 characters long";
+		if (!/(?=.*[a-z])/.test(value))
+			return "Password must contain at least one lowercase letter";
+		if (!/(?=.*[A-Z])/.test(value))
+			return "Password must contain at least one uppercase letter";
+		if (!/(?=.*\d)/.test(value))
+			return "Password must contain at least one number";
+		if (!/(?=.*[@$!%*?&])/.test(value))
+			return "Password must contain at least one special character";
+		return true;
+	};
+
+	const onSubmit = async (data: FormValues) => {
+		await fetch(location.pathname, {
+			method: "POST",
+			body: JSON.stringify(data),
+			headers: { "Content-Type": "application/json" },
+		});
+	};
 
 	const togglePasswordVisibility = () => {
 		setShowPassword((prevState) => !prevState);
@@ -126,7 +137,7 @@ const Login = () => {
 			<form
 				noValidate
 				autoComplete='off'
-				onSubmit={handleSubmit(onValid, onInvalid)}
+				onSubmit={handleSubmit(onSubmit)}
 				className='mt-12 space-y-8 md:w-[19rem] flex flex-col items-center'>
 				{/* Email Input */}
 				<div className='relative'>
@@ -139,7 +150,7 @@ const Login = () => {
 					</label>
 					<input
 						autoFocus
-						autoComplete='false'
+						autoComplete='off'
 						id='email'
 						type='email'
 						className={`w-[17rem] rounded-[3px] py-4 px-6 ring-[2.5px] ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-blue-600 sm:leading-6 ${
@@ -175,6 +186,7 @@ const Login = () => {
 					</label>
 					<div className='relative w-[17rem]'>
 						<input
+							autoComplete='off'
 							id='password'
 							type={showPassword ? "text" : "password"}
 							className={`w-full rounded-[3px] py-4 px-6 ring-[2.5px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-blue-600 ring-inset ring-gray-900 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
@@ -189,25 +201,14 @@ const Login = () => {
 									value: true,
 									message: "Please enter a password",
 								},
-								validate: {
-									minLength: (value) =>
-										value.length >= 8 ||
-										"Password must be at least 8 characters long",
-									lowercase: (value) =>
-										/^(?=.*[a-z])/.test(value) ||
-										"Password must contain at least one lowercase letter",
-									uppercase: (value) =>
-										/^(?=.*[A-Z])/.test(value) ||
-										"Password must contain at least one uppercase letter",
-									number: (value) =>
-										/^(?=.*\d)/.test(value) ||
-										"Password must contain at least one number",
-									specialChar: (value) =>
-										/^(?=.*[@$!%*?&])/.test(value) ||
-										"Password must contain at least one special character",
-								},
+								validate: validatePassword,
 							})}
 						/>
+						{errors.password && (
+							<p className='mt-1 text-sm text-red-500'>
+								{errors.password.message}
+							</p>
+						)}
 						<button
 							type='button'
 							onClick={togglePasswordVisibility}
@@ -233,7 +234,8 @@ const Login = () => {
 							? "border-3 border-white text-white shadow-custom-view-dark-lg text-black bg-black hover:text-gray-700 hover:bg-gray-50"
 							: "text-black border-3 border-black hover:bg-gray-100 active:bg-gray-100 active:text-black hover:text-gray-700 shadow-custom-view-lg bg-white"
 					}`}
-					text='Enter Memories Portal'
+					text={isSubmitting ? "Logging in..." : "Enter Memories Portal"}
+					disabled={isSubmitting}
 				/>
 			</form>
 			<div

@@ -8,26 +8,26 @@ export const loggedInData = async (): Promise<{
 	isApproved: boolean;
 	user: User | null;
 }> => {
-	// export const loggedInData = async () => {
 	try {
-		const res = await http("/api/auth/login/status");
+		const res = await http.get("/api/auth/login/status"); // Explicit GET
 		const data = res.data;
-		// Check if loggedIn is true and userId is present & is approved
+
 		if (data && data.loggedIn && data.userId) {
 			return {
 				loggedIn: true,
-				isAdmin: data.isAdmin,
-				isApproved: data.isApproved,
+				isAdmin: !!data.isAdmin, // Ensure boolean
+				isApproved: !!data.isApproved, // Ensure boolean
 				user: {
-					avatar: data.avatar,
+					avatar: data.avatar || "",
 					id: data.userId,
-					first_name: data.firstName,
-					last_name: data.lastName,
-					isAdmin: data.isAdmin,
-					isApproved: data.isApproved,
+					first_name: data.firstName || "",
+					last_name: data.lastName || "",
+					isAdmin: !!data.isAdmin,
+					isApproved: !!data.isApproved,
 				},
 			};
 		}
+
 		return { loggedIn: false, isAdmin: false, isApproved: false, user: null };
 	} catch (error) {
 		console.error("Error checking login status:", error);
@@ -44,9 +44,14 @@ export const register = async (formData: FormData) => {
 
 // LOGIN
 export const login = async (formData: FormData) => {
-	const res = await http.post("api/auth/login", formData);
-	if (res.status !== 200) throw res;
-	return res.data;
+	try {
+		const res = await http.post("/api/auth/login", formData);
+		if (res.status !== 200) throw new Error("Login failed");
+		return res.data;
+	} catch (error) {
+		console.error("Error logging in:", error);
+		throw error; // Ensures calling function can handle it
+	}
 };
 
 // LOGOUT
