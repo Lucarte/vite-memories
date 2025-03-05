@@ -87,7 +87,7 @@ const Login = () => {
 		isApproved?: boolean;
 	};
 	const navigate = useNavigate();
-	const [message, setMessage] = useState<{
+	const [, setMessage] = useState<{
 		type: "success" | "error";
 		text: string;
 	} | null>(null);
