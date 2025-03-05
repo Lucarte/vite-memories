@@ -5,6 +5,7 @@ import http from "./http";
 export const loggedInData = async (): Promise<{
 	loggedIn: boolean;
 	isAdmin: boolean;
+	isApproved: boolean;
 	user: User | null;
 }> => {
 	// export const loggedInData = async () => {
@@ -16,19 +17,21 @@ export const loggedInData = async (): Promise<{
 			return {
 				loggedIn: true,
 				isAdmin: data.isAdmin,
+				isApproved: data.isApproved,
 				user: {
 					avatar: data.avatar,
 					id: data.userId,
 					first_name: data.firstName,
 					last_name: data.lastName,
 					isAdmin: data.isAdmin,
+					isApproved: data.isApproved,
 				},
 			};
 		}
-		return { loggedIn: false, isAdmin: false, user: null };
+		return { loggedIn: false, isAdmin: false, isApproved: false, user: null };
 	} catch (error) {
 		console.error("Error checking login status:", error);
-		return { loggedIn: false, isAdmin: false, user: null };
+		return { loggedIn: false, isAdmin: false, isApproved: false, user: null };
 	}
 };
 
