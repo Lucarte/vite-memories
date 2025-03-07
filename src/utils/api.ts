@@ -42,15 +42,39 @@ export const register = async (formData: FormData) => {
 	return res.data;
 };
 
-// LOGIN
+// // LOGIN
+// export const login = async (formData: FormData) => {
+// 	try {
+// 		const res = await http.post("/api/auth/login", formData);
+// 		if (res.status !== 200) throw new Error("Login failed");
+// 		return res.data;
+// 	} catch (error) {
+// 		console.error("Error logging in:", error);
+// 		throw error; // Ensures calling function can handle it
+// 	}
+// };
+
 export const login = async (formData: FormData) => {
 	try {
-		const res = await http.post("/api/auth/login", formData);
+		// Convert FormData to JSON
+		const data = Object.fromEntries(formData.entries());
+
+		const res = await http.post("/api/auth/login", data, {
+			headers: { "Content-Type": "application/json" }, // Ensure JSON format
+		});
+
 		if (res.status !== 200) throw new Error("Login failed");
-		return res.data;
-	} catch (error) {
+		return { status: res.status, data: res.data };
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	} catch (error: any) {
 		console.error("Error logging in:", error);
-		throw error; // Ensures calling function can handle it
+
+		return {
+			status: error.response?.status || 500,
+			data: {
+				errorMessage: error.response?.data?.message || "An error occurred.",
+			},
+		};
 	}
 };
 
