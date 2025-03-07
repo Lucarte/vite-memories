@@ -9,12 +9,7 @@ import {
 	useNavigate,
 	useActionData,
 } from "react-router-dom";
-import {
-	SubmitHandler,
-	// FieldValues,
-	// SubmitErrorHandler,
-	useForm,
-} from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useTheme } from "../context/ThemeContext";
 import { login } from "../utils/api";
 import { json } from "react-router-dom";
@@ -29,10 +24,14 @@ type FormValues = {
 // action function (modified to handle login status check)
 export const action: ActionFunction = async ({ request }) => {
 	const formData = await request.formData();
+	console.log("Form data received:", formData); // Log the form data
+
 	const { status, data } = await login(formData);
+	console.log("Login response:", { status, data }); // Log the login response
 
 	if (status === 403) {
 		// Account not approved
+		console.log("Account not approved"); // Log account not approved
 		return json(
 			{
 				errorMessage: data.errorMessage || "Your account is pending approval.",
@@ -43,6 +42,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 	if (status === 401 || status === 400) {
 		// Invalid credentials or bad request
+		console.log("Invalid credentials or bad request"); // Log invalid credentials
 		return json(
 			{
 				errorMessage: "Invalid credentials. Only registered users can log in.",
@@ -53,6 +53,7 @@ export const action: ActionFunction = async ({ request }) => {
 
 	if (status === 200) {
 		// Successful login
+		console.log("Login successful"); // Log successful login
 		return json(
 			{
 				successMessage: data.successMessage,
@@ -63,6 +64,7 @@ export const action: ActionFunction = async ({ request }) => {
 	}
 
 	// Catch-all for unexpected statuses
+	console.log("Unexpected response status:", status); // Log unexpected response status
 	return json(
 		{ errorMessage: "Something went wrong. Please try again later." },
 		{ status: 500 }
@@ -94,10 +96,15 @@ const Login = () => {
 
 	useEffect(() => {
 		if (actionData?.errorMessage) {
+			console.log("Error message received:", actionData.errorMessage); // Log error message
 			setMessage({ type: "error", text: actionData.errorMessage });
 		} else if (actionData?.successMessage && actionData.isApproved) {
+			console.log("Success message received:", actionData.successMessage); // Log success message
 			setMessage({ type: "success", text: actionData.successMessage });
-			setTimeout(() => navigate(actionData.redirectTo || "/dashboard"), 1500);
+			setTimeout(() => {
+				console.log("Redirecting to:", actionData.redirectTo || "/dashboard"); // Log redirect
+				navigate(actionData.redirectTo || "/dashboard");
+			}, 1500);
 		}
 	}, [actionData, navigate]);
 
@@ -115,7 +122,9 @@ const Login = () => {
 	};
 
 	const onSubmit: SubmitHandler<FormValues> = (_, event) => {
+		console.log("Form submitted"); // Log form submission
 		const formData = new FormData(event?.target);
+		console.log("Form data on submit:", formData); // Log form data on submit
 		submit(formData, {
 			method: "POST",
 			action: location.pathname,
@@ -124,7 +133,10 @@ const Login = () => {
 	};
 
 	const togglePasswordVisibility = () => {
-		setShowPassword((prevState) => !prevState);
+		setShowPassword((prevState) => {
+			console.log("Toggling password visibility:", !prevState); // Log visibility toggle
+			return !prevState;
+		});
 	};
 
 	return (
