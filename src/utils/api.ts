@@ -42,39 +42,15 @@ export const register = async (formData: FormData) => {
 	return res.data;
 };
 
-// // LOGIN
-// export const login = async (formData: FormData) => {
-// 	try {
-// 		const res = await http.post("/api/auth/login", formData);
-// 		if (res.status !== 200) throw new Error("Login failed");
-// 		return res.data;
-// 	} catch (error) {
-// 		console.error("Error logging in:", error);
-// 		throw error; // Ensures calling function can handle it
-// 	}
-// };
-
+// LOGIN
 export const login = async (formData: FormData) => {
 	try {
-		// Convert FormData to JSON
-		const data = Object.fromEntries(formData.entries());
-
-		const res = await http.post("/api/auth/login", data, {
-			headers: { "Content-Type": "application/json" }, // Ensure JSON format
-		});
-
+		const res = await http.post("/api/auth/login", formData);
 		if (res.status !== 200) throw new Error("Login failed");
-		return { status: res.status, data: res.data };
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	} catch (error: any) {
+		return res.data;
+	} catch (error) {
 		console.error("Error logging in:", error);
-
-		return {
-			status: error.response?.status || 500,
-			data: {
-				errorMessage: error.response?.data?.message || "An error occurred.",
-			},
-		};
+		throw error; // Ensures calling function can handle it
 	}
 };
 

@@ -5,14 +5,14 @@ import {
 	ActionFunction,
 	Link,
 	useLocation,
-	// useSubmit,
+	useSubmit,
 	useNavigate,
 	useActionData,
 } from "react-router-dom";
 import {
+	SubmitHandler,
 	// FieldValues,
 	// SubmitErrorHandler,
-	// SubmitHandler,
 	useForm,
 } from "react-hook-form";
 import { useTheme } from "../context/ThemeContext";
@@ -29,7 +29,7 @@ type FormValues = {
 // action function (modified to handle login status check)
 export const action: ActionFunction = async ({ request }) => {
 	const formData = await request.formData();
-	const { status, data } = await login(formData); // Use the updated login function
+	const { status, data } = await login(formData);
 
 	if (status === 403) {
 		// Account not approved
@@ -77,7 +77,7 @@ const Login = () => {
 		handleSubmit,
 		formState: { errors, isSubmitting },
 	} = useForm<FormValues>();
-	// const submit = useSubmit();
+	const submit = useSubmit();
 	const location = useLocation();
 
 	const actionData = useActionData() as {
@@ -114,11 +114,12 @@ const Login = () => {
 		return true;
 	};
 
-	const onSubmit = async (data: FormValues) => {
-		await fetch(location.pathname, {
+	const onSubmit: SubmitHandler<FormValues> = (_, event) => {
+		const formData = new FormData(event?.target);
+		submit(formData, {
 			method: "POST",
-			body: JSON.stringify(data),
-			headers: { "Content-Type": "application/json" },
+			action: location.pathname,
+			encType: "multipart/form-data",
 		});
 	};
 
