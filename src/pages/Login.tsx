@@ -24,7 +24,7 @@ type FormValues = {
 // action function (modified to handle login status check)
 export const action: ActionFunction = async ({ request }) => {
 	const formData = await request.formData();
-	console.log("Form data received:", formData); // Log the form data
+	console.log("Form data now received:", formData); // Log the form data
 
 	const { status, data } = await login(formData);
 	console.log("Login response:", { status, data }); // Log the login response
