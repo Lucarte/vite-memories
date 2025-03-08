@@ -1,3 +1,4 @@
+import axios from "axios";
 import { FanValues } from "../types/FanValues";
 import { PatchValues, User } from "../types/MemoryValues";
 import http from "./http";
@@ -10,6 +11,8 @@ export const loggedInData = async (): Promise<{
 }> => {
 	try {
 		const res = await http.get("/api/auth/login/status"); // Explicit GET
+		// 🔍 Log the full response to see what's coming from the backend
+		console.log("Full login status response:", res);
 		const data = res.data;
 
 		if (data && data.loggedIn && data.userId) {
@@ -30,9 +33,18 @@ export const loggedInData = async (): Promise<{
 
 		return { loggedIn: false, isAdmin: false, isApproved: false, user: null };
 	} catch (error) {
-		console.error("Error checking login status:", error);
+		if (axios.isAxiosError(error)) {
+			console.error("Axios error:", error.response?.data || error.message);
+		} else {
+			console.error("Unexpected error:", error);
+		}
 		return { loggedIn: false, isAdmin: false, isApproved: false, user: null };
 	}
+
+	// } catch (error) {
+	// 	console.error("Error checking login status:", error);
+	// 	return { loggedIn: false, isAdmin: false, isApproved: false, user: null };
+	// }
 };
 
 // REGISTER
