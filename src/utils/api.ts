@@ -55,15 +55,27 @@ export const register = async (formData: FormData) => {
 	return res.data;
 };
 
-// LOGIN
 export const login = async (formData: FormData) => {
 	try {
 		const res = await http.post("/api/auth/login", formData);
-		if (res.status !== 200) throw new Error("Login failed");
+
+		// Log the response to inspect what we get back from the API
+		console.log("Login API response:", res);
+
+		// Check if the status is 200 (successful response)
+		if (res.status !== 200) {
+			console.error("Login failed with status:", res.status);
+			throw new Error("Login failed");
+		}
+
+		// Return the response data if successful
 		return res.data;
 	} catch (error) {
+		// Log the error details for debugging
 		console.error("Error logging in:", error);
-		throw error; // Ensures calling function can handle it
+
+		// Re-throw the error so the calling function can handle it
+		throw error;
 	}
 };
 

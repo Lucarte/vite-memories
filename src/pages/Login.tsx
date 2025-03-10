@@ -24,17 +24,23 @@ type FormValues = {
 // action function (modified to handle login status check)
 export const action: ActionFunction = async ({ request }) => {
 	const formData = await request.formData();
-	console.log("Login Form data received:", formData); // Log the form data
+	console.log("Login Form data received:", formData);
 
-	const { status, data } = await login(formData); // Assuming login() returns an object like { status, data }
-	console.log("Login response:", { status, data }); // Log the login response
+	const { status, data } = await login(formData); // Assuming this is your login logic
+	console.log("Login response:", { status, data });
+
+	if (!status || !data) {
+		console.error("Login failed. Missing status or data.");
+		return json(
+			{ errorMessage: "Something went wrong. Please try again later." },
+			{ status: 500 }
+		);
+	}
 
 	if (status === 403) {
 		console.log("Account not approved");
 		return json(
-			{
-				errorMessage: data.errorMessage || "Your account is pending approval.",
-			},
+			{ errorMessage: "Your account is pending approval." },
 			{ status: 403 }
 		);
 	}
@@ -52,16 +58,12 @@ export const action: ActionFunction = async ({ request }) => {
 	if (status === 200) {
 		console.log("Login successful");
 		return json(
-			{
-				successMessage: data.successMessage || "Login successful",
-				redirectTo: data.redirectTo ?? "/memories",
-				isApproved: true, // Ensure this is returned
-			},
+			{ successMessage: "Login successful", redirectTo: "/memories" },
 			{ status: 200 }
 		);
 	}
 
-	console.log("Login status:", status); // Log unexpected status
+	console.log("Unexpected status:", status);
 	return json(
 		{ errorMessage: "Something went wrong. Please try again later." },
 		{ status: 500 }
