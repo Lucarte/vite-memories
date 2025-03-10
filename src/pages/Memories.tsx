@@ -137,6 +137,8 @@ export const action: ActionFunction = async ({ request }) => {
 const Memories = () => {
 	const [view, setView] = useState<"view" | "edit">("view");
 	const deferredData = useLoaderData() as DeferredLoaderData;
+	console.log("Loader Data:", deferredData); // Check what gets loaded
+
 	const [isMobile, setIsMobile] = useState<boolean>(false);
 
 	useEffect(() => {
