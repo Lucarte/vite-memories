@@ -1,53 +1,52 @@
-import axios from "axios";
 import { FanValues } from "../types/FanValues";
 import { PatchValues, User } from "../types/MemoryValues";
 import http from "./http";
 
+// Function to check login status
 export const loggedInData = async (): Promise<{
 	loggedIn: boolean;
 	isAdmin: boolean;
 	isApproved: boolean;
 	user: User | null;
 }> => {
-	console.log("Calling loggedInData function..."); // Debugging step
-	try {
-		// Call the backend to check the user's login status
-		const res = await http.get("/api/auth/login/status"); // Explicit GET to /status endpoint
-		console.log("Full login status response:", res); // Debug the full response
+	console.log("Calling loggedInData function...");
 
-		// Extract data from the response
+	try {
+		// Make the request to check login status
+		const res = await http.get("/api/auth/login/status"); // Ensure the correct URL
+
+		console.log("Login response status:", res.status);
+		console.log("Login response data:", res.data);
+
 		const data = res.data;
 
-		// Check if 'loggedIn' is true and required data exists
+		// Check if the user is logged in
 		if (data && data.loggedIn) {
 			return {
 				loggedIn: true,
-				isAdmin: !!data.isAdmin, // Ensure isAdmin is a boolean
-				isApproved: !!data.isApproved, // Ensure isApproved is a boolean
+				isAdmin: !!data.isAdmin,
+				isApproved: !!data.isApproved,
 				user: {
-					avatar: data.avatar || "", // Default to empty string if no avatar
+					avatar: data.avatar || "",
 					id: data.userId,
-					first_name: data.firstName || "", // Default to empty string if no first name
-					last_name: data.lastName || "", // Default to empty string if no last name
-					isAdmin: !!data.isAdmin, // Ensure isAdmin is a boolean
-					isApproved: !!data.isApproved, // Ensure isApproved is a boolean
+					first_name: data.firstName || "",
+					last_name: data.lastName || "",
+					isAdmin: !!data.isAdmin,
+					isApproved: !!data.isApproved,
 				},
 			};
 		}
 
-		// If user is not logged in, return a default structure
+		// Return default values if user is not logged in
 		return { loggedIn: false, isAdmin: false, isApproved: false, user: null };
-	} catch (error) {
-		console.error("Error checking login status:", error);
-
-		// Handle both Axios and non-Axios errors
-		if (axios.isAxiosError(error)) {
-			console.error("Axios error:", error.response?.data || error.message);
+	} catch (error: unknown) {
+		// Type assertion for AxiosError
+		if (error instanceof Error) {
+			console.error("Error occurred:", error.message);
 		} else {
 			console.error("Unexpected error:", error);
 		}
 
-		// Return a default structure if there's an error
 		return { loggedIn: false, isAdmin: false, isApproved: false, user: null };
 	}
 };
