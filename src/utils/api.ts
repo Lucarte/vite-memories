@@ -1,50 +1,46 @@
-// import axios from "axios";
+import axios from "axios";
 import { FanValues } from "../types/FanValues";
-import { PatchValues } from "../types/MemoryValues";
+import { PatchValues, User } from "../types/MemoryValues";
 import http from "./http";
 
-export const loggedInData = async () => {
+export const loggedInData = async (): Promise<{
+	loggedIn: boolean;
+	isAdmin: boolean;
+	isApproved: boolean;
+	user: User | null;
+}> => {
 	console.log("Calling loggedInData function..."); // Debugging step
 	try {
-		// const res = await http.get("/api/auth/login/status"); // Explicit GET
-		const res = await fetch("http://localhost:8000/api/auth/login/status", {
-			credentials: "include", // Ensures cookies are sent
-		});
+		const res = await http.get("/api/auth/login/status"); // Explicit GET
 		// 🔍 Log the full response to see what's coming from the backend
 		console.log("Full login status response:", res);
-		// const data = res.json();
-		const data = await res.json();
-		console.log("Fetch response:", data);
+		const data = res.data;
 
-		return data;
+		if (data && data.loggedIn && data.userId) {
+			return {
+				loggedIn: true,
+				isAdmin: !!data.isAdmin, // Ensure boolean
+				isApproved: !!data.isApproved, // Ensure boolean
+				user: {
+					avatar: data.avatar || "",
+					id: data.userId,
+					first_name: data.firstName || "",
+					last_name: data.lastName || "",
+					isAdmin: !!data.isAdmin,
+					isApproved: !!data.isApproved,
+				},
+			};
+		}
+
+		return { loggedIn: false, isAdmin: false, isApproved: false, user: null };
 	} catch (error) {
-		console.error("Fetch error:", error);
+		if (axios.isAxiosError(error)) {
+			console.error("Axios error:", error.response?.data || error.message);
+		} else {
+			console.error("Unexpected error:", error);
+		}
+		return { loggedIn: false, isAdmin: false, isApproved: false, user: null };
 	}
-	// 	if (data && data.loggedIn && data.userId) {
-	// 		return {
-	// 			loggedIn: true,
-	// 			isAdmin: !!data.isAdmin, // Ensure boolean
-	// 			isApproved: !!data.isApproved, // Ensure boolean
-	// 			user: {
-	// 				avatar: data.avatar || "",
-	// 				id: data.userId,
-	// 				first_name: data.firstName || "",
-	// 				last_name: data.lastName || "",
-	// 				isAdmin: !!data.isAdmin,
-	// 				isApproved: !!data.isApproved,
-	// 			},
-	// 		};
-	// 	}
-
-	// 	return { loggedIn: false, isAdmin: false, isApproved: false, user: null };
-	// } catch (error) {
-	// 	if (axios.isAxiosError(error)) {
-	// 		console.error("Axios error:", error.response?.data || error.message);
-	// 	} else {
-	// 		console.error("Unexpected error:", error);
-	// 	}
-	// 	return { loggedIn: false, isAdmin: false, isApproved: false, user: null };
-	// }
 
 	// } catch (error) {
 	// 	console.error("Error checking login status:", error);

@@ -24,7 +24,7 @@ type FormValues = {
 // action function (modified to handle login status check)
 export const action: ActionFunction = async ({ request }) => {
 	const formData = await request.formData();
-	console.log("Form data now received:", formData); // Log the form data
+	console.log("Login Form data now received:", formData); // Log the form data
 
 	const { status, data } = await login(formData);
 	console.log("Login response:", { status, data }); // Log the login response
@@ -64,7 +64,7 @@ export const action: ActionFunction = async ({ request }) => {
 	}
 
 	// Catch-all for unexpected statuses
-	console.log("Unexpected response status:", status); // Log unexpected response status
+	console.log("From login - status:", status); // Log unexpected response status
 	return json(
 		{ errorMessage: "Something went wrong. Please try again later." },
 		{ status: 500 }
@@ -122,9 +122,9 @@ const Login = () => {
 	};
 
 	const onSubmit: SubmitHandler<FormValues> = (_, event) => {
-		console.log("Form submitted"); // Log form submission
+		console.log("Login Form submitted"); // Log form submission
 		const formData = new FormData(event?.target);
-		console.log("Form data on submit:", formData); // Log form data on submit
+		console.log("Login Form data on submit:", formData); // Log form data on submit
 		submit(formData, {
 			method: "POST",
 			action: location.pathname,

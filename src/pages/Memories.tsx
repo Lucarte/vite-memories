@@ -27,8 +27,8 @@ type DeferredLoaderData = {
 };
 
 export const loader: LoaderFunction = async () => {
-	// Check if logged in
 	const { loggedIn, isApproved } = await loggedInData();
+	console.log("loggedIn:", loggedIn, "isApproved:", isApproved);
 
 	if (!loggedIn) {
 		alert("Login Required ;)");
@@ -37,7 +37,7 @@ export const loader: LoaderFunction = async () => {
 
 	if (!isApproved) {
 		alert("Your account is pending admin approval.");
-		return redirect("/login"); // Redirect to login or an appropriate page
+		return redirect("/login");
 	}
 
 	try {
