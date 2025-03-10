@@ -29,7 +29,7 @@ export const action: ActionFunction = async ({ request }) => {
 	const { status, data } = await login(formData); // Assuming this is your login logic
 	console.log("Login response:", { status, data });
 
-	if (!status || !data) {
+	if (!status) {
 		console.error("Login failed. Missing status or data.");
 		return json(
 			{ errorMessage: "Something went wrong. Please try again later." },
