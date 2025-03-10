@@ -9,6 +9,7 @@ export const loggedInData = async (): Promise<{
 	isApproved: boolean;
 	user: User | null;
 }> => {
+	console.log("Calling loggedInData function..."); // Debugging step
 	try {
 		const res = await http.get("/api/auth/login/status"); // Explicit GET
 		// 🔍 Log the full response to see what's coming from the backend
