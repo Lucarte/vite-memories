@@ -27,24 +27,27 @@ type DeferredLoaderData = {
 };
 
 export const loader: LoaderFunction = async () => {
+	console.log("🔍 Loader function in memories.tsx is running!");
+
 	const { loggedIn, isApproved } = await loggedInData();
-	console.log("loggedIn:", loggedIn, "isApproved:", isApproved);
+	console.log("✅ loggedIn:", loggedIn, "isApproved:", isApproved);
 
 	if (!loggedIn) {
-		alert("Login Required ;)");
+		console.log("⛔ User not logged in, redirecting to login.");
 		return redirect("/login");
 	}
 
 	if (!isApproved) {
-		alert("Your account is pending admin approval.");
+		console.log("⛔ User not approved, redirecting to login.");
 		return redirect("/login");
 	}
 
 	try {
 		const memories = await getAllMemories();
+		console.log("📜 Retrieved memories:", memories);
 		return defer({ memories });
 	} catch (error) {
-		console.error("Error fetching all memories:", error);
+		console.error("⚠️ Error fetching memories:", error);
 		return defer({ memories: [] });
 	}
 };
