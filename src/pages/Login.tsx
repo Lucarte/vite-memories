@@ -56,7 +56,7 @@ export const action: ActionFunction = async ({ request }) => {
 		return json(
 			{
 				successMessage: data.successMessage,
-				redirectTo: data.redirectTo ?? "/",
+				redirectTo: data.redirectTo ?? "/memories",
 				isApproved: true, // Ensure this is returned
 			},
 			{ status: 200 }
@@ -103,8 +103,8 @@ const Login = () => {
 			console.log("Success message received:", actionData.successMessage);
 			setMessage({ type: "success", text: actionData.successMessage });
 			setTimeout(() => {
-				console.log("Redirecting to:", actionData.redirectTo || "/dashboard");
-				navigate(actionData.redirectTo || "/dashboard");
+				console.log("Redirecting to:", actionData.redirectTo || "/memories");
+				navigate(actionData.redirectTo || "/memories");
 			}, 1500);
 		}
 	}, [actionData, navigate]);
