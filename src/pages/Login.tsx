@@ -30,7 +30,7 @@ export const action: ActionFunction = async ({ request }) => {
 	console.log("Login response:", { status, data });
 
 	if (!status) {
-		console.error("Login failed. Missing status or data.");
+		console.error("Login failed. Missing status.");
 		return json(
 			{ errorMessage: "Something went wrong. Please try again later." },
 			{ status: 500 }

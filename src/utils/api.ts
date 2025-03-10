@@ -11,41 +11,45 @@ export const loggedInData = async (): Promise<{
 }> => {
 	console.log("Calling loggedInData function..."); // Debugging step
 	try {
-		const res = await http.get("/api/auth/login/status"); // Explicit GET
-		// 🔍 Log the full response to see what's coming from the backend
-		console.log("Full login status response:", res);
+		// Call the backend to check the user's login status
+		const res = await http.get("/api/auth/login/status"); // Explicit GET to /status endpoint
+		console.log("Full login status response:", res); // Debug the full response
+
+		// Extract data from the response
 		const data = res.data;
 
-		if (data && data.loggedIn && data.userId) {
+		// Check if 'loggedIn' is true and required data exists
+		if (data && data.loggedIn) {
 			return {
 				loggedIn: true,
-				isAdmin: !!data.isAdmin, // Ensure boolean
-				isApproved: !!data.isApproved, // Ensure boolean
+				isAdmin: !!data.isAdmin, // Ensure isAdmin is a boolean
+				isApproved: !!data.isApproved, // Ensure isApproved is a boolean
 				user: {
-					avatar: data.avatar || "",
+					avatar: data.avatar || "", // Default to empty string if no avatar
 					id: data.userId,
-					first_name: data.firstName || "",
-					last_name: data.lastName || "",
-					isAdmin: !!data.isAdmin,
-					isApproved: !!data.isApproved,
+					first_name: data.firstName || "", // Default to empty string if no first name
+					last_name: data.lastName || "", // Default to empty string if no last name
+					isAdmin: !!data.isAdmin, // Ensure isAdmin is a boolean
+					isApproved: !!data.isApproved, // Ensure isApproved is a boolean
 				},
 			};
 		}
 
+		// If user is not logged in, return a default structure
 		return { loggedIn: false, isAdmin: false, isApproved: false, user: null };
 	} catch (error) {
+		console.error("Error checking login status:", error);
+
+		// Handle both Axios and non-Axios errors
 		if (axios.isAxiosError(error)) {
 			console.error("Axios error:", error.response?.data || error.message);
 		} else {
 			console.error("Unexpected error:", error);
 		}
+
+		// Return a default structure if there's an error
 		return { loggedIn: false, isAdmin: false, isApproved: false, user: null };
 	}
-
-	// } catch (error) {
-	// 	console.error("Error checking login status:", error);
-	// 	return { loggedIn: false, isAdmin: false, isApproved: false, user: null };
-	// }
 };
 
 // REGISTER
@@ -59,23 +63,15 @@ export const login = async (formData: FormData) => {
 	try {
 		const res = await http.post("/api/auth/login", formData);
 
-		// Log the response to inspect what we get back from the API
-		console.log("Login API response:", res);
-
-		// Check if the status is 200 (successful response)
-		if (res.status !== 200) {
-			console.error("Login failed with status:", res.status);
+		if (res.status === 200 && res.data.redirectTo) {
+			// Login successful, redirect to the desired page
+			return res.data.redirectTo;
+		} else {
 			throw new Error("Login failed");
 		}
-
-		// Return the response data if successful
-		return res.data;
 	} catch (error) {
-		// Log the error details for debugging
 		console.error("Error logging in:", error);
-
-		// Re-throw the error so the calling function can handle it
-		throw error;
+		throw error; // Let the component handle the error
 	}
 };
 
