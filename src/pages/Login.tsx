@@ -24,14 +24,13 @@ type FormValues = {
 // action function (modified to handle login status check)
 export const action: ActionFunction = async ({ request }) => {
 	const formData = await request.formData();
-	console.log("Login Form data now received:", formData); // Log the form data
+	console.log("Login Form data received:", formData); // Log the form data
 
-	const { status, data } = await login(formData);
+	const { status, data } = await login(formData); // Assuming login() returns an object like { status, data }
 	console.log("Login response:", { status, data }); // Log the login response
 
 	if (status === 403) {
-		// Account not approved
-		console.log("Account not approved"); // Log account not approved
+		console.log("Account not approved");
 		return json(
 			{
 				errorMessage: data.errorMessage || "Your account is pending approval.",
@@ -41,8 +40,7 @@ export const action: ActionFunction = async ({ request }) => {
 	}
 
 	if (status === 401 || status === 400) {
-		// Invalid credentials or bad request
-		console.log("Invalid credentials or bad request"); // Log invalid credentials
+		console.log("Invalid credentials or bad request");
 		return json(
 			{
 				errorMessage: "Invalid credentials. Only registered users can log in.",
@@ -55,7 +53,7 @@ export const action: ActionFunction = async ({ request }) => {
 		console.log("Login successful");
 		return json(
 			{
-				successMessage: data.successMessage,
+				successMessage: data.successMessage || "Login successful",
 				redirectTo: data.redirectTo ?? "/memories",
 				isApproved: true, // Ensure this is returned
 			},
@@ -63,8 +61,7 @@ export const action: ActionFunction = async ({ request }) => {
 		);
 	}
 
-	// Catch-all for unexpected statuses
-	console.log("From login - status:", status); // Log unexpected response status
+	console.log("Login status:", status); // Log unexpected status
 	return json(
 		{ errorMessage: "Something went wrong. Please try again later." },
 		{ status: 500 }
