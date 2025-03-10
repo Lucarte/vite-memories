@@ -52,12 +52,12 @@ export const action: ActionFunction = async ({ request }) => {
 	}
 
 	if (status === 200) {
-		// Successful login
-		console.log("Login successful"); // Log successful login
+		console.log("Login successful");
 		return json(
 			{
 				successMessage: data.successMessage,
 				redirectTo: data.redirectTo ?? "/",
+				isApproved: true, // Ensure this is returned
 			},
 			{ status: 200 }
 		);
@@ -95,14 +95,15 @@ const Login = () => {
 	} | null>(null);
 
 	useEffect(() => {
+		console.log("Action Data:", actionData); // Debugging log
 		if (actionData?.errorMessage) {
-			console.log("Error message received:", actionData.errorMessage); // Log error message
+			console.log("Error message received:", actionData.errorMessage);
 			setMessage({ type: "error", text: actionData.errorMessage });
 		} else if (actionData?.successMessage && actionData.isApproved) {
-			console.log("Success message received:", actionData.successMessage); // Log success message
+			console.log("Success message received:", actionData.successMessage);
 			setMessage({ type: "success", text: actionData.successMessage });
 			setTimeout(() => {
-				console.log("Redirecting to:", actionData.redirectTo || "/dashboard"); // Log redirect
+				console.log("Redirecting to:", actionData.redirectTo || "/dashboard");
 				navigate(actionData.redirectTo || "/dashboard");
 			}, 1500);
 		}
